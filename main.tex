@@ -1,0 +1,93 @@
+\documentclass[10pt,a4paper, titlepage]{report}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{multicol}
+\usepackage{mathrsfs}
+\usepackage{tikz}
+\usepackage[bookmarks]{hyperref}
+\usepackage[english,italian]{babel}
+\usepackage [autostyle]{csquotes}
+\MakeInnerQuote{"}
+%\usepackage[nowrite, norules, swapnames]{frontespizio}
+\usepackage{braket}
+\usepackage{stmaryrd}
+\usepackage{mathtools}
+\usepackage{xfrac}
+\usepackage{enumerate}
+\usepackage[
+backend=bibtex,
+style=numeric,
+sorting=nyt
+]{biblatex}
+\addbibresource{bibliography.bib}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+
+
+\newcommand{\send}[1]{\overline{#1}}
+\newcommand{\kp}{\ket{\psi}}
+\newcommand{\kf}{\ket{\phi}}
+
+
+\title{QCCS reduction semantics }
+\author{Gabriele Tedeschi}
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\chapter{Introduction}
+
+\chapter{Background}
+In this chapter, we review some fundamentals concepts in quantum computing and formal methods.
+
+\section{Quantum Computing}
+
+The laws on Quantum Mechanics, as we understand them, are elegantly formalized in a mathematical framework, built upon simple linear algebra. This framework is based on a few postulates that describe the behaviour of quantum systems. Since quantum computing is just the technique of manipulating quantum systems to perform some computation, it must follow the same postulates. 
+
+First we recall some basic definition from linear algebra, formulated in the Dirac's "bra-ket" notation, and then we present the postulates that apply to quantum computing. For further reading, the standard textbook on the subject is \cite{nielsen_chuang_2010}.
+
+
+\begin{definition}
+A column vector is written $\kp$, and it's called "ket of $\psi$"
+\[ \kp = \begin{pmatrix}
+		\alpha_1\\
+		\ldots\\
+		\alpha_n
+\end{pmatrix}
+\]
+while its conjugate transposed is writted $\bra{\psi}$
+	\[
+		\bra{\psi} = \kp^\dagger = (\alpha_1^*, \ldots, \alpha_n^*)
+	\]
+\end{definition}
+
+A Hilbert space, often denoted as $\cal{H}$, is a complex inner product space, i.e. etc etc
+
+
+orthogonal vectors
+
+tensor product on hilbert spaces
+
+\subsection{State vector}
+\subsection{Unitary Transformation}
+\subsection{Measurement}
+\subsection{Density matrix formalism}
+
+\section{Process Calculi}	
+
+\chapter{chapter 3}
+\chapter{chapter 4}
+
+\chapter{Conclusions}
+\printbibliography[
+heading=bibintoc,
+title={Bibliography}
+]
+\end{document}
