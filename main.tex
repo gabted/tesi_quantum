@@ -1,4 +1,5 @@
-\documentclass[10pt,a4paper, titlepage]{report}
+	\documentclass[10pt,a4paper, titlepage]{report}
+\usepackage[margin=1.5in]{geometry}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -32,6 +33,15 @@ sorting=nyt
 \newcommand{\send}[1]{\overline{#1}}
 \newcommand{\kp}{\ket{\psi}}
 \newcommand{\kf}{\ket{\phi}}
+\newcommand{\kz}{\ket{0}}
+\newcommand{\ko}{\ket{1}}
+\newcommand{\kpl}{\ket{+}}
+\newcommand{\oost}{\frac{1}{\sqrt{2}}}
+\newcommand{\km}{\ket{-}}
+\newcommand{\calH}{\mathcal{H}}
+\newcommand{\calHt}{\mathcal{H}^2}
+\newcommand{\braketpp}{\braket{\psi | \psi}}
+\newcommand{\braketpf}{\braket{\psi | \phi}}
 
 
 \title{QCCS reduction semantics }
@@ -49,36 +59,199 @@ In this chapter, we review some fundamentals concepts in quantum computing and f
 
 \section{Quantum Computing}
 
-The laws on Quantum Mechanics, as we understand them, are elegantly formalized in a mathematical framework, built upon simple linear algebra. This framework is based on a few postulates that describe the behaviour of quantum systems. Since quantum computing is just the technique of manipulating quantum systems to perform some computation, it must follow the same postulates. 
-
-First we recall some basic definition from linear algebra, formulated in the Dirac's "bra-ket" notation, and then we present the postulates that apply to quantum computing. For further reading, the standard textbook on the subject is \cite{nielsen_chuang_2010}.
+The laws on Quantum Mechanics, as we understand them, are elegantly formalized in a mathematical framework, built upon simple linear algebra. This framework is based on a few \textit{postulates} that describe the behaviour of quantum systems. Since quantum computing is just the technique of manipulating quantum systems to perform some computation, it must follow the same rules. Before presenting each postulate, we will recall the necessary basic definition from linear algebra, formulated in the Dirac's "bra-ket" notation. For further reading, the standard textbook on the subject is \cite{nielsen_chuang_2010}.
 
 
-\begin{definition}
-A column vector is written $\kp$, and it's called "ket of $\psi$"
+\subsection{State vector}
+
+A \textit{column vector} in a complex vector space is written $\kp$, and it's called a "ket",
 \[ \kp = \begin{pmatrix}
 		\alpha_1\\
-		\ldots\\
+		\vdots\\
 		\alpha_n
 \end{pmatrix}
 \]
-while its conjugate transposed is writted $\bra{\psi}$
+where $\alpha_1, \ldots,  \alpha_n \in \mathbb{C}$. Its \textit{conjugate transposed} is written $\bra{\psi}$, and its called a "bra".
 	\[
-		\bra{\psi} = \kp^\dagger = (\alpha_1^*, \ldots, \alpha_n^*)
+		\bra{\psi} = \kp^\dagger = (\alpha_1^* \ldots \alpha_n^*)
 	\]
-\end{definition}
 
-A Hilbert space, often denoted as $\cal{H}$, is a complex inner product space, i.e. etc etc
+A (finite-dimensional) \textit{Hilbert space}, often denoted as $\cal{H}$, is a complex inner product space, i.e. a complex vector space equipped with a binary operator $\braket{  \,\_\, |\, \_\, }: \calH \times \calH \rightarrow \mathbb{C}$ called \textit{inner product}, dot product, or simply "braket".
+\[
+	\braket{\psi | \phi} = 
+	\begin{pmatrix}
+	\alpha_1^* \ldots \alpha_n^*
+	\end{pmatrix}\begin{pmatrix}
+	\beta_1 \\
+	\vdots \\
+	\beta_n
+	\end{pmatrix} = 
+	\sum_i \alpha_i^*\beta_i
+\]
+
+The inner product satisfies the following properties:
+\begin{align*}
+\text{Conjugate symmetry} & &  \braket{\psi | \phi} &= \braket{\phi | \psi}^* \\
+\text{Linearity \quad\quad} & & \bra{\psi} (\alpha\ket{\phi} + \beta\ket{\varphi}) &= \alpha\braket{\psi | \phi} + \beta\braket{\psi | \varphi}\\
+\text{Positive definiteness} & & \braket{\psi | \psi} &\geq 0
+\end{align*}
+
+Notice that $\braket{\psi|\psi} = 0$ if and only if $\kp$ is the $\mathbf{0}$ vector. Besides, thanks to conjugate symmetry, we have $\braket{\psi | \psi} = \braket{\psi | \psi} ^ *$, so $\braket{\psi | \psi}$ it's always a real, non-negative number, when $\kp \neq \mathbf{0}$.
+
+Two vectors $\kp$ and $\kf$ are \textit{orthogonal} if
+ \[\braket{\psi | \phi} = 0\]
 
 
-orthogonal vectors
+The \textit{norm} of $\kp$ is defined as: 
+\[ \|\kp\| = \sqrt{\braketpp}\]
 
-tensor product on hilbert spaces
 
-\subsection{State vector}
-\subsection{Unitary Transformation}
+A \textit{unit vector} is a vector $\kp$ such that \[\|\kp\| = 1\].
+
+A set of vectors $\{\kp_i\}_i$ is an \textit{orthonormal basis} of $\calH$ if \begin{itemize}
+	\item each vector $\kf \in \calH$ can be expressed as a \textit{linear combination} of the vector in the basis, $\kf = \sum_i \alpha_i\kp_i$.
+	\item All the vector in the basis are orthogonal
+	\item All the vector in the basis are unit vector 
+\end{itemize}
+
+We're now ready to present the postulates of Quantum Mechanics, in the form more convenient for quantum computing.
+
+\begin{quote} 
+\textbf{Postulate I}: The state of an isolated physical system is represented, at a fixed time $t$, by a unit vector $\kp$, called the \textit{state vector}, belonging to a Hilbert space $\calH$, called the \textit{state space}. 
+\end{quote}
+
+ When describing the state oh a quantum system, we ignore the \textit{global phase factor}\footnote{An equivalent formulation, in fact, says that a quantum system is described not by a vector but by a \textit{ray}, a one-dimensional subspace of $\calH$}, i.e. 
+ \[
+ 	\kp = \begin{pmatrix}
+	\alpha \\
+	\beta
+	\end{pmatrix} = - \begin{pmatrix}
+	\alpha \\
+	\beta
+	\end{pmatrix} = \lambda \begin{pmatrix}
+	\alpha \\
+	\beta
+	\end{pmatrix} 
+	\text{ for each $\lambda$ such that $|\lambda| = 1$}
+ \]
+
+The simplest, prototypical example of a quantum physical system is a \textit{qubit}: a qubit is a physical system with associated a two-dimensional Hilbert Space $\calH^2$. Such systems comprehend an elector in the ground or excited state, a vertically or horizontally polarized photon, or a spin up or spin down particle.
+
+Taken for example a photon, we could say that the photon is in state $\kz$ when vertically polarized, and in state $\ko$ when is horizontally polarized, where $\kz$ and $\ko$ are the two unit vector of the Hilbert space defined as
+\[
+	\kz = \begin{pmatrix}
+	1 \\
+	0
+	\end{pmatrix} \qquad
+	\ko = \begin{pmatrix}
+	0 \\
+	1
+	\end{pmatrix}
+\]
+
+The vectors $\{\kz, \ko\}$ form an orthonormal basis of $\calHt$, called the \textit{computational basis}. Since they form a basis, each vector $\kp \in \calH^2$ can be expressed as 
+	\[\kp = \begin{pmatrix}
+	\alpha \\
+	\beta
+	\end{pmatrix} = 
+	\alpha\kz + \beta\ko
+	\]
+where $\alpha, \beta \in \mathbb{C}$ and $|\alpha|^2 + |\beta|^2 = 1$.
+
+So, the state of any qubit can mathematically be described as $\kp = \alpha\kz +\beta\ko$, a linear combination of $\kz$ and $\ko$. From the physical point of view, this means that the qubit is in a \textit{quantum superposition} of state $\kz$ and $ko$, like a photon being diagonally-polarized, or an electron being at the same time in the excited and in the ground state.
+
+Other important vectors in the $\calHt$ state space are $\kpl$ and $\km$,
+\begin{align*}
+	\kpl = \oost &\begin{pmatrix}
+	1 \\
+	1
+	\end{pmatrix}  = \oost\kz + \oost\ko   \\
+	\km  = \oost &\begin{pmatrix}
+	1 \\
+	-1
+	\end{pmatrix}  = \oost\kz - \oost\ko 
+\end{align*}
+that form the so called \textit{hadamard basis} of $\calHt$.
+\subsection{Unitary Transformations}
+
+For each linear operator $A$ acting on a Hilbert space $\calH$, we denote as $A^\dagger$ the \textit{adjoint} of $A$, i.e. the unique linear operator such that
+\[
+	\braket{\psi|A\phi} = \braket{A^\dagger\psi|\phi}
+\]
+
+A linear operator $A$ acting on a $n$-dimensional Hilbert space $\calH^n$ can be represented as a $n\times n$ matrix, and its adjoint is calculated as 
+\[
+	A^\dagger = (A^*)^T
+\] the conjugate transpose of the matrix $A$.
+
+
+If it holds that $A = A^\dagger$, we say that $A$ is self-adjoint, or \textit{Hermitian}.
+
+A linear operator $U$ is said to be \textit{unitary} when $U^\dagger = U^{-1}$, which implies 
+\[
+	UU^\dagger = U^\dagger U = I
+\]
+
+Unitary matrices enjoy many useful properties, first of all that they have a spectral decomposition. An other defining characteristic is that they preserve the inner product, $\braket{\psi | \phi} = \braket{U\psi | U\phi}$
+\[
+	\braket{U\psi | U\phi} = \bra{\psi}U^\dagger U\ket{\psi} = \bra{\psi}I\ket{\psi} = \braket{\psi|\phi}
+\]
+
+A corollary of this property is that applying a unitary operator to a unit vector gives a unit vector
+\[
+	\braket{U\psi | U\psi} = \braketpp = 1
+\]
+
+The following postulates make obvious why we are interested in unitary transformation.
+\begin{quote}
+\textbf{Postulate II}: The evolution of a closed quantum system is described by a unitary transformation. That is, the state $\kp$ of the system at time $t_0$ is related to the state $\ket{\psi^\prime}$ of the system at time $t_2$ by a unitary operator $U$ which depends only on the times $t_0$ and $t_1$.
+\[
+	\ket{\psi^\prime} = U\kp
+\]
+\end{quote}
+
+According to what we said before, if a physical system starts in a unit state, it will always remain in a unit state.
+
+In quantum computing, the the programmer can manipulate the state of a qubit, applying unitary transformations to it. Some of the most frequent transformation, implemented in every quantum computer, are:
+\begin{gather*}
+	X = \sigma_X = \begin{bmatrix}
+	0 & 1 \\
+	1 & 0
+	\end{bmatrix} \qquad
+	Y = \sigma_Y = \begin{bmatrix}
+	0 & -i \\
+	i & 0
+	\end{bmatrix} \qquad
+	Z = \sigma_Z = \begin{bmatrix}
+	1 & 0 \\
+	0 & -1
+	\end{bmatrix} \\
+	I = \begin{bmatrix}
+	1 & 0 \\
+	0 & 1
+	\end{bmatrix} \qquad
+	H = \oost\begin{bmatrix}
+	1 & 1 \\
+	1 & -1
+	\end{bmatrix}\qquad 
+	S = \begin{bmatrix}
+	1 & 0 \\
+	0 & i
+	\end{bmatrix} 
+\end{gather*}
+
+For example, the $H$ operator, called the Hadamard operator, or Hadamard gate, is used to \textit{create superposition}, as it transforms a vector from the computational basis to the Hadamard basis:
+\begin{gather*}
+	H\kz = \kpl \qquad H\ko = \km \\
+	H\kpl = \kz \qquad H\km = \ko \\	 
+\end{gather*}
 \subsection{Measurement}
+\subsection{Composite quantum systems}
+tensor product
 \subsection{Density matrix formalism}
+outer product
+
+positive semidefinite operators
 
 \section{Process Calculi}	
 
