@@ -29,8 +29,10 @@ sorting=nyt
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}[section]
 
+\newcommand{\note}[1]{{\color{red} #1}}
 
-\newcommand{\send}[1]{\overline{#1}}
+\newcommand{\ketbra}[2]{\ket{#1}\!\!\bra{#2}}
+\newcommand{\proj}[1]{\ketbra{#1}{#1}}
 \newcommand{\kp}{\ket{\psi}}
 \newcommand{\kf}{\ket{\phi}}
 \newcommand{\kz}{\ket{0}}
@@ -41,13 +43,14 @@ sorting=nyt
 \newcommand{\calH}{\mathcal{H}}
 \newcommand{\calHt}{\mathcal{H}^2}
 \newcommand{\Hto}[1]{\mathcal{H}^{\otimes #1}}
-\newcommand{\braketpp}{\braket{\psi | \psi}}
-\newcommand{\braketpf}{\braket{\psi | \phi}}
+\newcommand{\calDH}{\mathcal{D}(\mathcal{H})}
+\newcommand{\calSH}{\mathcal{S}(\mathcal{H})}
+\newcommand{\sop}{\mathcal{E}}
 \newcommand{\tensor}{\otimes}
 \newcommand{\cnot}{\text{CNOT}}
 
 
-\title{QCCS reduction semantics }
+\title{Exploring Quantum process calculi via barbs and contexts }
 \author{Gabriele Tedeschi}
 \begin{document}
 
@@ -106,7 +109,7 @@ Two vectors $\kp$ and $\kf$ are \textit{orthogonal} if
 
 
 The \textit{norm} of $\kp$ is defined as: 
-\[ \|\kp\| = \sqrt{\braketpp}\]
+\[ \|\kp\| = \sqrt{\braket{\psi|\psi}}\]
 
 
 A \textit{unit vector} is a vector $\kp$ such that \[\|\kp\| = 1\].
@@ -202,7 +205,7 @@ Unitary matrices enjoy many useful properties, first of all that they have a spe
 
 A corollary of this property is that applying a unitary operator to a unit vector gives a unit vector
 \[
-	\braket{U\psi | U\psi} = \braketpp = 1
+	\braket{U\psi | U\psi} = \braket{\psi|\psi} = 1
 \]
 
 The following postulate makes obvious why we are interested in unitary transformation.
@@ -254,7 +257,7 @@ The second postulate describes only the evolution of isolated systems. Such syst
 
 From a physical point of view, if a system is in a superposition of states, measuring it can  cause the wavefunction to collapse to a single state, in a purely probabilistic way. This means that, even if we compute a state that contains the desired information, this information is often difficult to recover, because directly measuring  it can destroy the information and produce a trivial outcome.
 
-\begin{quote} \textbf{Postulate III}: Quantum measurements are described by a set $\{M_m\}$ of measurement operators, where the index $m$ refers to the measurement outcomes that may occur in the experiment. The set of measurement operators must be \textit{complete}, i.e.:
+\begin{quote} \textbf{Postulate III}: Quantum measurements are described by a set $\{M_m\}_m$ of measurement operators, where the index $m$ refers to the measurement outcomes that may occur in the experiment. The set of measurement operators must be \textit{complete}, i.e.:
 \[\sum_m M_m^\dagger M_m = I\]
 If the state of the quantum system is $\kp$ before the measurement, then the probability that result $m$ occurs is 
 \[p_m = \bra{\psi}M_m^\dagger M_m\kp\]
@@ -266,7 +269,7 @@ The most common class of quantum measurements is composed of \textit{projective 
 
 The simplest example of (projective) measurement is simply measuring a state in the computational basis, i.e. projecting it in its $0$-$1$ component. The measurement in the computational basis is defined as \[ M_0 = \begin{pmatrix} 1 & 0 \\ 0 & 0\end{pmatrix} \qquad
 M_1 = \begin{pmatrix}0 & 0 \\ 0 & 1\end{pmatrix} \]
-And it's effect of the state $\kp = \begin{pmatrix}\alpha \\ \beta \end{pmatrix}$ is:
+And its effect of the state $\kp = \begin{pmatrix}\alpha \\ \beta \end{pmatrix}$ is:
 \begin{align*}
 \frac{1}{\sqrt{p_0}}M_0\kp = \frac{1}{|\alpha|}\begin{pmatrix} 1 & 0 \\ 0 & 0\end{pmatrix}
 \begin{pmatrix}\alpha \\ \beta \end{pmatrix} = \begin{pmatrix} 1 \\ 0 \end{pmatrix} = \kz 
@@ -323,7 +326,7 @@ The fourth postulate tells us that the state space of a composite system is simp
 \[	H\tensor I = \oost\begin{pmatrix}
 	I & I \\ I & -I
 	\end{pmatrix}\]
-And when applied to a two-qubit system, it applies $H$ on the first qubit, and leav the second one unaltered:
+And when applied to a two-qubit system, it applies $H$ on the first qubit, and leaves the second one unaltered:
 \[ (H\tensor I) \ket{00} = H\kz \tensor I\kz = \oost \begin{pmatrix}
 	I & I \\ I & -I
 	\end{pmatrix} \begin{pmatrix}
@@ -352,19 +355,121 @@ This matrix applies a $X$ transformation on the second qubit only if the first o
 \big(\ket{00} - \ket{11}\big) = \ket{\Phi^-}
 \end{gather*}
 
-\subsection{Density matrix formalism}
+.\subsection{Density operator formalism}
 
-The formalism presented so far describes quantum system in terms of unit vectors and unitary transformations. There is an alternative, more general formulation, namely the \textit{density operator formalism}.  We will explain its advantages in a motivating example, and then reformulate the postulates in terms of density operators and quantum operations.
+The formalism presented so far describes quantum system in terms of unit vectors and unitary transformations. There is an alternative, more general formulation, the \textit{density operator formalism}, in which states are represented as positive operators, and transformations as linear maps from operators to operators, i.e. superoperators.
+
+The main advantage of this formulation is that represents also \textit{partial information} about a quantum system. When describing open systems, that are systems which interact with the external environment, it is often impossible to have complete knowledge on the state of our systems. Instead, one could know that the open system is either in state $\kp$, with a certain probability $p$, or in state $\kf$, with probability $1-p$. In other words, we know that the system is in a \textit{probabilistic mixture of states}, called an \textit{ensemble} of states, or also a \textit{mixed state}.
+
+In general, given an $n$-dimensional Hilbert space $\calH$, an \textit{ensemble} of quantum states is a set:
+\[\{(\ket{\psi_i}, p_i)\} \]
+of quantum states in $\calH$, each with a different probability, such that $\forall i \, p_i > 0$ and $\sum_i p_i \leq 1$. Notice that when $\sum_i p_i = 1$, we have a probability distribution of states, when $\sum_i p_i < 1$, we have a so called subprobability distribution.
+
+Each ensemble defines a density operator, that is a matrix in $\mathbb{C}^{n \times n}$, i.e. an operator $\calH \rightarrow \calH$. The ensemble $\{(\ket{\psi_i}, p_i)\}$, with $\ket{\psi_i} \in \calH$ defines the density operator: 
+\[
+	\rho = \sum_i p_i \proj{\psi_i}
+\]
+where $\ketbra{\psi}{\phi}$ denotes the matrix multiplication between the column vector $\kp$ and the row vector $\bra{\phi}$, known as the \textit{outer product}. Notice that this construction is not injective, as there are different ensembles that correspond to the same density operator. We indicate with $\calDH$ the set of density operators of $\calH$.
+
+Density operators enjoy two useful properties (see \cite{nielsen_chuang_2010}): \begin{enumerate}
+\item The trace of $\rho$ is the sum of the probabilities of the ensemble $tr(\rho) = \sum_i p_i \leq 1$.
+\item $\rho$ is \textit{positive semidefinite}, i.e. 
+\[\forall \kp \in \calH \ \bra{\psi}\rho\kp \geq 0\]
+\end{enumerate}
+
+Positive semidefinite operators are always diagonalizable with eigenvalues real and positives. So, each positive semidefinite operator with trace $\leq 1$ represents at least one ensemble, with the eigenvectors as states and the corresponding eigenvalues as probabilities.
 
 
-outer product
+One of the main application of density operators is to describe the state of a subsystem of a composite quantum system.
 
-positive semidefinite operators
+Suppose a composite system, made of two subsystem $A$ and $B$, with state space  $\calH = \calH_A \tensor \calH_B$.  Given a generic $\rho^{AB} \in \calH$, that describes the state of the whole system, the operator $\rho^A$ that describes the subsystem $A$ is obtained as 
+\[
+	\rho^A = tr_B(\rho^{AB})
+\]
+where the $tr_B$ is called the \textit{partial trace over $B$}, and is defined by 
+\[
+ tr_B\big(\proj{\psi} \tensor \proj{\phi}\big) = \proj{\psi}tr\big(\proj{\phi}\big)
+\]
+together with linearity.
+
+When applied to a separable state $\rho^A \tensor \rho^B$, the partial trace operator $tr_B$ leaves $\rho^A$ unaltered. When applied to an entangled state, instead, it produces a probabilistic mixture of states, because "forgetting" the information on the state of subsystem $B$ leaves us with only partial information on subsystem $A$. The canonical example is the bell state $\rho = \frac{1}{2} \proj{00} + \frac{1}{2}\proj{11} \in \calH_A \tensor \calH_B$:
+
+\begin{align*}
+tr_B(\rho) &= \frac{1}{2} tr_B\big(\proj{00}\big) + \frac{1}{2}tr_B\big(\proj{11}\big)  \\
+	&= \frac{1}{2} tr_B\big(\proj{0}\tensor\proj{0}\big) + \frac{1}{2}tr_B\big(\proj{1}\tensor\proj{1}\big) \\
+	&= \frac{1}{2} \proj{0}tr\big(\proj{0}\big) + \frac{1}{2}\proj{1}tr\big(\proj{1}\big) \\
+	&= \frac{1}{2} \big(\proj{0} + \proj{1}\big) = \frac{1}{2}I
+\end{align*}
+
+\note{superoperators definitions}
+
+
+Let $\calH_A$ and $\calH_B$ be Hilbert spaces. Given $\mathcal{E}: \mathcal{D}(\calH_A) \rightarrow \mathcal{D}(\calH_A)$ and $\mathcal{F}: \mathcal{D}(\calH_B) \rightarrow \mathcal{D}(\calH_B)$,  their tensor product $\sop\tensor \mathcal{F}: \mathcal{D}(\calH_A \tensor \calH_B)\rightarrow \mathcal{D}(\calH_A \tensor \calH_B)$ is defined as:
+
+\[
+	(\sop \tensor \mathcal{F})(\rho_A \tensor \rho_B) = \sop(\rho_A)\tensor \mathcal{F}(\rho_B)
+\]
+
+
+Superoperators on $\calH$: all the maps $\sop: \calDH \rightarrow \calDH$ satifying:
+\begin{itemize}
+\item $\sop$ is \textit{convex linear}: for any set of probabilities	$\{p_i\}_i$,
+\[\sop\left(\sum_i p_i \rho_i \right) = \sum_i p_i \sop(\rho_i)\]
+\item $\sop$ is \textit{completely positive}: for any extra Hilbert space $\calH_R$, for any positive $\rho \in \calH_R \tensor \calH$, $(\mathcal{I}\tensor \sop)(\rho)$ is also positive, where $\mathcal{I}_R$ is the identity operator on $\mathcal{D}(\calH_R)$.
+\item $\sop$ is \textit{trace non-increasing}: for any density operator $\rho \in \calDH$, 
+\[tr\big(\sop(\rho)\big) \leq tr(\rho) \leq 1\].
+\end{itemize}
+
+We call $\calSH$ the set of all superoperators on $\calH$.
+
+
+\textit{Löwner order}: we define the partial order $\sqsubseteq$ on $\calDH$ as :
+\[ \rho \sqsubseteq \sigma \text{ if and only if } \sigma-\rho \text{ is positive}\]
+
+\textit{Kraus operator sum}: For any superoperator $\sop \in \calSH$, there exists a finite set of operators $\{E_i\}$ such that
+\begin{gather*}
+\sop(\rho) = \sum_i E_i\rho E_i^\dagger \\
+\sum_i E_i^\dagger E_i \sqsubseteq I_\calH
+\end{gather*}
+
+Superoperators can describe both unitary transformations and measurements. Given unitary operator $U$ on $\calH$, we can define  the (trace preserving) superoperator $\sop_U \in \calSH$ as:
+\[ \sop_U(\rho) = U \rho U^\dagger\]
+Given a measurement $\{M_m\}_m$, we can define the (trace non-increasing) superoperator $\sop_m \in \calSH$ as 
+\[\sop_m(\rho) = M_m\rho M_m^\dagger\]
+Notice that $\sop_m(\rho)$ is equal to $p_m\rho_m$, where $p_m$ is the probability of the outcome $m$ when measuring the state $\rho$, and $\rho_m$ is the state after outcome $m$ has occurred. 
+
 
 \section{Process Calculi}	
 
-\chapter{chapter 3}
+\note{lts}
+
+\note{bisimulation}
+
+\note{probabilistic (hennessy)}
+
+\note{reduction system}
+
+\note{barbed}
+
+
+\chapter{Stato dell'arte}
+-CQP con bisimulazione 
+-qCCS con bisimulazione  	
+
 \chapter{chapter 4}
+
+qCCS, pLTS di configurazioni, contesti 
+
+2 tipi di contesti: con continuazioni o senza
+qCCS contesti w.r.t CQP -> distribution semantics?
+qCCS contesti w.r.t qCCS -> 
+  open bisimulation via contesti
+  stafeulness? -> contesti con continuazioni
+
+\chapter{chapter 5}
+In cerca di una process algebra minimale
+senza configurazioni	
+con distribuzioni
 
 \chapter{Conclusions}
 \printbibliography[
