@@ -1,0 +1,65 @@
+\subsection{Type system properties}
+
+\begin{theorem}[Evaluation Preserves Typing]\label{thm:eval_typing}
+  If $\Gamma \vdash e$ and $e \Downarrow v$, then $\Gamma \vdash v$.
+\end{theorem}
+\begin{proof}
+  Follows by induction on the evaluation rules.
+\end{proof}
+
+\begin{theorem}[Structural Congruence Preserves Typing]
+  If $\Gamma; \Sigma \vdash P$ and $P \equiv Q$, then $\Gamma; \Sigma \vdash Q$.
+\end{theorem}
+\begin{proof}
+  By induction on the derivation of $P \equiv Q$. All rules follow trivially from: the rules of the operators,
+  \textsc{Par}, \textsc{Sum}, which are commutative, associative, have $nil$ as unit and require
+  each component to be typable; the \textsc{Nil} rule; and the \textsc{Guard} rule which requires the guarded process
+  to be typable.
+\end{proof}
+
+\begin{theorem}[Quantum weakening]
+  Let $\Gamma; \Sigma \vdash P$ and let $x : \mathcal{Q}$. If $x \not\in \Sigma$, then $\Gamma, x : \mathcal{Q}; \Sigma, x \vdash P$.
+\end{theorem}
+\begin{proof}
+  By induction on the derivation of $\Gamma; \Sigma \vdash P$.
+\end{proof}
+
+\begin{theorem}[Substitution in Process]
+  Let $\Gamma, x : T, \Gamma'; \Sigma \vdash P$ and let $v : T$ be a value such that:
+  \begin{itemize}
+    \item if $T = \mathcal{Q}$ and $v \not\in \Sigma$, then $\Gamma, \Gamma'; \Sigma[\sfrac{v}{x}] \vdash P[\sfrac{v}{x}]$.
+    \item if $T \neq \mathcal{Q}$, then $\Gamma, \Gamma'; \Sigma \vdash P[\sfrac{v}{x}]$.
+  \end{itemize}
+\end{theorem}
+\begin{proof}
+  By structural induction on the deriviation of $\Gamma, x : T, \Gamma'; \Sigma \vdash P$.
+  Let us analyze the interesting cases: For the \textsc{QOp} rule it must be that $P = \mathcal{E}(\widetilde{x}).Q$ for some process $Q$.
+  By induction hypothesis it holds that $\Gamma, \Gamma'; \Sigma' \vdash Q[\sfrac{v}{x}]$, however we must consider two cases:
+  if $v : \mathbb{N}$ or $v : \mathbb{B}$ then the conclusion follows trivially from the inductive hypothesis;
+  if $v : Q$ then $x \not\in \Sigma$ and $\Sigma' = \Sigma, v$, thus $v$ is not in $\widetilde{x}$ and we can reapply the \textsc{QOp} rule to obtain
+  $\Gamma, \Gamma'; \Sigma' \vdash \mathcal{E}(\widetilde{x}).Q$. The same line of reasoning is valid for the \textsc{QMeas} rule.
+  The \textsc{QSend} rule is also guaranteed by the $v \not\in \Sigma$ requirement when $v : Q$.
+  Finally, for the \textsc{Par} rule in the case of $v : Q$ and $x \in \Sigma$: the rule deriviation imposes that only one of the components, $P_i$,
+  contains the variable $x$ in its quantum environment, $\Sigma_i$, thus by induction we obtain $\Gamma, \Gamma'; \Sigma[\sfrac{v}{x}] \vdash P_i$.
+  While for the other components the substitution has no effect, thus $\Gamma, \Gamma'; \Sigma \vdash P_i$. However, since $v \not\in \Sigma$, we can
+  conclude that all smaller environment are still pairwise distinct, thus we can infer $\Gamma, \Gamma'; \Sigma[\sfrac{v}{x}] \vdash \parallel_{i \in I} P_i$.
+\end{proof}
+
+\begin{theorem}[Typing Preservation]
+  If $\Gamma; \Sigma \vdash P$ and $\langle \rho, P \rangle \longrightarrow \boxplus_{i \in I} \langle \rho_i, P_i \rangle$ then
+  $\forall i \in I \ldotp \Gamma; \Sigma \vdash P_i$.
+\end{theorem}
+\begin{proof}
+  By structural induction on the transition relation $\longrightarrow$.
+  Let us analyze the interesting cases: if the last step in the derivation is a \textsc{SemQMeas} rule, then $P = M(\widetilde{x} \rhd y).Q$ for some process $Q$,
+  where $Q$ is typed with $\Gamma, m : \mathbb{N}; \Sigma \vdash Q$. Each component of the box sum is of the form $Q[\sfrac{m}{y}]$ with $m \in \mathbb{N}$, thus
+  by the substitution theorem it holds that $\Gamma; \Sigma \vdash Q[\sfrac{m}{y}]$.
+  If the last step is a \textsc{SemPar} rule, then $P = Q \parallel R$ for some processes $Q$ and $R$, where
+  $\Gamma; \Sigma_1 \vdash Q$ and $\Gamma; \Sigma_2 \vdash R$ with $\Sigma = \Sigma_1 \cup \Sigma_2$ and $\Sigma_1 \cap \Sigma_2 = \emptyset$.
+  By induction $\Gamma; \Sigma_1 \vdash Q'$, however since the conditions on the $\Sigma$ are still true, it also holds that $\Gamma; \Sigma \vdash Q' \parallel R$.
+  The argument is similar for the \textsc{SemSum} rule.
+  If the last step is a \textsc{SemReduce} rule, then $P = c!e \parallel c?x.Q$ for some process $Q$. If $c : \hat{T}$ where $T = \mathbb{N}$ or $T = \mathbb{B}$, then
+  the theorem holds trivially by the substitution theorem. If $c : \hat{\mathcal{Q}}$ then we can still apply the substitution theorem since by virtue of the \textsc{Par} rule,
+  it must be that $\Gamma; \Sigma_1 \vdash c!e$ and $\Gamma; \Sigma_2 \vdash c?x.Q$ with $\Sigma_1 \cap \Sigma_2 = \emptyset$, but by the \textsc{QSend} rule $v$ must be in $\Sigma_1$,
+  therefore $v \not\in \Sigma_2$ and thus $\Gamma; \Sigma_2[\sfrac{v}{x}] \vdash Q[\sfrac{v}{x}]$, and by weakening $\Gamma; \Sigma \vdash Q[\sfrac{v}{x}]$.
+\end{proof}

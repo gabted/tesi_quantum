@@ -1,0 +1,52 @@
+
+\subsection{Semantics}
+	\begin{gather*}
+    \infer[\mbox{\footnotesize\scshape SCParNil}]{P \parallel nil \equiv P}{} \qquad
+    \infer[\mbox{\footnotesize\scshape SCParComm}]{P \parallel Q \equiv Q \parallel P}{} \qquad
+    \infer[\mbox{\footnotesize\scshape SCParAssoc}]{P \parallel (Q \parallel R) \equiv (P \parallel Q) \parallel R}{} \\[0.3cm]
+    \infer[\mbox{\footnotesize\scshape SCSumNil}]{M + nil \equiv M}{} \qquad
+    \infer[\mbox{\footnotesize\scshape SCSumComm}]{M + N \equiv N + M}{} \\[0.3cm]
+    \infer[\mbox{\footnotesize\scshape SCSumAssoc}]{M + (N + O) \equiv (M + N) + O}{} \\[0.3cm]
+    \infer[\mbox{\footnotesize\scshape SCGuardF}]{[\text{ff}]P \equiv nil}{} \qquad
+    \infer[\mbox{\footnotesize\scshape SCGuardT}]{[\text{tt}]P \equiv P}{} \\[0.3cm]
+    \infer[\mbox{\footnotesize\scshape SCBoxP0}]{\langle 0, P \rangle \equiv \langle 0, R \rangle}{} \qquad
+    \infer[\mbox{\footnotesize\scshape SCBoxPlus}]{\langle \rho, P \rangle \boxplus \langle \rho', P \rangle \equiv \langle \rho + \rho', P \rangle}{} \\[0.3cm]
+    \infer[\mbox{\footnotesize\scshape SCBoxComm}]{\langle \rho, P \rangle \boxplus \langle \rho', R \rangle \equiv \langle \rho', R \rangle \boxplus \langle \rho, P \rangle}{} \\[0.3cm]
+    \infer[\mbox{\footnotesize\scshape SCBoxAssoc}]{\langle \rho, P \rangle \boxplus (\langle \rho', Q \rangle \boxplus \langle \rho'', R \rangle) \equiv (\langle \rho, P \rangle \boxplus \langle \rho', Q \rangle) \boxplus \langle \rho'', R \rangle}{} \\[0.3cm]
+    \infer[\mbox{\footnotesize\scshape SCRefl}]{P \equiv P}{} \qquad
+    \infer[\mbox{\footnotesize\scshape SCSym}]{P \equiv Q}{Q \equiv P} \qquad
+    \infer[\mbox{\footnotesize\scshape SCTrans}]{P \equiv R}{P \equiv Q & Q \equiv R} \\[0.3cm]
+	\end{gather*}	
+
+  \begin{gather*}
+    \infer[\mbox{\footnotesize\scshape SemVar}]{x \Downarrow x}{} \qquad
+    \infer[\mbox{\footnotesize\scshape SemNat}]{n \Downarrow n}{} \qquad
+    \infer[\mbox{\footnotesize\scshape SemBool}]{b \Downarrow b}{}  \qquad
+    \infer[\mbox{\footnotesize\scshape SemQC}]{q \Downarrow q}{} \\[0.3cm]
+    \infer[\mbox{\footnotesize\scshape SemOr}]{(e_1 \lor e_2) \Downarrow b}{e_1 \Downarrow b_1 & e_2 \Downarrow b_2 & b = b_1 \lor b_2} \qquad
+    \infer[\mbox{\footnotesize\scshape SemNeg}]{\neg e \Downarrow b}{e \Downarrow b_1 & b = \neg b_1} \\[0.3cm]
+    \infer[\mbox{\footnotesize\scshape SemLEq}]{(e_1 \leq e_2) \Downarrow b}{e_1 \Downarrow n_1 & e_2 \Downarrow n_2 & b = n_1 \leq n_2} \\[0.3cm]
+    \infer[\mbox{\footnotesize\scshape SemTau}]{\langle \rho, \tau . P \rangle \longrightarrow \langle \rho, P \rangle}{} \qquad
+    \infer[\mbox{\footnotesize\scshape SemGuard}]{\langle \rho, [e] P \rangle \longrightarrow \langle \rho, [e'] P \rangle}{e \Downarrow e'} \\[0.3cm]
+    \infer[\mbox{\footnotesize\scshape SemRename}]{\langle \rho, P \{f\} \rangle \longrightarrow \langle \rho', P' \{f\}\rangle}{\langle \rho, f(P) \rangle \longrightarrow \langle \rho', f(P') \rangle} \qquad
+    \infer[\mbox{\footnotesize\scshape SemRestrict}]{\langle \rho, P \setminus L \rangle \longrightarrow \langle \rho, P' \setminus L \rangle}{\langle \rho, P \rangle \longrightarrow \langle \rho', P' \rangle} \\[0.3cm]
+    \infer[\mbox{\footnotesize\scshape SemQOp}]{\langle \rho, \mathcal{E}(\widetilde{x}) . P \rangle \longrightarrow \langle \mathcal{E}_{\widetilde{x}}(\rho), P \rangle}{} \\[0.3cm]
+    \infer[\mbox{\footnotesize\scshape SemQMeas}]{\langle \rho, M(\widetilde{x} \rhd y) . P \rangle \longrightarrow \boxplus_{m = 0}^{2^{|\widetilde{x}|}} \left\langle {M_m \rho M_m^\dag}, P[\sfrac{m}{y}] \right\rangle}{} \\[0.3cm]
+    \infer[\mbox{\footnotesize\scshape SemPar}]{\langle \rho, P \parallel R \rangle \longrightarrow \langle \rho', P' \parallel R \rangle}{\langle \rho, P \rangle \longrightarrow \langle \rho', P' \rangle} \qquad
+    \infer[\mbox{\footnotesize\scshape SemSum}]{\langle \rho, P + R \rangle \longrightarrow \langle \rho', P' \rangle}{\langle \rho, P \rangle \longrightarrow \langle \rho', P' \rangle} \\[0.3cm]
+    \infer[\mbox{\footnotesize\scshape SemReduce}]{\langle \rho, c!e \parallel c?x . P \rangle \longrightarrow \langle \rho, P[\sfrac{v}{x}] \rangle}{e \Downarrow v} \\[0.3cm]
+    \infer[\mbox{\footnotesize\scshape SemBox}]{\boxplus_{i \in I}\langle \rho_i, P_i \rangle \longrightarrow \boxplus_{i \in I, j \in J_i}\langle \rho_{i, j},P_{i, j} \rangle}
+          {\forall i \ldotp \langle \rho_i, P_i \rangle \longrightarrow \boxplus_{j \in J_i} \langle\rho_{i, j},P_{i, j}\rangle}
+  \end{gather*}
+  
+  
+  
+\paragraph{Quantum Teleportation}
+\begin{align*}
+  \proc{A} &\Coloneqq \text{in}_a?x.\text{CNOT}(q_0, x).\text{H}(q_0).M(x,q_0 \rhd n).(\text{m}_a!n \parallel discard(q_0) \parallel discard(x) )\\
+  \proc{B} &\Coloneqq \text{in}_b?x.\text{m}_a?n.\left(\sum_{i = 0}^3 [n = i]\sigma_i(x).\text{out}_b!x\right) \\
+  \proc{S} &\Coloneqq \text{H}(q_1).\text{CNOT}(q_1, q_2).(\text{in}_a!q_1 \parallel \text{in}_b!q_2) \\
+  \proc{Tel} &\Coloneqq (A \parallel B \parallel S) \setminus \Set{\text{in}_a, \text{in}_b, \text{m}_a } \\
+  \proc{TelSpec} &\Coloneqq \text{SWAP}(q_0,q_2).(\text{out}_b!q_2 \parallel discard(q_0) \parallel discard(q_1))
+\end{align*}
+$\Gamma = \Set{\text{in}_a : \hat{\mathcal{Q}}, \text{in}_b : \hat{\mathcal{Q}}, \text{m}_a : \hat{\mathbb{N}}, \text{out}_b : \hat{\mathcal{Q}}}$

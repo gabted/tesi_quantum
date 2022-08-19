@@ -1,0 +1,63 @@
+\subsection{Syntax}
+\begin{align*}
+  P \Coloneqq &\ K \mid c!e 
+%  \mid discard(e) 
+  \mid \bigparallel_{i \in I} P_i \\[0.1cm]
+  K \Coloneqq &\ nil \mid \tau . P \mid \mathcal{E}(\widetilde{x}) . P \mid M(\widetilde{x} \rhd y) . P \mid c?x . P \mid \\[0.1cm]
+              &\ [e] P \mid \sum_{i \in I} K_i \mid P \{f\} \mid P \setminus L \mid A(\widetilde{x}) \\[0.1cm]
+  e \Coloneqq &\ x \mid b \mid n \mid q \mid \neg e \mid e \lor e \mid e \leq e
+\end{align*}	
+where $b \in \mathbb{B}$, $n \in \mathbb{N}$, $x \in \text{Var}$, $q \in \text{QC}$, with $Var$ a denumerable set of variable names, and
+QC a set of names with cardinality equal to the size of the chosen Hilbert space.
+
+We use $discard(e)$ as syntactic sugar for $c!e \setminus c$.
+
+\subsection{Type System}
+
+Variables Types: $\set{\mathcal{Q}, \mathbb{N}, \mathbb{B}}$
+Channel types: $\set{\hat{\mathcal{Q}}, \hat{\mathbb{N}}, \hat{\mathbb{B}}}$
+
+\begin{gather*}
+\infer[\mbox{\footnotesize\scshape CBool}]{\vdash b : \mathbb{B}}{b \in \mathbb{B}} \qquad
+\infer[\mbox{\footnotesize\scshape CNat}]{\vdash n : \mathbb{N}}{n \in \mathbb{N}} \qquad
+\infer[\mbox{\footnotesize\scshape QVar}]{\set{x} \vdash x}{} \qquad
+\infer[\mbox{\footnotesize\scshape CVar}]{x : T \vdash x : T}{} \\[0.2cm]
+\infer[\mbox{\footnotesize\scshape BoolOr}]{\Gamma_1 \cup \Gamma_2 \vdash e_1 \lor e_2 : \mathbb{B}}{\Gamma_1 \vdash e_1 : \mathbb{B} & \Gamma_2 \vdash e_2 : \mathbb{B}} \qquad
+\infer[\mbox{\footnotesize\scshape BoolNeg}]{\Gamma \vdash \neg e : \mathbb{B}}{\Gamma \vdash e : \mathbb{B}} \qquad
+\infer[\mbox{\footnotesize\scshape NatLEq}]{\Gamma_1 \cup \Gamma_2 \vdash e_1 \leq e_2 : \mathbb{B}}{\Gamma_1 \vdash e_1 : \mathbb{N} & \Gamma_2 \vdash e_2 : \mathbb{N}} \\[0.2cm]
+ \infer[\mbox{\footnotesize\scshape CWeak}]{\Gamma, x : T; \Sigma \vdash P}{\Gamma; \Sigma \vdash P & \text{$x$ fresh}} \\[0.2cm]
+% \infer[\mbox{\footnotesize\scshape QWeak}]{\Gamma; \Sigma, x \vdash P}{\Gamma; \Sigma \vdash P} \\[0.2cm]
+\infer[\mbox{\footnotesize\scshape Nil}]{\emptyset; \emptyset \vdash nil}{} \qquad
+\infer[\mbox{\footnotesize\scshape Tau}]{\Gamma; \Sigma \vdash \tau . P}{ \Gamma; \Sigma \vdash P} \qquad
+\infer[\mbox{\footnotesize\scshape Guard}]{\Gamma_1 \cup \Gamma_2; \Sigma \vdash [e] P}{\Gamma_1 \vdash e : \mathbb{B} & \Gamma_2; \Sigma \vdash P} \\[0.2cm]
+\infer[\mbox{\footnotesize\scshape QOp}]
+{\Gamma; \Sigma \vdash \mathcal{E}(\widetilde{x}) . P}
+{\mathcal{E}: Op(n) & |\widetilde{x}| = n & \forall i, j \ldotp x_i \neq x_j & \Sigma \vdash \widetilde{x} & \Gamma; \Sigma \vdash P} \\[0.2cm]
+\infer[\mbox{\footnotesize\scshape QMeas}]{\Gamma; \Sigma \vdash M(\widetilde{x} \rhd y) . P}
+{\forall i, j \ldotp x_i \neq x_j & \text{$y$ fresh} & \Sigma \vdash \widetilde{x} & \Gamma, y : \mathbb{N}; \Sigma \vdash P} \\[0.2cm]
+\infer[\mbox{\footnotesize\scshape CRecv}]
+{\Gamma, c : \hat{T}; \Sigma \vdash c?x . P}
+{\text{$x$ fresh} & T \neq \mathcal{Q} & \Gamma, x : T; \Sigma \vdash P} 
+\qquad
+\infer[\mbox{\footnotesize\scshape QRecv}]
+{\Gamma, c : \hat{\mathcal{Q}}; \Sigma \vdash c?x . P}
+{\text{$x$ fresh} & \Gamma, x : \mathcal{Q}; \Sigma, x \vdash P} 
+\\[0.2cm]
+\infer[\mbox{\footnotesize\scshape CSend}]{\Gamma, c : \hat{T}; \emptyset \vdash c!e}{T \neq \mathcal{Q} & \Gamma \vdash e : T} \qquad
+\infer[\mbox{\footnotesize\scshape QSend}]{c : \hat{\mathcal{Q}}, e:\mathcal{Q} ; \set{e} \vdash c!e}{} \\[0.2cm]
+%\infer[\mbox{\footnotesize\scshape QDiscard}]{e:\mathcal{Q} ; \set{e} \vdash discard(e)}{} \\[0.2cm]
+\infer[\mbox{\footnotesize\scshape Sum}]{\bigcup_{i \in I}\Gamma_i; \bigcup_{i \in I}\Sigma_i \vdash \sum_{i \in I} P_i}{\forall i \ldotp \Gamma_i; \Sigma_i \vdash P_i} \qquad 
+\infer[\mbox{\footnotesize\scshape Par}]{\bigcup_{i \in I}\Gamma_i; \bigcup_{i \in I}\Sigma_i \vdash \bigparallel_{i \in I} P_i}
+{\forall i, j \ldotp \Sigma_i \cap \Sigma_j = \emptyset & \forall i \ldotp \Gamma_i; \Sigma_i \vdash P_i} \\[0.2cm]
+\infer[\mbox{\footnotesize\scshape Rename}]{\Gamma; \Sigma \vdash P \{f\}}{f(\Gamma); \Sigma \vdash f(P)} \qquad
+\infer[\mbox{\footnotesize\scshape Restrict}]{\Gamma; \Sigma \vdash P \setminus L}{\Gamma; \Sigma \vdash P} \\[0.3cm]
+\end{gather*}
+
+\begin{definition}
+  Let $\rho$ and $P$ be an arbitrary partial density operator and a process. $\Gamma; \Sigma \vdash \langle \rho, P \rangle$ iff $\Gamma; \Sigma \vdash P$.
+
+  Let $I$ be an arbitrary index set. $\Gamma; \Sigma \vdash \boxplus_{i \in I} \langle \rho_i, P_i \rangle$ iff for each $i \in I$ such that $\rho_i \neq \mathbf{0}$,
+  then $\Gamma; \Sigma \vdash \langle \rho_i, P_i \rangle$.
+\end{definition}
+
+

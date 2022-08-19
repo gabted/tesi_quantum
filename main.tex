@@ -18,6 +18,9 @@
 \usepackage{stmaryrd}
 \usepackage{mathtools}
 \usepackage{xfrac}
+\usepackage{proof}
+\usepackage{xfrac}
+\usepackage{tensor}
 \usepackage{enumerate}
 \usepackage[
 backend=bibtex,
@@ -26,8 +29,6 @@ sorting=nyt
 ]{biblatex} 
 \addbibresource{bibliography.bib}
 
-\theoremstyle{definition}
-\newtheorem{definition}{Definition}[section]
 
 \newcommand{\note}[1]{{\color{red} #1}}
 
@@ -46,9 +47,31 @@ sorting=nyt
 \newcommand{\calDH}{\mathcal{D}(\mathcal{H})}
 \newcommand{\calSH}{\mathcal{S}(\mathcal{H})}
 \newcommand{\sop}{\mathcal{E}}
-\newcommand{\tensor}{\otimes}
 \newcommand{\cnot}{\text{CNOT}}
 
+
+\newcommand{\hilbert}{\mathcal{H}}
+\newcommand{\qsum}[1]{\tensor[_{#1}]{\boxplus}{}}
+\newcommand{\psum}[1]{\tensor[_{#1}]{\oplus}{}}
+\newcommand{\nil}{\mathbf{0}}
+\newcommand{\sem}[1]{\llbracket#1\rrbracket}
+\newcommand{\sema}[1]{\llparenthesis\,#1\,\rrparenthesis}
+\newcommand{\rel}{\mathcal{R}}
+\newcommand{\conf}{\mathcal{C}}
+\newcommand{\confw}[1]{\langle#1\rangle}
+\newcommand{\blank}{{-}}
+\newcommand{\qlift}[1]{\stackrel{\scriptscriptstyle \boxplus}{#1}}
+\newcommand{\slift}[1]{\stackrel{\scriptscriptstyle \circ}{#1}}
+\newcommand{\barb}[3]{#3\downarrow_{#1, #2}}
+\newcommand{\proc}[1]{\text{\textbf{#1}}}
+
+\newtheorem{theorem}{Theorem}%[section]
+\newtheorem{corollary}{Corollary}%[section]
+\newtheorem{lemma}{Lemma}%[section]
+\newtheorem{definition}{Definition}%[section]
+\newtheorem{proposition}{Proposition}%[section]
+\newtheorem{example}{Example}%[section]
+\newtheorem{assumption}{Assumption}%[section]
 
 \title{Exploring Quantum process calculi via barbs and contexts }
 \author{Gabriele Tedeschi}
@@ -287,28 +310,28 @@ In the previous sections we characterized 1-qubit systems and how they evolve, d
 
 If we have two photons, each described by a (2-dimensional) Hilbert space $\calH$, the most natural way to describe the system composed of both photons is as the \textit{tensor product} of Hilbert spaces.	
 
-If $\calH_n$ is a $n$-dimensional Hilbert space, and $\calH_m$ is a $m$ dimensional Hilbert space, their tensor product $\calH_n \tensor \calH_m$ is a $nm$ Hilbert space. If $\{\ket{\psi_1}, \ldots \ket{\psi_n}\}$ is a basis of $\calH_n$, and $\{\ket{\phi_1}, \ldots\ket{\phi_m}\}$ is a base of $\calH_m$, then a basis of $\calH_n \tensor \calH_m$ is\[\big\{\ket{\psi_i}\tensor\ket{\phi_j} \mid i \in [1, \ldots n], j \in [1, \ldots m] \big\}\]
- where $\kp \tensor \kf$ denotes the Kronecker product. We will often omit the tensor symbol, writing $\ket{\psi}\ket{\phi}$ or also $\ket{\psi\phi}$ instead of $\kp\tensor\kf$. We can now state the last postulate we need:
+If $\calH_n$ is a $n$-dimensional Hilbert space, and $\calH_m$ is a $m$ dimensional Hilbert space, their tensor product $\calH_n \otimes \calH_m$ is a $nm$ Hilbert space. If $\{\ket{\psi_1}, \ldots \ket{\psi_n}\}$ is a basis of $\calH_n$, and $\{\ket{\phi_1}, \ldots\ket{\phi_m}\}$ is a base of $\calH_m$, then a basis of $\calH_n \otimes \calH_m$ is\[\big\{\ket{\psi_i}\otimes\ket{\phi_j} \mid i \in [1, \ldots n], j \in [1, \ldots m] \big\}\]
+ where $\kp \otimes \kf$ denotes the Kronecker product. We will often omit the tensor symbol, writing $\ket{\psi}\ket{\phi}$ or also $\ket{\psi\phi}$ instead of $\kp\otimes\kf$. We can now state the last postulate we need:
 
 \begin{quote}
 \textbf{Postulate IV}: The state space of a composite physical system is the tensor product of the state spaces of the component physical systems. 
 \end{quote}
 
-If a single qubit is described by a $2$-dimensional space $\calH$, we will write $\calH^{\tensor n}$ to intend the tensor product $n$ copies of $\calH$, of dimension $2^n$. So, a compound system composed of two qubits has a state space $\calH^{\tensor 2}$, its canonical basis is 
+If a single qubit is described by a $2$-dimensional space $\calH$, we will write $\calH^{\otimes n}$ to intend the otimes product $n$ copies of $\calH$, of dimension $2^n$. So, a compound system composed of two qubits has a state space $\calH^{\otimes 2}$, its canonical basis is 
 \[\{\ket{00}, \ket{01}, \ket{10}, \ket{11}\}\]
 and all its vector can be expressed as a linear combination:
 \[\kp \in \Hto{2} = \begin{pmatrix}
 \alpha \\ \beta \\ \gamma \\ \delta
 \end{pmatrix} = \alpha\ket{00} + \beta\ket{01} + \gamma\ket{10} + \delta\ket{11}\]
 
-A quantum state in $\calH_1 \tensor \calH_2$ is said \textit{separable} when can be expressed as the product of two vectors, one in $\calH_1$ and the other in $\calH_2$. From the definition of the Kronecker product, all separable states of $\Hto{2}$ are of the form:
+A quantum state in $\calH_1 \otimes \calH_2$ is said \textit{separable} when can be expressed as the product of two vectors, one in $\calH_1$ and the other in $\calH_2$. From the definition of the Kronecker product, all separable states of $\Hto{2}$ are of the form:
 \[
  \kp = \begin{pmatrix}
  \alpha\gamma \\ \alpha\delta \\ \beta\gamma \\ \beta\delta
  \end{pmatrix} = 
  \begin{pmatrix}
  \alpha \\ \beta
- \end{pmatrix} \tensor 
+ \end{pmatrix} \otimes 
  \begin{pmatrix}
  \gamma \\ \delta
  \end{pmatrix}
@@ -323,17 +346,17 @@ The classical example of an entangled state is the so called $\ket{\Phi^+}$ \tex
 \]
 
 The fourth postulate tells us that the state space of a composite system is simply the tensor product of the state spaces of the smaller systems. The tensor product of Hilbert spaces is still an Hilbert space, the composition of unit vector is still a unit vector, and the composition of unitary transformation is still unitary. For example, the (Kronecker) composition of $H$ and $I$ matrices is defined as a block matrix:
-\[	H\tensor I = \oost\begin{pmatrix}
+\[	H\otimes I = \oost\begin{pmatrix}
 	I & I \\ I & -I
 	\end{pmatrix}\]
 And when applied to a two-qubit system, it applies $H$ on the first qubit, and leaves the second one unaltered:
-\[ (H\tensor I) \ket{00} = H\kz \tensor I\kz = \oost \begin{pmatrix}
+\[ (H\otimes I) \ket{00} = H\kz \otimes I\kz = \oost \begin{pmatrix}
 	I & I \\ I & -I
 	\end{pmatrix} \begin{pmatrix}
 	1 \\ 0 \\0 \\0
 	\end{pmatrix} = \oost \begin{pmatrix}
 	1 \\ 0 \\ 1 \\ 0
-	\end{pmatrix} = \kpl\tensor\kz
+	\end{pmatrix} = \kpl\otimes\kz
 \]
 
 One of the most common two-qubit unitary that is not just the composition of one-qubit transformations is the CNOT matrix:
@@ -382,21 +405,21 @@ Positive semidefinite operators are always diagonalizable with eigenvalues real 
 
 One of the main application of density operators is to describe the state of a subsystem of a composite quantum system.
 
-Suppose a composite system, made of two subsystem $A$ and $B$, with state space  $\calH = \calH_A \tensor \calH_B$.  Given a generic $\rho^{AB} \in \calH$, that describes the state of the whole system, the operator $\rho^A$ that describes the subsystem $A$ is obtained as 
+Suppose a composite system, made of two subsystem $A$ and $B$, with state space  $\calH = \calH_A \otimes \calH_B$.  Given a generic $\rho^{AB} \in \calH$, that describes the state of the whole system, the operator $\rho^A$ that describes the subsystem $A$ is obtained as 
 \[
 	\rho^A = tr_B(\rho^{AB})
 \]
 where the $tr_B$ is called the \textit{partial trace over $B$}, and is defined by 
 \[
- tr_B\big(\proj{\psi} \tensor \proj{\phi}\big) = \proj{\psi}tr\big(\proj{\phi}\big)
+ tr_B\big(\proj{\psi} \otimes \proj{\phi}\big) = \proj{\psi}tr\big(\proj{\phi}\big)
 \]
 together with linearity.
 
-When applied to a separable state $\rho^A \tensor \rho^B$, the partial trace operator $tr_B$ leaves $\rho^A$ unaltered. When applied to an entangled state, instead, it produces a probabilistic mixture of states, because "forgetting" the information on the state of subsystem $B$ leaves us with only partial information on subsystem $A$. The canonical example is the bell state $\rho = \frac{1}{2} \proj{00} + \frac{1}{2}\proj{11} \in \calH_A \tensor \calH_B$:
+When applied to a separable state $\rho^A \otimes \rho^B$, the partial trace operator $tr_B$ leaves $\rho^A$ unaltered. When applied to an entangled state, instead, it produces a probabilistic mixture of states, because "forgetting" the information on the state of subsystem $B$ leaves us with only partial information on subsystem $A$. The canonical example is the bell state $\rho = \frac{1}{2} \proj{00} + \frac{1}{2}\proj{11} \in \calH_A \otimes \calH_B$:
 
 \begin{align*}
 tr_B(\rho) &= \frac{1}{2} tr_B\big(\proj{00}\big) + \frac{1}{2}tr_B\big(\proj{11}\big)  \\
-	&= \frac{1}{2} tr_B\big(\proj{0}\tensor\proj{0}\big) + \frac{1}{2}tr_B\big(\proj{1}\tensor\proj{1}\big) \\
+	&= \frac{1}{2} tr_B\big(\proj{0}\otimes\proj{0}\big) + \frac{1}{2}tr_B\big(\proj{1}\otimes\proj{1}\big) \\
 	&= \frac{1}{2} \proj{0}tr\big(\proj{0}\big) + \frac{1}{2}\proj{1}tr\big(\proj{1}\big) \\
 	&= \frac{1}{2} \big(\proj{0} + \proj{1}\big) = \frac{1}{2}I
 \end{align*}
@@ -404,10 +427,10 @@ tr_B(\rho) &= \frac{1}{2} tr_B\big(\proj{00}\big) + \frac{1}{2}tr_B\big(\proj{11
 \note{superoperators definitions}
 
 
-Let $\calH_A$ and $\calH_B$ be Hilbert spaces. Given $\mathcal{E}: \mathcal{D}(\calH_A) \rightarrow \mathcal{D}(\calH_A)$ and $\mathcal{F}: \mathcal{D}(\calH_B) \rightarrow \mathcal{D}(\calH_B)$,  their tensor product $\sop\tensor \mathcal{F}: \mathcal{D}(\calH_A \tensor \calH_B)\rightarrow \mathcal{D}(\calH_A \tensor \calH_B)$ is defined as:
+Let $\calH_A$ and $\calH_B$ be Hilbert spaces. Given $\mathcal{E}: \mathcal{D}(\calH_A) \rightarrow \mathcal{D}(\calH_A)$ and $\mathcal{F}: \mathcal{D}(\calH_B) \rightarrow \mathcal{D}(\calH_B)$,  their tensor product $\sop\otimes \mathcal{F}: \mathcal{D}(\calH_A \otimes \calH_B)\rightarrow \mathcal{D}(\calH_A \otimes \calH_B)$ is defined as:
 
 \[
-	(\sop \tensor \mathcal{F})(\rho_A \tensor \rho_B) = \sop(\rho_A)\tensor \mathcal{F}(\rho_B)
+	(\sop \otimes \mathcal{F})(\rho_A \otimes \rho_B) = \sop(\rho_A)\otimes \mathcal{F}(\rho_B)
 \]
 
 
@@ -415,14 +438,14 @@ Superoperators on $\calH$: all the maps $\sop: \calDH \rightarrow \calDH$ satify
 \begin{itemize}
 \item $\sop$ is \textit{convex linear}: for any set of probabilities	$\{p_i\}_i$,
 \[\sop\left(\sum_i p_i \rho_i \right) = \sum_i p_i \sop(\rho_i)\]
-\item $\sop$ is \textit{completely positive}: for any extra Hilbert space $\calH_R$, for any positive $\rho \in \calH_R \tensor \calH$, $(\mathcal{I}\tensor \sop)(\rho)$ is also positive, where $\mathcal{I}_R$ is the identity operator on $\mathcal{D}(\calH_R)$.
+\item $\sop$ is \textit{completely positive}: for any extra Hilbert space $\calH_R$, for any positive $\rho \in \calH_R \otimes \calH$, $(\mathcal{I}\otimes \sop)(\rho)$ is also positive, where $\mathcal{I}_R$ is the identity operator on $\mathcal{D}(\calH_R)$.
 \item $\sop$ is \textit{trace non-increasing}: for any density operator $\rho \in \calDH$, 
 \[tr\big(\sop(\rho)\big) \leq tr(\rho) \leq 1\].
 \end{itemize}
 
 We call $\calSH$ the set of all superoperators on $\calH$.
 
-
+ 	
 \textit{Löwner order}: we define the partial order $\sqsubseteq$ on $\calDH$ as :
 \[ \rho \sqsubseteq \sigma \text{ if and only if } \sigma-\rho \text{ is positive}\]
 
@@ -440,36 +463,75 @@ Notice that $\sop_m(\rho)$ is equal to $p_m\rho_m$, where $p_m$ is the probabili
 
 
 \section{Process Calculi}	
+\subsection*{Process Calculi}
 
+Features: \begin{itemize}
+\item Communication $c!v.P$
+\item Internal Action $\tau.P$
+\item Non-determinism $P + Q$
+\item Parallel Execution $P \parallel Q$
+\end{itemize}
+
+\subsection{Labelled Transition System}
 \note{lts}
 
-\note{bisimulation}
+A \textit{Labelled Transition System} (LTS) is a triple $\langle S , Act, \rightarrow \rangle$ where \begin{itemize}
+\item $S$ is a set of states
+\item $Act$ is a set of transition labels
+\item $\rightarrow 	\subseteq S\times Act_\tau \times S$ is the transition relation, with $Act_\tau = Act \cup \{\tau\}$
+\end{itemize} 
 
-\note{probabilistic (hennessy)}
+\subsection{Bisimulation}
 
-\note{reduction system}
+\subsection{Probabilistic LTS}
+A \textit{Probabilistic Labelled Transition System} (pLTS) is a triple $\langle S , Act, \rightarrow \rangle$ where \begin{itemize}
+\item $S$ is a set of states
+\item $Act$ is a set of transition labels
+\item $\rightarrow 	\subseteq S\times Act_\tau \times \mathcal{D}(S)$ is the transition relation, with $Act_\tau = Act \cup \{\tau\}$
+\end{itemize} 
 
-\note{barbed}
+two possible way method to transform a pLTS in a LTS: \begin{itemize}
+\item Probabilities on transitions
+\item Probabilisties on states
+\end{itemize}
 
+\subsection*{Reduction systems}
 
-\chapter{Stato dell'arte}
+A \textit{Reduction System} (RS) is a couple $\langle S,  \rightarrow \rangle$ where \begin{itemize}
+\item $S$ is a set of states
+\item $\rightarrow 	\subseteq S\times S$ is the transition relation.
+\end{itemize} 
+
+\chapter{State of the art}
 -CQP con bisimulazione 
 -qCCS con bisimulazione  	
 
-\chapter{chapter 4}
+\chapter{Linear qCCS}
 
-qCCS, pLTS di configurazioni, contesti 
+\section{Definitions}
+\input{chapter4/definitions.tex}
 
-2 tipi di contesti: con continuazioni o senza
-qCCS contesti w.r.t CQP -> distribution semantics?
-qCCS contesti w.r.t qCCS -> 
-  open bisimulation via contesti
-  stafeulness? -> contesti con continuazioni
 
-\chapter{chapter 5}
-In cerca di una process algebra minimale
-senza configurazioni	
-con distribuzioni
+\section{Semantics}
+\input{chapter4/semantics}
+\input{chapter4/typesystem_theorems}
+
+
+\section{Contextual Equivalence}
+\input{chapter4/bisimulation}
+
+\section{Examples}
+\input{chapter4/examples.tex}
+
+
+
+%\chapter{chapter 5}
+%In cerca di una process algebra minimale
+%senza configurazioni	
+%con distribuzioni
+%
+%\section{Quantum Transition System}
+%\input{chapter5/qts.tex}
 
 \chapter{Conclusions}
 \printbibliography[
