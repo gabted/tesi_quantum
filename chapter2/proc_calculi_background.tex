@@ -1,0 +1,88 @@
+\subsection{Process Calculi}
+
+Features: \begin{itemize}
+\item Communication $c!v.P$
+\item Internal Action $\tau.P$
+\item Non-determinism $P + Q$
+\item Parallel Execution $P \parallel Q$
+\end{itemize}
+
+\subsection{Labelled Transition System}
+\note{lts}
+
+A \textit{Labelled Transition System} (LTS) is a triple $\langle S , Act, \rightarrow \rangle$ where \begin{itemize}
+\item $S$ is a set of states
+\item $Act$ is a set of transition labels
+\item $\rightarrow 	\subseteq S\times Act_\tau \times S$ is the transition relation, with $Act_\tau = Act \cup \{\tau\}$
+\end{itemize} 
+
+\subsection{Bisimulation}
+
+Let $\langle S , Act, \rightarrow \rangle$ be a LTS. Then a symmetric relation $\rel \subseteq S \times S$ is a \textit{bisimultion} if and only if, whenever $s \rel t$, then 
+\begin{center}
+if $s \xrightarrow{\alpha} s'$ then $t \xrightarrow{\alpha} t'$ for some $t'$ such that $s' \rel t'$
+\end{center}
+
+
+\subsection{Probabilistic LTS}
+
+Given a set $S$, a (discrete) \textit{probability distribution on $S$} is a mapping $\Delta: S \rightarrow [0, 1]$ such that $\sum_{s\in S} \Delta(s) = 1$. We indicate with $\distr(S)$ the set of all probability distribution on $S$.
+The \textit{support} of $\Delta \in \distr(S)$ is defined as $\lceil\Delta\rceil = \{s \in S \mid \Delta(s) > 0\}$. We use $\overline{s}$ to denote the point distribution on $s$ (also known as Dirac distribution, in the continuous case):
+\[
+	\overline{s}(t) = 
+	\begin{cases} 1 \text{ if }t = s \\
+	0 \text{ if } t\neq s
+	\end{cases}
+\]
+
+Given a set $\{p_i\}$ of probabilities (i.e. $\sum_i p_i = 1$ and $p_i > 0$ for each $i$), we define the convex combination of distributions:
+\[
+\left(\sum_i p_i \Delta_i\right)(s) = \sum_i p_i \Delta_i(s)
+\]
+
+We often abbreviate $p \Delta + (1-p) \Theta$ as $\Delta \psum{p} \Theta$.
+
+
+A relation $\mathcal{R} \subseteq \distr(S) \times \distr(S)$ is said to be \textit{linear} if $\Delta_i \rel \Theta_i$ and $\Delta_j \rel \Theta_j$ implies $(\Delta_i \psum{p} \Delta_j) \rel (\Theta_i \psum{p} \Theta_j)$ of any $0 \leq p \leq 1$.
+
+
+A \textit{Probabilistic Labelled Transition System} (pLTS) is a triple $\langle S , Act, \rightarrow \rangle$ where \begin{itemize}
+\item $S$ is a set of states
+\item $Act$ is a set of transition labels
+\item $\rightarrow 	\subseteq S\times Act_\tau \times \mathcal{D}(S)$ is the transition relation, with $Act_\tau = Act \cup \{\tau\}$
+\end{itemize} 
+
+two possible way method to transform a pLTS in a LTS: \begin{itemize}
+\item Probabilities on transitions
+\item Probabilisties on states
+\end{itemize}
+
+
+Given a relation $\rel \subseteq S \times S$, we define its \textit{lifting} $\mathring{\rel} \subseteq \distr(S) \times \distr(S)$ as the smaller linear relation such that $s \rel t$ implies $overline{s} \mathring{\rel} \overline{t}$.
+
+%With abuse of notation, we denote with the same symbol also the lifting of relations $\rel \subseteq S \times \distr(S)$. Given a relation $\rel \subseteq S \times \distr(S)$, we define its \textit{lifting} $\mathring{\rel} \subseteq \distr(S) \times \distr(S)$ as the smaller linear relation such that $s \rel \Delta$ implies $\overline{s} \mathring{\rel} \Delta$.
+
+
+This lifted relation enjoys two useful properties. Interestingly, both this property are equivalent to the given definition, and are indeed used as the definition in various works on probabilistic bisimulations.
+
+Given $\rel \subseteq S \times S$, then $\Delta \lrel \Theta$ if ans only if: \begin{enumerate}
+\item $\Delta = \sum_{i \in I} p_i \overline{s_i}$, where $I$ is a finite index set and $\sum_{i \in I}p_i = 1$
+\item For each $i \in I$ there is a state $t_i$ such that $s_i \rel t_i$
+\item $\Theta = \sum_{i\in I}p_i\overline{t_i}$ 
+\end{enumerate}
+
+Given $\rel \subseteq S \times S$, then $\Delta \lrel \Theta$ if ans only if, for all equivalence classes $C \in S/R$
+\[\sum_{s\in C} \Delta(s) = \sum_{s\in C} \Theta(s)\]
+
+
+Let $\langle S , Act, \rightarrow \rangle$ be a pLTS. Then a symmetric relation $\rel \subseteq S \times S$ is a \textit{probabilistic bisimultion} if and only if, whenever $s \rel t$, then 
+\begin{center}
+if $s \xrightarrow{\alpha} \Delta$ then $t \xrightarrow{\alpha} \Theta$ for some $\Theta$ such that $\Delta \lrel \Theta$
+\end{center}
+
+\subsection*{Reduction systems}
+
+A \textit{Reduction System} (RS) is a couple $\langle S,  \rightarrow \rangle$ where \begin{itemize}
+\item $S$ is a set of states
+\item $\rightarrow 	\subseteq S\times S$ is the transition relation.
+\end{itemize} 
