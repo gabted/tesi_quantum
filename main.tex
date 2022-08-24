@@ -13,7 +13,6 @@
 \usepackage[english]{babel}
 \usepackage [autostyle]{csquotes}
 \MakeInnerQuote{"}
-%\usepackage[nowrite, norules, swapnames]{frontespizio}
 \usepackage{braket}
 \usepackage{stmaryrd}
 \usepackage{mathtools}
@@ -68,6 +67,8 @@ sorting=nyt
 
 \newcommand{\distr}{\mathcal{D}}
 
+\newcommand{\ITE}[3]{\textbf{If }{#1}\textbf{ Then } {#2} \textbf{ Else } {#3}}
+
 \newtheorem{theorem}{Theorem}%[section]
 \newtheorem{corollary}{Corollary}%[section]
 \newtheorem{lemma}{Lemma}%[section]
@@ -99,6 +100,15 @@ In this chapter, we review some fundamentals concepts in quantum computing and f
 
 
 \chapter{State of the art}
+
+\note{\textbf{Inglesi}}
+\begin{itemize}
+\item \textbf{CQP gay nagarajan popl 05}: pi-calculus like, measurements are expressions, no probabilistic sum (can be implemented with parallel syncronization), reduction semantic con congruenza, typesystem affine per garantire il no cloning. probability-on-transitions approach: a reduction relation $\rightarrow \subseteq S \times \distr(S)$ and a probabilistic choice transition $\rightsquigarrow \subseteq \distr(S)\times [0, 1] \times S$. Configurations of the form (quantum state, channel names, P).
+
+\item \textbf{Thesis Davidson 2011}: proposes an equational theory, in which $U.0 \sim 0, M.0 \sim 0$.
+
+\item \textbf{thesis Puthoor 2015}:
+\end{itemize}
 
 
 

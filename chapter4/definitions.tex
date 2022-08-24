@@ -2,9 +2,9 @@
 \begin{align*}
   P \Coloneqq &\ K \mid c!e 
 %  \mid discard(e) 
-  \mid \bigparallel_{i \in I} P_i \\[0.1cm]
+  \mid P \parallel P \\[0.1cm]
   K \Coloneqq &\ nil \mid \tau . P \mid \mathcal{E}(\widetilde{x}) . P \mid M(\widetilde{x} \rhd y) . P \mid c?x . P \mid \\[0.1cm]
-              &\ [e] P \mid \sum_{i \in I} K_i \mid P \{f\} \mid P \setminus L \mid A(\widetilde{x}) \\[0.1cm]
+  &\ \ITE{e}{P}{P} \mid K + K \mid P \{f\} \mid P \setminus c \mid A(\widetilde{x}) \\[0.1cm]
   e \Coloneqq &\ x \mid b \mid n \mid q \mid \neg e \mid e \lor e \mid e \leq e
 \end{align*}	
 where $b \in \mathbb{B}$, $n \in \mathbb{N}$, $x \in \text{Var}$, $q \in \text{QC}$, with $Var$ a denumerable set of variable names, and
@@ -29,7 +29,8 @@ Channel types: $\set{\hat{\mathcal{Q}}, \hat{\mathbb{N}}, \hat{\mathbb{B}}}$
 % \infer[\mbox{\footnotesize\scshape QWeak}]{\Gamma; \Sigma, x \vdash P}{\Gamma; \Sigma \vdash P} \\[0.2cm]
 \infer[\mbox{\footnotesize\scshape Nil}]{\emptyset; \emptyset \vdash nil}{} \qquad
 \infer[\mbox{\footnotesize\scshape Tau}]{\Gamma; \Sigma \vdash \tau . P}{ \Gamma; \Sigma \vdash P} \qquad
-\infer[\mbox{\footnotesize\scshape Guard}]{\Gamma_1 \cup \Gamma_2; \Sigma \vdash [e] P}{\Gamma_1 \vdash e : \mathbb{B} & \Gamma_2; \Sigma \vdash P} \\[0.2cm]
+\\[0.2cm]
+\infer[\mbox{\footnotesize\scshape Guard}]{\Gamma \cup \Gamma_1 \cup \Gamma_2; \Sigma \vdash \ITE{e}{P_1}{P_2}}{\Gamma \vdash e : \mathbb{B} & \Gamma_1; \Sigma \vdash P_1 & \Gamma_2; \Sigma \vdash P_2} \\[0.2cm]
 \infer[\mbox{\footnotesize\scshape QOp}]
 {\Gamma; \Sigma \vdash \mathcal{E}(\widetilde{x}) . P}
 {\mathcal{E}: Op(n) & |\widetilde{x}| = n & \forall i, j \ldotp x_i \neq x_j & \Sigma \vdash \widetilde{x} & \Gamma; \Sigma \vdash P} \\[0.2cm]
@@ -46,15 +47,24 @@ Channel types: $\set{\hat{\mathcal{Q}}, \hat{\mathbb{N}}, \hat{\mathbb{B}}}$
 \infer[\mbox{\footnotesize\scshape CSend}]{\Gamma, c : \hat{T}; \emptyset \vdash c!e}{T \neq \mathcal{Q} & \Gamma \vdash e : T} \qquad
 \infer[\mbox{\footnotesize\scshape QSend}]{c : \hat{\mathcal{Q}}, e:\mathcal{Q} ; \set{e} \vdash c!e}{} \\[0.2cm]
 %\infer[\mbox{\footnotesize\scshape QDiscard}]{e:\mathcal{Q} ; \set{e} \vdash discard(e)}{} \\[0.2cm]
-\infer[\mbox{\footnotesize\scshape Sum}]{\bigcup_{i \in I}\Gamma_i; \bigcup_{i \in I}\Sigma_i \vdash \sum_{i \in I} P_i}{\forall i \ldotp \Gamma_i; \Sigma_i \vdash P_i} \qquad 
+\infer[\mbox{\footnotesize\scshape Sum}]{\bigcup_{i \in I}\Gamma_i; \Sigma \vdash \sum_{i \in I} P_i}{\forall i \ldotp \Gamma_i; \Sigma_i \vdash P_i} \qquad 
 \infer[\mbox{\footnotesize\scshape Par}]{\bigcup_{i \in I}\Gamma_i; \bigcup_{i \in I}\Sigma_i \vdash \bigparallel_{i \in I} P_i}
 {\forall i, j \ldotp \Sigma_i \cap \Sigma_j = \emptyset & \forall i \ldotp \Gamma_i; \Sigma_i \vdash P_i} \\[0.2cm]
 \infer[\mbox{\footnotesize\scshape Rename}]{\Gamma; \Sigma \vdash P \{f\}}{f(\Gamma); \Sigma \vdash f(P)} \qquad
-\infer[\mbox{\footnotesize\scshape Restrict}]{\Gamma; \Sigma \vdash P \setminus L}{\Gamma; \Sigma \vdash P} \\[0.3cm]
+\infer[\mbox{\footnotesize\scshape Restrict}]{\Gamma - c; \Sigma \vdash P \setminus c}{\Gamma; \Sigma \vdash P} \\[0.3cm]
 \end{gather*}
 
+Where $$\Gamma - c = \begin{cases}
+\Gamma \setminus \{c : \hat{T}\} \text{ if } c: \hat{T} \in \Gamma \text{ for some } \hat{T} \\
+\Gamma \text{ otherwise}
+\end{cases}$$
+
+We say that the channel name $c$ is \textit{bound} in $P\setminus c$, and it is \textit{free} when it isn't bound by any restriction operator. We denote with $fc(P)$ the set of free channels of $P$.
+
 \begin{definition}
-  Let $\rho$ and $P$ be an arbitrary partial density operator and a process. $\Gamma; \Sigma \vdash \langle \rho, P \rangle$ iff $\Gamma; \Sigma \vdash P$.
+  Assume a fixed set  $QVar = {q_1, q_2, \ldots q_n}$ of quantum variables, where each variable $q_i$ refers to a unique qubit with state space $\calH_i$. We denote as $\calH_{QVar}$ the $2^n$-dimensional Hilbert space $\bigoplus_{i=1}^n \calH_i$.
+
+Let $P$ be a process and $\rho \in \mathcal{D}(\calH_{QVar})$ an arbitrary partial density operator. $\Gamma; \Sigma \vdash \langle \rho, P \rangle$ iff $\Gamma; \Sigma \vdash P$ and $\Sigma \subseteq QVar$.
 
   Let $I$ be an arbitrary index set. $\Gamma; \Sigma \vdash \boxplus_{i \in I} \langle \rho_i, P_i \rangle$ iff for each $i \in I$ such that $\rho_i \neq \mathbf{0}$,
   then $\Gamma; \Sigma \vdash \langle \rho_i, P_i \rangle$.

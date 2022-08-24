@@ -16,13 +16,29 @@ A \textit{Labelled Transition System} (LTS) is a triple $\langle S , Act, \right
 \item $\rightarrow 	\subseteq S\times Act_\tau \times S$ is the transition relation, with $Act_\tau = Act \cup \{\tau\}$
 \end{itemize} 
 
+An element $(s, \alpha, t) \in \rightarrow$ is called a \textit{transition}, and is often written as $s \xrightarrow{\alpha} t$. We denote with $\Rightarrow$ the reflexive and transitive closure of $\xrightarrow{\tau}$, and use $s \xRightarrow{\alpha} t$ as an abbreviation for $s \Rightarrow s' \xrightarrow{\alpha} t' \Rightarrow t$ for some $s', t' \in S$.
+
 \subsection{Bisimulation}
 
-Let $\langle S , Act, \rightarrow \rangle$ be a LTS. Then a symmetric relation $\rel \subseteq S \times S$ is a \textit{bisimultion} if and only if, whenever $s \rel t$, then 
+Let $\langle S , Act, \rightarrow \rangle$ be a LTS. Then a symmetric relation $\rel \subseteq S \times S$ is a \textit{strong bisimulation} if and only if, whenever $s \rel t$, then 
 \begin{center}
 if $s \xrightarrow{\alpha} s'$ then $t \xrightarrow{\alpha} t'$ for some $t'$ such that $s' \rel t'$
 \end{center}
+Two states $s, t \in S$ are said to be \textit{strongly bisimilar}, written $s \sim t$, if exists a strong bisimulation $\rel$ such that $s \rel t$.
 
+
+Let $\langle S , Act, \rightarrow \rangle$ be a LTS. Then a symmetric relation $\rel \subseteq S \times S$ is a \textit{weak bisimulation} if and only if, whenever $s \rel t$, then 
+\begin{center}
+if $s \xrightarrow{\alpha} s'$ then $t \xRightarrow{\alpha} t'$ for some $t'$ such that $s' \rel t'$
+\end{center}
+Two states $s, t \in S$ are said to be \textit{weakly bisimilar}, written $s \approx t$, if exists a weak bisimulation $\rel$ such that $s \rel t$. 
+
+
+Let $\langle S , Act, \rightarrow \rangle$ be a LTS. Then a symmetric relation $\rel \subseteq S \times S$ is a \textit{branching bisimulation} if and only if, whenever $s \rel t$, then 
+\begin{center}
+if $s \xrightarrow{\alpha} s'$ then $t \xRightarrow t' \xrightarrow{\alpha} t''$ for some $t', t''$ such that $s \rel t'$ and $s' \rel t''$
+\end{center}
+Two states $s, t \in S$ are said to be \textit{branching bisimilar}, written $s \simeq t$, if exists a branching bisimulation $\rel$ such that $s \rel t$.
 
 \subsection{Probabilistic LTS}
 
@@ -52,9 +68,9 @@ A \textit{Probabilistic Labelled Transition System} (pLTS) is a triple $\langle 
 \item $\rightarrow 	\subseteq S\times Act_\tau \times \mathcal{D}(S)$ is the transition relation, with $Act_\tau = Act \cup \{\tau\}$
 \end{itemize} 
 
-two possible way method to transform a pLTS in a LTS: \begin{itemize}
+two possible way to transform a pLTS in a LTS: \begin{itemize}
 \item Probabilities on transitions
-\item Probabilisties on states
+\item Probabilities on states
 \end{itemize}
 
 
@@ -85,4 +101,18 @@ if $s \xrightarrow{\alpha} \Delta$ then $t \xrightarrow{\alpha} \Theta$ for some
 A \textit{Reduction System} (RS) is a couple $\langle S,  \rightarrow \rangle$ where \begin{itemize}
 \item $S$ is a set of states
 \item $\rightarrow 	\subseteq S\times S$ is the transition relation.
+
+We call \textit{barb} a predicate on states, often used to capture a certain notion of "observable property".
+Given a barb $b$, we write $s\downarrow_b$ to say that $s$ statisfies the predicate $b$, i.e. expresses that property.
+
+Let $\langle S , Act, \rightarrow \rangle$ be a LTS, and $B$ a set of barbs. Then a symmetric relation $\rel \subseteq S \times S$ is a \textit{barbed bisimulation} if and only if, whenever $s \rel t$, then 
+\begin{itemize}
+\item If $s \downarrow_b$ for some barb $b \in B$, then $t \downarrow_b$ \\
+\item If $s \xrightarrow{\alpha} s'$ then $t \xrightarrow{\alpha} t'$ for some $t'$ such that $s' \rel t'$
+\end{itemize}
+Two states $s, t \in S$ are said to be \textit{barbed bisimilar}, written $s \sim_b t$, if exists a barbed bisimulation $\rel$ such that $s \rel t$.
+
+Given a set of contexts, two states $s, t \in S$ are said to be \textit{barbed congruent} if for any context $C[]$, it holds that $C[s] \sim_b C[t]$. 
+
+\note{Sarebbe meglio definire i contesti su processi, non su stati, probabilmente ridefinirò tutte le bisimulazioni come relazioni su processi non su stati.}
 \end{itemize} 

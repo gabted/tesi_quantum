@@ -7,22 +7,23 @@
   Follows by induction on the evaluation rules.
 \end{proof}
 
-\begin{theorem}[Structural Congruence Preserves Typing]
-  If $\Gamma; \Sigma \vdash P$ and $P \equiv Q$, then $\Gamma; \Sigma \vdash Q$.
+
+\begin{theorem}[Structural Congruence Preserves Typing] For any well typed $P$ and $Q$, if $\Gamma; \Sigma \vdash P$ and $P \equiv Q$, then $\Gamma; \Sigma \vdash Q$.
 \end{theorem}
 \begin{proof}
+  
   By induction on the derivation of $P \equiv Q$. All rules follow trivially from: the rules of the operators,
   \textsc{Par}, \textsc{Sum}, which are commutative, associative, have $nil$ as unit and require
   each component to be typable; the \textsc{Nil} rule; and the \textsc{Guard} rule which requires the guarded process
   to be typable.
 \end{proof}
 
-\begin{theorem}[Quantum weakening]
-  Let $\Gamma; \Sigma \vdash P$ and let $x : \mathcal{Q}$. If $x \not\in \Sigma$, then $\Gamma, x : \mathcal{Q}; \Sigma, x \vdash P$.
-\end{theorem}
-\begin{proof}
-  By induction on the derivation of $\Gamma; \Sigma \vdash P$.
-\end{proof}
+%\begin{theorem}[Quantum weakening]
+%  Let $\Gamma; \Sigma \vdash P$ and let $x : \mathcal{Q}$. If $x \not\in \Sigma$, then $\Gamma, x : \mathcal{Q}; \Sigma, x \vdash P$.
+%\end{theorem}
+%\begin{proof}
+%  By induction on the derivation of $\Gamma; \Sigma \vdash P$.
+%\end{proof}
 
 \begin{theorem}[Substitution in Process]
   Let $\Gamma, x : T, \Gamma'; \Sigma \vdash P$ and let $v : T$ be a value such that:
@@ -32,7 +33,7 @@
   \end{itemize}
 \end{theorem}
 \begin{proof}
-  By structural induction on the deriviation of $\Gamma, x : T, \Gamma'; \Sigma \vdash P$.
+  By structural induction on the derivation of $\Gamma, x : T, \Gamma'; \Sigma \vdash P$.
   Let us analyze the interesting cases: For the \textsc{QOp} rule it must be that $P = \mathcal{E}(\widetilde{x}).Q$ for some process $Q$.
   By induction hypothesis it holds that $\Gamma, \Gamma'; \Sigma' \vdash Q[\sfrac{v}{x}]$, however we must consider two cases:
   if $v : \mathbb{N}$ or $v : \mathbb{B}$ then the conclusion follows trivially from the inductive hypothesis;

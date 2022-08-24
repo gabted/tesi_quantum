@@ -3,7 +3,7 @@
 	\begin{itemize}
 		\item $\conf\ \rel\ \conf'$ implies $\overline{\conf}\ \slift{\rel}\ \overline{\conf'}$;
 		\item $\Delta_i\ \slift{\rel}\ \Theta_i$, $i = 1, 2$, implies $\Delta_1 \psum{p} \Delta_2 \slift{\rel}\ \Theta_1 \psum{p} \Theta_2$;
-		\item $\overline{\confw{\rho, P}} \psum{p} \overline{\confw{\sigma, P}} \slift{\rel} \overline{\confw{p \rho + (1-p)\sigma, P}}$.
+		\item $\left(\overline{\confw{\rho, P}} \psum{p} \overline{\confw{\sigma, P}}\right) \slift{\rel} \overline{\confw{p \rho + (1-p)\sigma, P}}$.
 	\end{itemize} 
 \end{definition}
 
@@ -57,8 +57,11 @@ and typed according to the typing rules:
 	$\conf \approx_{SPB} \conf'$ implies
 	\begin{enumerate}
 		\item for any $\sop \in TSO(\hilbert_{\overline{\Sigma}})$, $\sop (\conf)\ \approx_{SPB}\ \sop (\conf')$; and
-		\item for each $\conf_f, \conf_f'$ such that $\conf \Rightarrow \conf_f \not\rightarrow$ and $\conf' \Rightarrow \conf_f' \not\rightarrow$, $env(\conf_f) = env(\conf_f')$.
+		\item For each $B[]$, if $B[C] \Rightarrow C_f\not\rightarrow $ and $B[C'] \Rightarrow C_f'\not\rightarrow$ then $tr_{D}(C_f) = tr_{D}(C'_f)$
 	\end{enumerate}
+	Where $D(\langle \rho, P\rangle)$ is the greatest subset of $QVar$ such that 
+	\[ \forall B[] \text{ if } B[C] \rightarrow \langle\rho', P'\rangle \not\rightarrow \text{ then } tr_{\overline{D}}(\rho) = tr_{\overline{D}}(\rho')
+	\] 
 \end{theorem}
 
 
