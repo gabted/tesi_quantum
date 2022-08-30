@@ -77,7 +77,7 @@ sorting=nyt
 \newtheorem{example}{Example}%[section]
 \newtheorem{assumption}{Assumption}%[section]
 
-\title{Exploring Quantum process calculi via barbs and contexts }
+\title{Exploring Quantum Process Calculi via barbs and contexts }
 \author{Gabriele Tedeschi}
 \begin{document}
 
@@ -99,16 +99,9 @@ In this chapter, we review some fundamentals concepts in quantum computing and f
 
 
 
-\chapter{State of the art}
+\chapter{Quantum Process Calculi}
+\input{chapter3/quantum_proc_calculi}
 
-\note{\textbf{Inglesi}}
-\begin{itemize}
-\item \textbf{CQP gay nagarajan popl 05}: pi-calculus like, measurements are expressions, no probabilistic sum (can be implemented with parallel syncronization), reduction semantic con congruenza, typesystem affine per garantire il no cloning. probability-on-transitions approach: a reduction relation $\rightarrow \subseteq S \times \distr(S)$ and a probabilistic choice transition $\rightsquigarrow \subseteq \distr(S)\times [0, 1] \times S$. Configurations of the form (quantum state, channel names, P).
-
-\item \textbf{Thesis Davidson 2011}: proposes an equational theory, in which $U.0 \sim 0, M.0 \sim 0$.
-
-\item \textbf{thesis Puthoor 2015}:
-\end{itemize}
 
 
 
