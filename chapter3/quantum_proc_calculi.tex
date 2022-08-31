@@ -30,12 +30,22 @@ So in all quantum process calculi, a process can be defined by a pLTS $\langle C
 QPAlg and CQP follow the "probabilistic-transition" approach, while qCCS follows the $probabilistic-state$ approach.
 
 
-in [CQP2005], Gay and Nagarajan present their calculus Communicating Quantum Process, CQP, the first that make use of an (affine) type system to restrict the set of possible processes of the algebra to the "admissible" ones, the ones respecting the no-cloning theorem. Under the assumption that Alice, Bob and Charlie are in three different physical location, the process \[Alice = b!q.c!q.nil\] should not be well typed, because Bob could read from the $b$ channel, Charlie from the $c$ channel, and there will be duplication of quantum information.
+in [CQP2005], Gay and Nagarajan presented their calculus Communicating Quantum Process. CQP makes use of an (affine) type system to restrict the set of possible processes of the algebra to the "admissible" ones, the ones respecting the no-cloning theorem. Under the assumption that Alice, Bob and Charlie are in three different physical location, the process \[Alice = b!q.c!q.nil\] should not be well typed, because Bob could read from the $b$ channel, Charlie from the $c$ channel, and there will be duplication of quantum information.
+
+
+Variables and expressions in CQP can have types \textbf{Int}, \textbf{Qbit} and \textbf{Unit}, and channels have the correspogint types $\widehat{\ }\textbf{Int}$, $\widehat{\ }\textbf{Qbit}$, $\widehat{\ }\textbf{Unit}$.
+The typing judgements in CQP have the form \[\Gamma \vdash P\] meaning that $P$ is well typed under the context $\Gamma$. $\Gamma$ contains both classical variables and quantum variables: the former are treated following the usual typing rules, the latter are subject to affine typing rules. Affine rules guarantee that each quantum variable will be sent at most once, thanks to how the typing contexts $\Gamma$ are constructed, lacking a contraction rules for quantum variables. \note{approfondisco una spiegazione sulle regole strutturali e il type system affine?}.
+
+
+From the practical point of view, this means that, \begin{itemize} 
+\item if $c!q.P$ is well typed, where $q$ is a quantum variable, then $P$ cannot contain any other occurence $q$
+\item if $P \parallel Q$ is well typed, then $P$ and $Q$ cannot have occurrences of the same quantum variables
+\end{itemize}
+\note{
+CQP2005 is a probabilistic-transtition, pi calculus like reduction system, MUST REPRESENTS CLOSED SYSTEMS, WITH REDUCTION RULES, BECAUSE GLOBAL STATE INFROMATION IS REQUIRED, otherwise we can't represent input and output of entangled state. cfr with qpalg2005 and qCCS 2006.
+}
 
 \note{
-CQP2005 is a probabilistic-transtition, pi calculus like reduction system
-
-
 QPAlg2005 introduces a probabilistic branching bisimulation
 
 
@@ -46,7 +56,7 @@ Puthoor develops the equational theory of davidson's bisimulation, and extends C
 }
 
 
-MUST REPRESENTS CLOSED SYSTEMS, WITH REDUCTION RULES, BECAUSE GLOBAL STATE INFROMATION IS REQUIRED, otherwise we can't represent input and output of entangled state. 
+ 
 
 
 \note{note:}
