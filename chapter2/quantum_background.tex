@@ -337,19 +337,20 @@ tr_B(\rho) &= \frac{1}{2} tr_B\big(\proj{00}\big) + \frac{1}{2}tr_B\big(\proj{11
 
 \note{superoperators definitions}
 
-
 Let $\calH_A$ and $\calH_B$ be Hilbert spaces. Given $\mathcal{E}: \mathcal{D}(\calH_A) \rightarrow \mathcal{D}(\calH_A)$ and $\mathcal{F}: \mathcal{D}(\calH_B) \rightarrow \mathcal{D}(\calH_B)$,  their tensor product $\sop\otimes \mathcal{F}: \mathcal{D}(\calH_A \otimes \calH_B)\rightarrow \mathcal{D}(\calH_A \otimes \calH_B)$ is defined as:
 
 \[
 	(\sop \otimes \mathcal{F})(\rho_A \otimes \rho_B) = \sop(\rho_A)\otimes \mathcal{F}(\rho_B)
 \]
 
+The superoperator $\mathcal{E} \otimes \mathcal{F}$ can be applied to arbitrary density operators $\rho$, expressed as sum of separable states, by linearity.
+
 
 Superoperators on $\calH$: all the maps $\sop: \calDH \rightarrow \calDH$ satifying:
 \begin{itemize}
 \item $\sop$ is \textit{convex linear}: for any set of probabilities	$\{p_i\}_i$,
 \[\sop\left(\sum_i p_i \rho_i \right) = \sum_i p_i \sop(\rho_i)\]
-\item $\sop$ is \textit{completely positive}: for any extra Hilbert space $\calH_R$, for any positive $\rho \in \calH_R \otimes \calH$, $(\mathcal{I}\otimes \sop)(\rho)$ is also positive, where $\mathcal{I}_R$ is the identity operator on $\mathcal{D}(\calH_R)$.
+\item $\sop$ is \textit{completely positive}: for any extra Hilbert space $\calH_R$, for any positive $\rho \in \calH_R \otimes \calH$, $(\mathcal{I}_R\otimes \sop)(\rho)$ is also positive, where $\mathcal{I}_R$ is the identity operator on $\mathcal{D}(\calH_R)$.
 \item $\sop$ is \textit{trace non-increasing}: for any density operator $\rho \in \calDH$, 
 \[tr\big(\sop(\rho)\big) \leq tr(\rho) \leq 1\].
 \end{itemize}
@@ -360,11 +361,22 @@ We call $\calSH$ the set of all superoperators on $\calH$.
 \textit{Löwner order}: we define the partial order $\sqsubseteq$ on $\calDH$ as :
 \[ \rho \sqsubseteq \sigma \text{ if and only if } \sigma-\rho \text{ is positive}\]
 
-\textit{Kraus operator sum}: For any superoperator $\sop \in \calSH$, there exists a finite set of operators $\{E_i\}$ such that
+\textit{Kraus operator sum}: For any superoperator $\sop \in \calSH$, there exists a (non-unique) finite set of operators $\{E_i\}$, with $1 \leq i \leq dim(\calH)$ such that
 \begin{gather*}
 \sop(\rho) = \sum_i E_i\rho E_i^\dagger \\
 \sum_i E_i^\dagger E_i \sqsubseteq I_\calH
 \end{gather*}
+
+Although there are possibly multiple Kraus form for any superoperator $\sop \in \calSH$, they are related by a unitary transformation.
+Formally, for any two set of decompositions $\{C_i\}_i$ and $\{B_j\}_j$, there is a unitary matrix $U = \{u_{ij}\}_{ij}$ such that $C_i = \sum_j u_{ij} B_j$.
+
+Given $\mathcal{E}: \mathcal{D}(\calH_A) \rightarrow \mathcal{D}(\calH_A)$ and $\mathcal{F}: \mathcal{D}(\calH_B) \rightarrow \mathcal{D}(\calH_B)$,
+respectively expressed in Kraus form as $\mathcal{E}(\rho) = \sum_i E_i \rho E_i^\dag$ and $\mathcal{F}(\rho) = \sum_j F_j \rho E_j^\dag$, the thensor product $\mathcal{E} \otimes \mathcal{F}$
+can be expressed in Kraus form as 
+
+\[
+  (\mathcal{E} \otimes \mathcal{F})(\rho) = \sum_i \sum_j (E_i \otimes F_j)\,\rho\:(E_i \otimes F_j)^\dag
+\]
 
 Superoperators can describe both unitary transformations and measurements. Given unitary operator $U$ on $\calH$, we can define  the (trace preserving) superoperator $\sop_U \in \calSH$ as:
 \[ \sop_U(\rho) = U \rho U^\dagger\]
