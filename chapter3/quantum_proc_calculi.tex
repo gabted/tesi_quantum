@@ -1,5 +1,6 @@
 
-\section{LTS and quantum states} 
+
+
 
 There is a number of proposals of quantum process calculi in the literature, often with different syntax, semantics and behavioural equivalences, even if they all model the same systems and the same protocols. 
 The are three main line of research that developed in recent years. The first, started with QPAlg and then developed with CQP, is inspired by the $\pi$-calculus. 
@@ -7,28 +8,51 @@ The second approach, developed simultaneously but independently, is centered aro
 This thesis will focus on analyzing similarities and differences of these two calculi, CQP and qCCS. 
 The third proposal, exploring the quantum process algebra qACP, is less directly related and comparable with the first two, in the same way as its classical counterpart ACP is designed in a different fashion with respect to CCS/$\pi$-calculus.
 
+\section{LTS and quantum states} 
 
-Since from the first works by Lalire and Jorrand [qpalg2004], it became evident that the operational semantic of a \textit{quantum} process calculus could not of consist only of syntactic elements, like the transitions $P \rightarrow P'$ of a classical process algebra. A process manipulating and communicating quantum data should always be coupled with a state vector, describing the current state of the quantum system. In all the quantum process calculi, the LTS is always composed of \textit{configurations}, i.e. states of the form 
+\subsection{QPAlg}
+
+Since from the first works by Lalire and Jorrand [qpalg2004], it became evident that the operational semantic of a \textit{quantum} process calculus could not of consist only of syntactic elements, like the transitions $P \rightarrow P'$ of a classical process algebra. In all the calculi proposed so far, processes manipulating and communicating quantum data are always be coupled with a state vector, describing the current state of the quantum system. The operational semantic of such calculi produces a LTS is composed of \textit{configurations}, i.e. states of the form 
 \[
 	\langle q_0, \ldots, q_n = \kp, P\rangle
 \] 
 in which $P$ is a process containing $q_0 \ldots q_n$ as free variables, and $\kp \in \Hto{n}$  describes the state of the qubits manipulated by $P$. 
-This approach solves two crucial problems arising from the peculiarity of quantum computation:\begin{itemize}
-\item \textbf{No cloning}: Since quantum information cannot be copied, variable instantiation cannot be performed in a "pass-by-value" fashion like classical process algebras:
-	\[ c?x.P \xrightarrow{c?v} P[v/x]
+
+This approach leads to a imperative, stateful style of computation.
+In QPAlg, processes can be contructed with the usual actions of vaule passing calculi, $c?x$, $c!v$, but also with \textit{quantum action}, like $X, Z, H, M_{01}$, that correspond to applying unitaries or measurement to the underlying quantum state: \[ \langle q = \kp, H[q].P \rangle \xrightarrow{\tau} \langle q = H\kp, P \rangle\]
+
+Quantum actions are labelled as $\tau$ in the LTS, since are internal action of a process changing its state. Despite that, quantum action cannot always be considered local to the process, as becomes evident when considering parallel processes with entangled qubits.
+
+If two processes $P$ and $Q$ act on separable qubits, it would possible to consider them together in a compositional way, like in classical process algebra
+\[ \infer{\langle p,q=\kp\otimes\kf, P\parallel Q\rangle \xrightarrow{\alpha} \langle p,q=\kp'\otimes\kf, P'\parallel Q\rangle}{\langle p=\kp, P\rangle \xrightarrow{\alpha} \langle p=\kp', P'\rangle}\]
+
+But due to entanglement, qubits are not always separable, and the quantum action of $P$ can change the state of $Q$ (even thou the quantum action are labelled as a silent transition). So in QPAlg a more general rule is used:
+\[\infer{\langle p,q=\nu, P\parallel Q\rangle \xrightarrow{\alpha} \langle p,q=\nu', P'\parallel Q\rangle}{\langle p, q=\nu, P\rangle \xrightarrow{\alpha} \langle p, q=\nu', P'\rangle}\]
+where quantum actions of $P$ must be intended as transformations on the whole Hilbert space $\calH_p \otimes \calH_q$.
+
+Separating the syntactic, control part of the configuration (the process $P$) from the underlying quantum data (the statevector $\kp$) allows also for a "pass-by-reference" way of communication, opposed to the "pass-by-value" of classical value passing process algebras.
+The usual rule for syncrhonization, in fact, would be
+	\[ \infer{c!v.P \parallel c?x.Q \xrightarrow{\tau} P\parallel Q[v/x]}
+	{ c!v.P \xrightarrow{c!v} P & c?x.Q \xrightarrow{c?v} Q[v/x]}
 	\] 
-In this way, if $P$ contains two occurences of $x$, each of them gets instantiated with a different, independent copy of the value $v$. But if the value $v$ was a state vector $\kp$, this would require duplicating the quantum information.
-So in QPAlg and in all other quantum calculi, information is manipulated and passed in a imperative, "pass-by-reference" manner:
-\[ \langle q=\kp, c?x.P \rangle \xrightarrow{c?q} \langle q=\kp, P[q/x]\rangle
-\]
+In this way, if $Q$ contains two occurrences of $x$, each of them gets instantiated with a different, independent copy of the value $v$. But if the value $v$ was a state vector $\kp$, this would require duplicating the quantum information, wich is impossible due to the no-cloning theorem.
+So in QPAlg (and in all other quantum calculi), quantum data is passed in a "pass-by-reference" manner:
+\[ \infer{ \langle q=\kp, c!q.P \parallel c?x.Q \rangle \xrightarrow{\tau}  \langle q=\kp, P\parallel Q[q/x] \rangle}
+{  \langle q=\kp, c!q.P \rangle \xrightarrow{c!q}  \langle q=\kp, P \rangle & \langle q=\kp,  c?x.Q \rangle \xrightarrow{c?q} \langle q=\kp,  Q[q/x] \rangle}
+\] 
 where $q$ is just a pointer to the quantum variable stored in a configuration.
-\item \textbf{Entanglement}: Since a composite quantum system is not always separable, the semantic of two parallel processes $P$ and $Q$ cannot always be described separately, and then simply interleaved with the parallel operator. If manipulating an entangled state the semantic of process $P$ depends by the behaviour of process $Q$, and so the two must be described together, in a global configuration $\langle q_1, q_2 = \beta, P \parallel Q$ (where $\beta$ is the bell state $\oost\ket{00} + \oost\ket{11}$. 
-\end{itemize}
+
+
 
 Another key feature present in QPAlg and in all other calculi is the coexistence of \textit{nondeterminism}, arising from sums and parallel composition, and probabilistic behaviour, arising from the probabilistic nature of quantum measurements. 
 So in all quantum process calculi, a process can be defined by a pLTS $\langle Conf, Act, \rightarrow \rangle$, where $Conf$ is the set of all possible configurations. 
 QPAlg and CQP follow the "probabilistic-transition" approach, while qCCS follows the $probabilistic-state$ approach.
 
+
+
+\note{qpalg2005 different rules for comunication (with the environment) and synronization. }
+
+\subsection{CQP}
 
 in [CQP2005], Gay and Nagarajan presented their calculus Communicating Quantum Process. CQP makes use of an (affine) type system to restrict the set of possible processes of the algebra to the "admissible" ones, the ones respecting the no-cloning theorem. Under the assumption that Alice, Bob and Charlie are in three different physical location, the process \[Alice = b!q.c!q.nil\] should not be well typed, because Bob could read from the $b$ channel, Charlie from the $c$ channel, and there will be duplication of quantum information.
 
@@ -62,7 +86,12 @@ Puthoor develops the equational theory of davidson's bisimulation, and extends C
 \note{note:}
 \note{\textbf{Inglesi}}
 \begin{itemize}
-\item \textbf{Lalire} configurazioni e probabilismo. complex variablescoping, with a stack in the configuration, reception extends rho. Non congruenza perchè entabglement e larsen skou.
+\item \textbf{QPALg2004} configurazioni e probabilismo. complex variablescoping, with a stack in the configuration, sending shrinks rho. 
+
+\item \textbf{QPAlg2006} probabilistic branching bisimilarity, non congruenza perchè entabglement e larsen skou. sending does not shrink rho, reception enlarges rho, but syncronization doesn't use any of the two rules. 
+\[ \langle q = \rho, c?x.P \rangle \xrightarrow{c?x} \langle x,q = \nu\otimes\rho, c?x.P \rangle
+\]
+for any $\nu$, infinite branching
 
 
 \item \textbf{CQP gay nagarajan popl 05}: pi-calculus like, measurements are expressions, no probabilistic sum (can be implemented with parallel syncronization), reduction semantic con congruenza, typesystem affine per garantire il no cloning. probability-on-transitions approach: a reduction relation $\rightarrow \subseteq S \times \distr(S)$ and a probabilistic choice transition $\rightsquigarrow \subseteq \distr(S)\times [0, 1] \times S$. Configurations of the form (quantum state, channel names, P).
