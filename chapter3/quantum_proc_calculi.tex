@@ -12,59 +12,92 @@ The third proposal, exploring the quantum process algebra qACP, is less directly
 
 \subsection{QPAlg}
 
-Since from the first works by Lalire and Jorrand [qpalg2004], it became evident that the operational semantic of a \textit{quantum} process calculus could not of consist only of syntactic elements, like the transitions $P \rightarrow P'$ of a classical process algebra. In all the calculi proposed so far, processes manipulating and communicating quantum data are always be coupled with a state vector, describing the current state of the quantum system. The operational semantic of such calculi produces a LTS is composed of \textit{configurations}, i.e. states of the form 
+In classical process calculi, the operational semantics is given in terms of transitions $P \xrightarrow{\alpha} P'$ between processes. In [qpalg2004], Lalire and Jorrand describe how to "quantumize" a simple classical process caulculus, adding to it quantum variables and quantum actions. To do so, processes manipulating and communicating quantum data are always coupled with a state vector, describing the current value of the quantum variables. The operational semantic of QPAlg describes in fact an LTS composed of \textit{configurations}, i.e. states of the form \footnote{The actual configurations described in QPAlg are more complex than this, containing also a stack to manage variable delcaration. We will omit these non-quantum construct to simplify the presentation and the comparisons.}
 \[
-	\langle q_0, \ldots, q_n = \kp, P\rangle
+	\langle q_0, \ldots, q_n = \rho, P\rangle
 \] 
-in which $P$ is a process containing $q_0 \ldots q_n$ as free variables, and $\kp \in \Hto{n}$  describes the state of the qubits manipulated by $P$. 
+in which $P$ is a process containing $q_0 \ldots q_n$ as free quantum variables, and $\rho \in \mathcal{D}(\Hto{n})$  describes the state of the qubits manipulated by $P$. The same approach is used in (almost) all the other calculi proposed so far, and has become somewhat standard.
 
-This approach leads to a imperative, stateful style of computation.
-In QPAlg, processes can be contructed with the usual actions of vaule passing calculi, $c?x$, $c!v$, but also with \textit{quantum action}, like $X, Z, H, M_{01}$, that correspond to applying unitaries or measurement to the underlying quantum state: \[ \langle q = \kp, H[q].P \rangle \xrightarrow{\tau} \langle q = H\kp, P \rangle\]
+This idea captures the imperative, stateful nature of quantum computation, in which a sequence of transformations are applied to the quantum variables (the qubits), treated as a mutable data structure.
+In QPAlg, processes can be contructed with the usual actions of vaule passing calculi, $c?x$, $c!v$, but also with \textit{quantum action}, like $X, Z, H, M_{01}$, that correspond to applying unitaries or measurement to the underlying quantum state: \[ \langle q = \rho, H[q].P \rangle \xrightarrow{\tau} \langle q = H\rho H^\dagger, P \rangle\]
 
-Quantum actions are labelled as $\tau$ in the LTS, since are internal action of a process changing its state. Despite that, quantum action cannot always be considered local to the process, as becomes evident when considering parallel processes with entangled qubits.
+%\note{varibale instantiation}
+Separating the syntactic, control part of the configuration (the process $P$) from the underlying quantum data (the statevector $\kp$) allows also for a "pass-by-reference" way of communication, opposed to the "pass-by-value" of classical value passing process algebras.
+The usual rule for reception, in fact, would be
+\[ c?x.P \xrightarrow{c?v} P[v/x]  \qquad \text{ for any value } v
+\]
+In this way, if $Q$ contains two occurrences of $x$, each of them gets instantiated with a different, independent copy of the value $v$. But if the value $v$ was a quantum state $\rho$, this would require duplicating the quantum information, which is impossible due to the no-cloning theorem. The solution proposed in various quantum calculi is substituting just the name of the variable, duplicating only the "pointers" to the same value.
+\[ \langle q_1, \ldots q_n = \rho, c?x.P \rangle \xrightarrow{c?q} \confw{q_1, \ldots q_n = \rho, P[q/x]} \qquad \text{ for any } q \in q_0 \ldots q_n
+\]
 
-If two processes $P$ and $Q$ act on separable qubits, it would possible to consider them together in a compositional way, like in classical process algebra
-\[ \infer{\langle p,q=\kp\otimes\kf, P\parallel Q\rangle \xrightarrow{\alpha} \langle p,q=\kp'\otimes\kf, P'\parallel Q\rangle}{\langle p=\kp, P\rangle \xrightarrow{\alpha} \langle p=\kp', P'\rangle}\]
+Notice that this idea requires the peculiar assumption that the \textit{value} recived from the external environment is already represented in the the configuration. In QPAlg and in other early works [qccs2006] there was a different rule, where the state vector is extended with a new value received from the environment. This approach was abandoned in more recent calculi, because extending the state vector when a qubit is received (or shrinking it when a qubit is sent) works poorly when exchanging entangled qubits. 
+Suppose that a process $P$ receives just one qubit of a Bell pair, i.e. a qubit that is entangled with something on which $P$ has no control. The only way to represent the new qubit in the configuration is with its reduced density operator $\frac{1}{2}I$. But what happens if the process then receives also the second qubit of the Bell pair? Since we stored the reduced density operator in the configuration, is now impossible to reconstruct the original Bell pair.
 
-But due to entanglement, qubits are not always separable, and the quantum action of $P$ can change the state of $Q$ (even thou the quantum action are labelled as a silent transition). So in QPAlg a more general rule is used:
+Besides, the assumption that the qubit to be received is already represented in the configuration is indeed correct when there is a synchronization between two processes. In that situation, it would be inaccurate to extend the configuration with a new density operator. The systems that allocate a new qubit when receiving end up with de facto two different behaviors, one for communication between processes and one for communication with and unknown environment. This difference is reasonable, but is in contrast with the compositional design of process algebras, and has been abandoned in later systems.
+
+
+%\note{measurements and probabilities}
+Another key feature present in QPAlg and in all other calculi is the coexistence of \textit{nondeterminism}, arising from sums and parallel composition, and probabilistic behaviour, arising from the probabilistic nature of quantum measurements. When the process P, with state $\rho$ performs a measurement, there is a distribution of possible configurations in which it could evolve. So in all quantum process calculi, the semantics of a process can be defined by a pLTS $\langle Conf, Act, \rightarrow \rangle$, where $Conf$ is the set of all possible configurations, and $\rightarrow$ goes from $Conf$ to $\distr(Conf)$
+\[
+	\confw{q = \proj{+}, M_{01}[q].P} 
+	\xlongrightarrow{\tau} 
+	\confw{q = \proj{0}, P'} \psum{1/2} \confw{q = \proj{1}, P''}
+\]
+QPAlg follows the "probabilistic-transition" approach, so the distribution state branches probabilistically in one of the possible outcomes.
+
+
+
+%\note{parallel composition}
+
+The last relevant detail of the rules of QPAlg, shared also by the other calculi, is the treatment of parallel composition. Due to entangled state, the parallel operator is not entirely compositional. That is, the behaviour of $P\parallel Q$ cannot be described simply as the interleaving of $P$ and $Q$.
+
+Only if two processes $P$ and $Q$ act on separable qubits, in fact, it would possible to treat them independently
+\[ \infer{\langle p,q=\rho\otimes\sigma, P\parallel Q\rangle \xrightarrow{\alpha} \langle p,q=\rho'\otimes\sigma, P'\parallel Q\rangle}{\langle p=\rho, P\rangle \xrightarrow{\alpha} \langle p=\rho', P'\rangle}\]
+
+
+But when $p, q$ are entangled, the quantum actions of $P$ cannot always be considered "local" to the process, as they effect also the value of $q$ (despite being labelled as internal transition). So in QPAlg a more general rule is used:
 \[\infer{\langle p,q=\nu, P\parallel Q\rangle \xrightarrow{\alpha} \langle p,q=\nu', P'\parallel Q\rangle}{\langle p, q=\nu, P\rangle \xrightarrow{\alpha} \langle p, q=\nu', P'\rangle}\]
 where quantum actions of $P$ must be intended as transformations on the whole Hilbert space $\calH_p \otimes \calH_q$.
 
-Separating the syntactic, control part of the configuration (the process $P$) from the underlying quantum data (the statevector $\kp$) allows also for a "pass-by-reference" way of communication, opposed to the "pass-by-value" of classical value passing process algebras.
-The usual rule for syncrhonization, in fact, would be
-	\[ \infer{c!v.P \parallel c?x.Q \xrightarrow{\tau} P\parallel Q[v/x]}
-	{ c!v.P \xrightarrow{c!v} P & c?x.Q \xrightarrow{c?v} Q[v/x]}
-	\] 
-In this way, if $Q$ contains two occurrences of $x$, each of them gets instantiated with a different, independent copy of the value $v$. But if the value $v$ was a state vector $\kp$, this would require duplicating the quantum information, wich is impossible due to the no-cloning theorem.
-So in QPAlg (and in all other quantum calculi), quantum data is passed in a "pass-by-reference" manner:
-\[ \infer{ \langle q=\kp, c!q.P \parallel c?x.Q \rangle \xrightarrow{\tau}  \langle q=\kp, P\parallel Q[q/x] \rangle}
-{  \langle q=\kp, c!q.P \rangle \xrightarrow{c!q}  \langle q=\kp, P \rangle & \langle q=\kp,  c?x.Q \rangle \xrightarrow{c?q} \langle q=\kp,  Q[q/x] \rangle}
-\] 
-where $q$ is just a pointer to the quantum variable stored in a configuration.
 
-
-
-Another key feature present in QPAlg and in all other calculi is the coexistence of \textit{nondeterminism}, arising from sums and parallel composition, and probabilistic behaviour, arising from the probabilistic nature of quantum measurements. 
-So in all quantum process calculi, a process can be defined by a pLTS $\langle Conf, Act, \rightarrow \rangle$, where $Conf$ is the set of all possible configurations. 
-QPAlg and CQP follow the "probabilistic-transition" approach, while qCCS follows the $probabilistic-state$ approach.
-
-
-
-\note{qpalg2005 different rules for comunication (with the environment) and synronization. }
 
 \subsection{CQP}
 
-in [CQP2005], Gay and Nagarajan presented their calculus Communicating Quantum Process. CQP makes use of an (affine) type system to restrict the set of possible processes of the algebra to the "admissible" ones, the ones respecting the no-cloning theorem. Under the assumption that Alice, Bob and Charlie are in three different physical location, the process \[Alice = b!q.c!q.nil\] should not be well typed, because Bob could read from the $b$ channel, Charlie from the $c$ channel, and there will be duplication of quantum information.
+In [CQP2005], Gay and Nagarajan presented their calculus Communicating Quantum Process. The main contribution of their work is the introduction of affine type system, used to restrict the set of possible processes of the algebra to the "admissible" ones. Under the assumption that Alice, Bob and Charlie are in three different physical location, in fact, the process \[Alice = b!q.c!q.P\] should not be well typed, because Bob could read from the $b$ channel, Charlie from the $c$ channel, and there will be duplication of quantum information. 
 
 
-Variables and expressions in CQP can have types \textbf{Int}, \textbf{Qbit} and \textbf{Unit}, and channels have the correspogint types $\widehat{\ }\textbf{Int}$, $\widehat{\ }\textbf{Qbit}$, $\widehat{\ }\textbf{Unit}$.
-The typing judgements in CQP have the form \[\Gamma \vdash P\] meaning that $P$ is well typed under the context $\Gamma$. $\Gamma$ contains both classical variables and quantum variables: the former are treated following the usual typing rules, the latter are subject to affine typing rules. Affine rules guarantee that each quantum variable will be sent at most once, thanks to how the typing contexts $\Gamma$ are constructed, lacking a contraction rules for quantum variables. \note{approfondisco una spiegazione sulle regole strutturali e il type system affine?}.
+Variables and expressions in CQP can have types \textbf{Int}, \textbf{Qbit} and \textbf{Unit}, and channels have the corresponding types $\widehat{\ }\textbf{Int}$, $\widehat{\ }\textbf{Qbit}$, $\widehat{\ }\textbf{Unit}$.
+The typing judgements in CQP have the form \[\Gamma \vdash P\] meaning that $P$ is well typed under the context $\Gamma$. $\Gamma$ contains both classical variables and quantum variables: the former are treated following the usual typing rules, the latter are subject to affine typing rules. Affine rules guarantee that each quantum variable will be sent at most once, thanks to how the typing contexts $\Gamma$ are constructed.
 
 
 From the practical point of view, this means that, \begin{itemize} 
 \item if $c!q.P$ is well typed, where $q$ is a quantum variable, then $P$ cannot contain any other occurence $q$
 \item if $P \parallel Q$ is well typed, then $P$ and $Q$ cannot have occurrences of the same quantum variables
 \end{itemize}
+
+Notice that the typing rules are not \textit{linear}, as that weakening holds both for classical and quantum variables. This means that the quantum variables must be sent at most once, not exactly once. So a process like 
+\[P = c?q.H[q].\nil\]
+is well typed, and the qubit denoted by $q$ becomes inaccessible for all other processes.
+
+An important remark is that the typing rules are intended to model processes in different physical location, where sending a qubit means physically moving the quantum system. In other settings these type system could be not necessary. For example different processes in a quantum computer, manipulating the same set of quantum registers, situations like 
+\[ H[q].P \paralle X[q].Q\]
+are reasonable, and their behaviour would be described as usual as race condition between the to processes acting on the same shared data.
+
+
+All the characteristic of QPAlg, in terms of configurations, probabilistic branching and parallel composition are present also in CQP. Differently from QPAlg, CQP  describes \textit{closed quantum systems}, without an unknown environment. That is, there are no transitions $\xrightarrow{c?x}$ or $\xrightarrow{c!v}$, all the communication happens as synchronization between processes. According to this, CQP semantics is described as a reduction system, where the transitions corresponds either to internal action or infra-process communication.  
+
+
+Without interaction with an external environment, all the information is completely represented in the initial configuration, and then there is no need to use mixed quantum states. The state of the quantum variables is thus described as a state vector.
+
+
+CQP is based on the typed pi calculus, with constructs to create new (typed) channel names, new classical variables (of type \mono{Int} or \textit{Unit}), and new quantum variables (of type \mono{Qbit}). When declaring  new qubit, the state vector is extended with the default value $\kz$
+\[ \confw{q_1, \ldots q_n = \kp, \mono{qbit }x.P} \rightarrow \confw{x,q_1, \ldots q_n = \kz\otimes\kp , P}\]
+
+Thanks to its type system, CQP supports integers and arithmetic expressions, and also \textit{quantum expressions} like $q_1\ldots q_n *= U$ and $M[q_1 \ldots q_n]$. There expressions that take the place of quantum action prefixes of QPAlg, changing the underlying quantum state and causing probabilistic branching.
+
+The main contribution of CQP is the introduction of affine typing type system. 
+
+
 \note{
 CQP2005 is a probabilistic-transtition, pi calculus like reduction system, MUST REPRESENTS CLOSED SYSTEMS, WITH REDUCTION RULES, BECAUSE GLOBAL STATE INFROMATION IS REQUIRED, otherwise we can't represent input and output of entangled state. cfr with qpalg2005 and qCCS 2006.
 }

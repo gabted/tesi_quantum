@@ -30,7 +30,9 @@ sorting=nyt
 
 
 \newcommand{\note}[1]{{\color{red} #1}}
+\newcommand{\mono}[1]{\texttt{#1}}
 
+%braket notation
 \newcommand{\ketbra}[2]{\ket{#1}\!\!\bra{#2}}
 \newcommand{\proj}[1]{\ketbra{#1}{#1}}
 \newcommand{\kp}{\ket{\psi}}
@@ -38,9 +40,12 @@ sorting=nyt
 \newcommand{\kz}{\ket{0}}
 \newcommand{\ko}{\ket{1}}
 \newcommand{\kpl}{\ket{+}}
-\newcommand{\oost}{\frac{1}{\sqrt{2}}}
 \newcommand{\km}{\ket{-}}
+\newcommand{\oost}{\frac{1}{\sqrt{2}}}
+
+%hilbert spaces, density matrices and sops
 \newcommand{\calH}{\mathcal{H}}
+\newcommand{\hilbert}{\calH}
 \newcommand{\calHt}{\mathcal{H}^2}
 \newcommand{\Hto}[1]{\mathcal{H}^{\otimes #1}}
 \newcommand{\calDH}{\mathcal{D}(\mathcal{H})}
@@ -48,8 +53,8 @@ sorting=nyt
 \newcommand{\sop}{\mathcal{E}}
 \newcommand{\cnot}{\text{CNOT}}
 
-
-\newcommand{\hilbert}{\mathcal{H}}
+%process algebras
+\newcommand{\ITE}[3]{\textbf{If }{#1}\textbf{ Then } {#2} \textbf{ Else } {#3}}
 \newcommand{\qsum}[1]{\tensor[_{#1}]{\boxplus}{}}
 \newcommand{\psum}[1]{\tensor[_{#1}]{\oplus}{}}
 \newcommand{\nil}{\mathbf{0}}
@@ -67,7 +72,7 @@ sorting=nyt
 
 \newcommand{\distr}{\mathcal{D}}
 
-\newcommand{\ITE}[3]{\textbf{If }{#1}\textbf{ Then } {#2} \textbf{ Else } {#3}}
+
 
 \newtheorem{theorem}{Theorem}%[section]
 \newtheorem{corollary}{Corollary}%[section]
