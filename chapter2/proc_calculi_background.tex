@@ -40,7 +40,7 @@ if $s \xrightarrow{\alpha} s'$ then $t \xRightarrow t' \xrightarrow{\alpha} t''$
 \end{center}
 Two states $s, t \in S$ are said to be \textit{branching bisimilar}, written $s \simeq t$, if exists a branching bisimulation $\rel$ such that $s \rel t$.
 
-\subsection{Probabilistic LTS}
+\subsection{Probabilistic LTS} \label{pLTS}
 
 Given a set $S$, a (discrete) \textit{probability distribution on $S$} is a mapping $\Delta: S \rightarrow [0, 1]$ such that $\sum_{s\in S} \Delta(s) = 1$. We indicate with $\distr(S)$ the set of all probability distribution on $S$.
 The \textit{support} of $\Delta \in \distr(S)$ is defined as $\lceil\Delta\rceil = \{s \in S \mid \Delta(s) > 0\}$. We use $\overline{s}$ to denote the point distribution on $s$ (also known as Dirac distribution, in the continuous case):
