@@ -1,15 +1,3 @@
-
-
-
-
-There is a number of proposals of quantum process calculi in the literature, often with different syntax, semantics and behavioural equivalences, even if they all model the same systems and the same protocols. 
-The are three main line of research that developed in recent years. The first, started with QPAlg and then developed with CQP, is inspired by the $\pi$-calculus. 
-The second approach, developed simultaneously but independently, is centered around qCCS, that is a quantum extension of value-passing CCS. 
-This thesis will focus on analyzing similarities and differences of these two calculi, CQP and qCCS. 
-The third proposal, exploring the quantum process algebra qACP, is less directly related and comparable with the first two, in the same way as its classical counterpart ACP is designed in a different fashion with respect to CCS/$\pi$-calculus.
-
-\section{LTS and quantum states} 
-
 \subsection{QPAlg}
 
 In classical process calculi, the operational semantics is given in terms of transitions $P \xrightarrow{\alpha} P'$ between processes. In [qpalg2004], Lalire and Jorrand describe how to "quantumize" a simple classical process caulculus, adding to it quantum variables and quantum actions. To do so, processes manipulating and communicating quantum data are always coupled with a state vector, describing the current value of the quantum variables. The operational semantic of QPAlg describes in fact an LTS composed of \textit{configurations}, i.e. states of the form \footnote{The actual configurations described in QPAlg are more complex than this, containing also a stack to manage variable delcaration. We will omit these non-quantum construct to simplify the presentation and the comparisons.}
@@ -62,7 +50,10 @@ where quantum actions of $P$ must be intended as transformations on the whole Hi
 
 
 \subsection{CQP}
+\note{Ha senso mettere prima il contributo principale, e poi i dettagli minori (e il confronto con qpalg), o viceversa?}
 
+
+\note{contributo principale}
 In [CQP2005], Gay and Nagarajan presented their calculus Communicating Quantum Process. The main contribution of their work is the introduction of affine type system, used to restrict the set of possible processes of the algebra to the "admissible" ones. Under the assumption that Alice, Bob and Charlie are in three different physical location, in fact, the process \[Alice = b!q.c!q.P\] should not be well typed, because Bob could read from the $b$ channel, Charlie from the $c$ channel, and there will be duplication of quantum information. 
 
 
@@ -72,7 +63,7 @@ The typing judgements in CQP have the form \[\Gamma \vdash P\] meaning that $P$ 
 
 From the practical point of view, this means that, \begin{itemize} 
 \item if $c!q.P$ is well typed, where $q$ is a quantum variable, then $P$ cannot contain any other occurence $q$
-\item if $P \parallel Q$ is well typed, then $P$ and $Q$ cannot have occurrences of the same quantum variables
+\item if $P \parallel Q$ is well typed, then $P$ and $Q$ cannot have occurrences of the same free quantum variables
 \end{itemize}
 
 Notice that the typing rules are not \textit{linear}, as that weakening holds both for classical and quantum variables. This means that the quantum variables must be sent at most once, not exactly once. So a process like 
@@ -80,86 +71,25 @@ Notice that the typing rules are not \textit{linear}, as that weakening holds bo
 is well typed, and the qubit denoted by $q$ becomes inaccessible for all other processes.
 
 An important remark is that the typing rules are intended to model processes in different physical location, where sending a qubit means physically moving the quantum system. In other settings these type system could be not necessary. For example different processes in a quantum computer, manipulating the same set of quantum registers, situations like 
-\[ H[q].P \paralle X[q].Q\]
+\[ H[q].P \parallel X[q].Q\]
 are reasonable, and their behaviour would be described as usual as race condition between the to processes acting on the same shared data.
 
-
-All the characteristic of QPAlg, in terms of configurations, probabilistic branching and parallel composition are present also in CQP. Differently from QPAlg, CQP  describes \textit{closed quantum systems}, without an unknown environment. That is, there are no transitions $\xrightarrow{c?x}$ or $\xrightarrow{c!v}$, all the communication happens as synchronization between processes. According to this, CQP semantics is described as a reduction system, where the transitions corresponds either to internal action or infra-process communication.  
+\note{dettagli minori}
+All the characteristic of QPAlg, in terms of configurations, probabilistic branching and parallel composition are also present in CQP. Differently from QPAlg, CQP  describes \textit{closed quantum systems}, without an unknown environment. That is, there are no transitions $\xrightarrow{c?x}$ or $\xrightarrow{c!v}$, all the communication happens as synchronization between processes. According to this, CQP semantics is described as a reduction system, where the transitions corresponds either to internal actions or infra-process communication.  
 
 
 Without interaction with an external environment, all the information is completely represented in the initial configuration, and then there is no need to use mixed quantum states. The state of the quantum variables is thus described as a state vector.
 
 
-CQP is based on the typed pi calculus, with constructs to create new (typed) channel names, new classical variables (of type \mono{Int} or \textit{Unit}), and new quantum variables (of type \mono{Qbit}). When declaring  new qubit, the state vector is extended with the default value $\kz$
+CQP is based on the typed pi calculus, with constructs to create new (typed) channel names, new classical variables and new quantum variables. When declaring  new qubit, the state vector is extended with the default value $\kz$
 \[ \confw{q_1, \ldots q_n = \kp, \mono{qbit }x.P} \rightarrow \confw{x,q_1, \ldots q_n = \kz\otimes\kp , P}\]
 
 Thanks to its type system, CQP supports integers and arithmetic expressions, and also \textit{quantum expressions} like $q_1\ldots q_n *= U$ and $M[q_1 \ldots q_n]$. There expressions that take the place of quantum action prefixes of QPAlg, changing the underlying quantum state and causing probabilistic branching.
-
-The main contribution of CQP is the introduction of affine typing type system. 
-
-
-\note{
-CQP2005 is a probabilistic-transtition, pi calculus like reduction system, MUST REPRESENTS CLOSED SYSTEMS, WITH REDUCTION RULES, BECAUSE GLOBAL STATE INFROMATION IS REQUIRED, otherwise we can't represent input and output of entangled state. cfr with qpalg2005 and qCCS 2006.
-}
-
-\note{
-QPAlg2005 introduces a probabilistic branching bisimulation
-
-
-Davidson introduces a labelled semantics  to CQP. ANd two probabilistic branching bisimulation, the second is a congruence
-
-
-Puthoor develops the equational theory of davidson's bisimulation, and extends CQP to LOQC
-}
-
-
  
 
-
-\note{note:}
-\note{\textbf{Inglesi}}
-\begin{itemize}
-\item \textbf{QPALg2004} configurazioni e probabilismo. complex variablescoping, with a stack in the configuration, sending shrinks rho. 
-
-\item \textbf{QPAlg2006} probabilistic branching bisimilarity, non congruenza perchè entabglement e larsen skou. sending does not shrink rho, reception enlarges rho, but syncronization doesn't use any of the two rules. 
-\[ \langle q = \rho, c?x.P \rangle \xrightarrow{c?x} \langle x,q = \nu\otimes\rho, c?x.P \rangle
-\]
-for any $\nu$, infinite branching
+In [Davidson], Davidson introduces a labelled semantics  to CQP, in order to define a bisimilarity relation on CQP processes. On top of internal actions and synchronization, the possible actions of a process are as usual reception and sending, in the form $c?x$ and $c!v$. A process $\confw{q_1 \ldots q_n = \kp, c?x.P}$ can evolve receiving a qubit $q_i$ from the environment, but its name and value must already be present in the configuration. Reception and sending in CQP do not modify the quantum state, simply move the quantum names around. As already said, this can be seen as physically moving qubits between different location, but also as concurrent processes exchanging lock on some shared variable, to guarantee mutual exclusion.
 
 
-\item \textbf{CQP gay nagarajan popl 05}: pi-calculus like, measurements are expressions, no probabilistic sum (can be implemented with parallel syncronization), reduction semantic con congruenza, typesystem affine per garantire il no cloning. probability-on-transitions approach: a reduction relation $\rightarrow \subseteq S \times \distr(S)$ and a probabilistic choice transition $\rightsquigarrow \subseteq \distr(S)\times [0, 1] \times S$. Configurations of the form (quantum state, channel names, P).
+As for the previous work, all the information is contained in the initial configuration and is never lost, so quantum variables state is expressed as a state vector, instead of as a density matrix.
 
-\item \textbf{Thesis Davidson 2011}:
-
-Gives a labelled transition semantic $\langle \sigma, \omega, P\rangle \xrightarrow{alpha} \distr(\sigma, \omega, P)$ and a probabilistic transition  $\rightsquigarrow$ as before, where $\sigma$ contains the quantum state, $\omega$ the used qubits, and $P$ the process. Quantum input doesn't extend rho (here called sigma).
-
-semantics: out removes $q$ from $\omega$, in and qbit add $q$ to $\omega$ 
-typing: measure and ops don't add $q$ to $\Sigma$, but expression does. out removes, qbit adds, in should add. 
-Sigma is a subset of omega
-
-THe chinese approach equates the quantum names, and require the same final state.
-the french-english approach doesn't equates the quantum names, but the (partial trace) of the state in the moment of communication.
-Our congurence doesn't equates quantum names, it could if we add a more specific barb $\downarrow_{c!q}$, or a name-matching construct in our contexts. 
-Ora come ora, nel nostro sistema, 
-\[ P = H(q_1, q_2).c!q_1 \parallel d!q_2 \quad H(q_1, q_2).d!q_1 \parallel c!q_2\]
-sono bisimili.
-
-The example 3.2 in page 74 shows two processes that are bisimilar but not congruent. There are to solution to this problem: provide a finer bisimilation, that distinguishes P and Q, confronting the enviroment ($tr_\Sigma(\rho)$) in a larsen skou way, or a coarser bisimulation, that doen't distinguis C[P] and C[Q], confronting the environment of distribution (called in davidson mixed configuration.)
-
-
-\item \textbf{thesis Puthoor 2015}:
-provides a correct set of equational axioms, to define behavioural equivalence axiomatically. Extends CQP to Linear optical quantum computing
-\end{itemize}
-
-
-\note{\textbf{Cinesi}}
-\begin{itemize}
-\item Feng duan 2006, probabilistic bisimulation for quantum:
-
-Probabilities-on-state approach, strong and week bisimilarity, deadlock quantum state equivalence, different inputs rules for correlated and uncorrelated qubits. Uncorrelated input extends rho. Introduces conbined transitions, i.e. convex closure transitions. bisimilarities not preserved by parallel composition, and restriction 
-P = U1[q].c!0.U2[q].nil, Q = V1[q].c!0.V2[q].nil. are bisimilar, but not $P\setminus c$ and $Q\setminus c$
-\item Ying feng 2009, an algebra of quantum, no classical comunxication. Input and output don't change rho. superoperators as visible transitions, reduction (i.e. independent superoperators) bisimilarity, approximate bisimulation based on diamond distance between superoperators
-
-\item Feng duan ying bisimulation for quantum, is a congruence, requires equality of the environment, not of the total state. 
-\item Open bisimulation for quantum
-\end{itemize}
+\subsection{qCCS}

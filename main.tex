@@ -105,9 +105,64 @@ In this chapter, we review some fundamentals concepts in quantum computing and f
 
 
 \chapter{Quantum Process Calculi}
+
+\input{chapter3/intro}
+
+\section{LTS and quantum states}
 \input{chapter3/quantum_proc_calculi}
 
+\section{Bisimulation}
+\input{chapter3/bisimulations}
 
+
+
+\note{note:}
+\note{\textbf{Inglesi}}
+\begin{itemize}
+\item \textbf{QPALg2004} configurazioni e probabilismo. complex variablescoping, with a stack in the configuration, sending shrinks rho. 
+
+\item \textbf{QPAlg2006} probabilistic branching bisimilarity, non congruenza perchè entabglement e larsen skou. sending does not shrink rho, reception enlarges rho, but syncronization doesn't use any of the two rules. 
+\[ \langle q = \rho, c?x.P \rangle \xrightarrow{c?x} \langle x,q = \nu\otimes\rho, c?x.P \rangle
+\]
+for any $\nu$, infinite branching
+
+
+\item \textbf{CQP gay nagarajan popl 05}: pi-calculus like, measurements are expressions, no probabilistic sum (can be implemented with parallel syncronization), reduction semantic con congruenza, typesystem affine per garantire il no cloning. probability-on-transitions approach: a reduction relation $\rightarrow \subseteq S \times \distr(S)$ and a probabilistic choice transition $\rightsquigarrow \subseteq \distr(S)\times [0, 1] \times S$. Configurations of the form (quantum state, channel names, P).
+
+\item \textbf{Thesis Davidson 2011}:
+
+Gives a labelled transition semantic $\langle \sigma, \omega, P\rangle \xrightarrow{alpha} \distr(\sigma, \omega, P)$ and a probabilistic transition  $\rightsquigarrow$ as before, where $\sigma$ contains the quantum state, $\omega$ the used qubits, and $P$ the process. Quantum input doesn't extend rho (here called sigma).
+
+semantics: out removes $q$ from $\omega$, in and qbit add $q$ to $\omega$ 
+typing: measure and ops don't add $q$ to $\Sigma$, but expression does. out removes, qbit adds, in should add. 
+Sigma is a subset of omega
+
+THe chinese approach equates the quantum names, and require the same final state.
+the french-english approach doesn't equates the quantum names, but the (partial trace) of the state in the moment of communication.
+Our congurence doesn't equates quantum names, it could if we add a more specific barb $\downarrow_{c!q}$, or a name-matching construct in our contexts. 
+Ora come ora, nel nostro sistema, 
+\[ P = H(q_1, q_2).c!q_1 \parallel d!q_2 \quad H(q_1, q_2).d!q_1 \parallel c!q_2\]
+sono bisimili.
+
+The example 3.2 in page 74 shows two processes that are bisimilar but not congruent. There are to solution to this problem: provide a finer bisimilation, that distinguishes P and Q, confronting the enviroment ($tr_\Sigma(\rho)$) in a larsen skou way, or a coarser bisimulation, that doen't distinguis C[P] and C[Q], confronting the environment of distribution (called in davidson mixed configuration.)
+
+
+\item \textbf{thesis Puthoor 2015}:
+provides a correct set of equational axioms, to define behavioural equivalence axiomatically. Extends CQP to Linear optical quantum computing
+\end{itemize}
+
+
+\note{\textbf{Cinesi}}
+\begin{itemize}
+\item Feng duan 2006, probabilistic bisimulation for quantum:
+
+Probabilities-on-state approach, strong and week bisimilarity, deadlock quantum state equivalence, different inputs rules for correlated and uncorrelated qubits. Uncorrelated input extends rho. Introduces conbined transitions, i.e. convex closure transitions. bisimilarities not preserved by parallel composition, and restriction 
+P = U1[q].c!0.U2[q].nil, Q = V1[q].c!0.V2[q].nil. are bisimilar, but not $P\setminus c$ and $Q\setminus c$
+\item Ying feng 2009, an algebra of quantum, no classical comunxication. Input and output don't change rho. superoperators as visible transitions, reduction (i.e. independent superoperators) bisimilarity, approximate bisimulation based on diamond distance between superoperators
+
+\item Feng duan ying bisimulation for quantum, is a congruence, requires equality of the environment, not of the total state. 
+\item Open bisimulation for quantum
+\end{itemize}
 
 
 
