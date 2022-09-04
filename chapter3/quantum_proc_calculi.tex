@@ -87,10 +87,18 @@ CQP is based on the typed pi calculus, with constructs to create new (typed) cha
 Thanks to its type system, CQP supports integers and arithmetic expressions, and also \textit{quantum expressions} like $q_1\ldots q_n *= U$ and $M[q_1 \ldots q_n]$. There expressions that take the place of quantum action prefixes of QPAlg, changing the underlying quantum state and causing probabilistic branching.
  
 
-In [Davidson], the author introduces a labelled semantics  to CQP, in order to define a bisimilarity relation on CQP processes. On top of internal actions and synchronization, the possible actions of a process are as usual reception and sending, in the form $c?x$ and $c!v$. A process $\confw{q_1 \ldots q_n = \kp, c?x.P}$ can evolve receiving a qubit $q_i$ from the environment, but its name and value must already be present in the configuration. Reception and sending in CQP do not modify the quantum state, simply move the quantum names around. As already said, this can be seen as physically moving qubits between different location, but also as concurrent processes exchanging lock on some shared variable, to guarantee mutual exclusion.
+In [Davidson], the author introduces a labelled semantics  to CQP, so to define a bisimilarity relation on CQP processes. On top of internal actions and synchronization, the possible actions of a process are as usual reception and sending, in the form $c?x$ and $c!v$. A process $\confw{q_1 \ldots q_n = \kp, c?x.P}$ can evolve receiving a qubit $q_i$ from the environment, but its name and value must already be present in the configuration. Reception and sending in CQP do not modify the quantum state, simply move the quantum names around. As already said, this can be seen as physically moving qubits between different location, but also as concurrent processes exchanging lock on some shared variable, to guarantee mutual exclusion.
 
 
 As for the previous work, all the information is contained in the initial configuration and is never lost, so quantum variables state is expressed as a state vector, instead of as a density matrix.
+
+
+
+In order to define a bisimilarity relation that is also a congruence, in [Davidson] a different semantic is proposed, featuring so called \textit{mixed configuration}. These mixed configuration can be considered as probabilistic distributions of configurations, but must be treated as a single state. In other words this semantics mixes the "probabilistic transition" and "probabilistic state" approches of \ref{pLTS}: after a measurement, a configuration evolves in a mixed configuration (that is, a distribution of configurations), and this mixed configuration do not perform a probabilistic transition, so does not decays in a single configuration. 
+
+Mixed configurations represent partial knowledge of the classical variables in a configuration, just like mixed state represent partial knowledge of quantum state. So, after a measurement, a configuration must evolve in a mixed configuration, because to an external observer, the outcome of the measurement in unknown. Only when the mixed configuration performs an output transition, where it communicates the output of the measurement, a mixed configuration can branch probabilistically in one of its possible configuration. As we will see, this difference is crucial, because changes the observable properties of the defined system: in the previous semantic, after a measurement there would be always probabilistic branching, i.e. the outcome probabilities are immediately observable; in the mixed configuration semantic, after a measurement there are no probabilities to observe (as that outcome is still local to the process), and the probabilities appear only when and if the outcome is comunicated.
+
+\note{esempio esplicativo, in tikzit? fatto a mano?}
 
 \subsection{qCCS}
 
