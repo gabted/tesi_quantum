@@ -1,5 +1,5 @@
 
-The laws on Quantum Mechanics, as we understand them, are elegantly formalized in a mathematical framework, built upon simple linear algebra. This framework is based on a few \textit{postulates} that describe the nature and evolution of quantum systems. Since quantum computing is just the technique of manipulating quantum systems to perform some computation, it will necessarily follows the same postulates. Before presenting each postulate, we will recall the necessary basic definition from linear algebra, formulated in the Dirac's "bra-ket" notation. For further reading, the standard textbook on the subject is \cite{nielsen_chuang_2010}.
+The laws on Quantum Mechanics, as we understand them, are elegantly formalized in a mathematical framework, built upon simple linear algebra. This framework is based on a few \textit{postulates} that describe the nature and evolution of quantum systems. Since quantum computing is just the technique of manipulating quantum systems to perform some computation, it necessarily follows the same postulates. Before presenting each postulate, we recall the necessary basic definition from linear algebra, formulated in the Dirac's "bra-ket" notation. For further reading, the standard textbook on the subject is \cite{nielsen_chuang_2010}.
 
 
 \subsection{State space}
@@ -60,7 +60,7 @@ We're now ready to present the postulates of Quantum Mechanics, in the form more
 \textbf{Postulate I}: The state of an isolated physical system is represented, at a fixed time $t$, by a unit vector $\kp$, called the \textit{state vector}, belonging to a Hilbert space $\calH$, called the \textit{state space}. 
 \end{quote}
 
- When describing the state oh a quantum system, we ignore the \textit{global phase factor}\footnote{An equivalent formulation, in fact, says that a quantum system is described not by a vector but by a \textit{ray}, a one-dimensional subspace of $\calH$}, i.e. 
+ When describing the state of a quantum system, we ignore the \textit{global phase factor}\footnote{An equivalent formulation, in fact, describes a quantum system as a \textit{ray}, a one-dimensional subspace of $\calH$.}, i.e. 
  \[
  	\kp = \begin{pmatrix}
 	\alpha \\
@@ -111,7 +111,7 @@ Other important vectors in the $\calHt$ state space are $\kpl$ and $\km$,
 	-1
 	\end{pmatrix}  = \oost\kz - \oost\ko 
 \end{align*}
-that form the so called \textit{hadamard basis} of $\calHt$. As we will see, $\kpl$ and $\km$ are both an equal superposition of $\kz$ and $\ko$. What differs in the two is the \textit{relative phase}, i.e. the phase between the $\kz$ and $\ko$ component. The states $\kz + \ko$, $-\kz -\ko$, $i\kz + i\ko$ are all equal to $\kpl$ times a certain global phase, and are considered the same state. The states $\kz + \ko$, $\kz - \ko$, $\kz +i\ko$, instead, all differs for a relative phase factor, and have a different behaviors when applied to the same computation. 
+that form the so called \textit{hadamard basis} of $\calHt$. As we will see, $\kpl$ and $\km$ are both an equal superposition of $\kz$ and $\ko$. The difference between $kpl$ and $km$ is the \textit{relative phase}, i.e. the phase between the $\kz$ and $\ko$ component. The states $\kz + \ko$, $-\kz -\ko$, $i\kz + i\ko$ are all equal to $\kpl$ times a certain global phase, and are considered the same state. The states $\kz + \ko$, $\kz - \ko$, $\kz +i\ko$, instead, all differs for a relative phase factor, and have a different behaviours when applied to the same computation. 
 \subsection{Unitary Transformations}
 
 For each linear operator $A$ acting on a Hilbert space $\calH$, we denote as $A^\dagger$ the \textit{adjoint} of $A$, i.e. the unique linear operator such that
@@ -152,6 +152,8 @@ The following postulate makes obvious why we are interested in unitary transform
 
 According to what we said before, if a physical system starts in a unit state, it will always remain in a unit state.
 
+\note{No cloning theorem:}
+
 In quantum computing, the the programmer can manipulate the state of a qubit, applying unitary transformations to it. Some of the most frequent transformation, implemented in every quantum computer, are:
 \begin{gather*}
 	X = \sigma_X = \begin{bmatrix}
@@ -180,14 +182,35 @@ In quantum computing, the the programmer can manipulate the state of a qubit, ap
 	\end{bmatrix} 
 \end{gather*}
 
-For example, the $H$ operator, called the Hadamard operator, or Hadamard gate, is used to \textit{create superposition}, as it transforms a vector from the computational basis to the Hadamard basis:
+The first three operators are known as Pauli operators. $X$ is the "bit-flip operator", the quantum equivalent of the classical not: it transforms $\kz$ in $\ko$ and $\ko$ in $\kz$. In general, the $X$ operators behaves as follows.
+
+\[ X\kp = \begin{bmatrix}
+	0 & 1 \\
+	1 & 0
+	\end{bmatrix} 
+	\begin{pmatrix}
+	\alpha \\
+	\beta	
+	\end{pmatrix} = 
+	\begin{pmatrix}
+	\beta \\
+	\alpha	
+	\end{pmatrix}
+\] 
+Notice that the $X$ operator leaves the $\kpl$ state unaltered, because it was in an equal superposition of $\kz$ and $\ko$, and it remains in a equal superposition.
+
+
+$Z$ is the "phase-flip operator", as it changes the relative phases of the $kz$ and $\ko$ component. $Z \kpl$ becomes $\km$ and vice versa. When applied to $\kz$ (or $\ko$) the $Z$ operator does nothing, 
+
+ 
+Finally, the $H$ operator, called the Hadamard operator, or Hadamard gate, is used to \textit{create superposition}, as it transforms a vector from the computational basis to the Hadamard basis:
 \begin{gather*}
 	H\kz = \kpl \qquad H\kpl = \kz  \\
 	H\ko = \km \qquad H\km = \ko \\	 
 \end{gather*}
 \subsection{Measurement}
 
-The second postulate describes only the evolution of isolated systems. Such system do not exchange energy nor information with the environment, and all their computations are always reversible (and are in fact formalized with invertible, unitary matrices). To extract classical information from the system, to \textit{measure} the output of a quantum computation, it is needed an interaction between the quantum system and the environment. As we will see, this measurement operation is first of all non-invertible, as different state could produce the same outcome when measured, but is also fundamentally probabilistic: a generic state $\kp$ could produce different measurement outcomes $m_1, m_2,\ldots$, each with a certain probability that depends on $\kp$.
+The second postulate describes only the evolution of isolated systems. Such system do not exchange energy nor information with the environment, and all their computations are always reversible (and are in fact formalized with invertible, unitary matrices). To extract classical information from the system, to \textit{measure} the output of a quantum computation, an interaction is needed an interaction between the quantum system and the environment. As we will see, this measurement operation is first of all non-invertible, as different state could produce the same outcome when measured, but is also fundamentally probabilistic: a generic state $\kp$ could produce different measurement outcomes $m_1, m_2,\ldots$, each with a certain probability that depends on $\kp$.
 
 From a physical point of view, if a system is in a superposition of states, measuring it can  cause the wavefunction to collapse to a single state, in a purely probabilistic way. This means that, even if we compute a state that contains the desired information, this information is often difficult to recover, because directly measuring  it can destroy the information and produce a trivial outcome.
 
@@ -201,7 +224,7 @@ and the state after the measurement will be \[\frac{1}{\sqrt{p_m}}M_m\kp\]
 The most common class of quantum measurements is composed of \textit{projective measurements}. Such measurements are described by a set of \textit{orthogonal projectors}, i.e. Hermitian operators such that \[ M_mM_{m'} = \begin{cases}\mathbf{0}\quad\text{if } m \neq m' \\ M_m\quad\text{if }m = m'\end{cases}\]
 
 
-The simplest example of (projective) measurement is simply measuring a state in the computational basis, i.e. projecting it in its $0$-$1$ component. The measurement in the computational basis is defined as \[ M_0 = \begin{pmatrix} 1 & 0 \\ 0 & 0\end{pmatrix} \qquad
+The simplest example of (projective) measurement is simply measuring a state in the computational basis, i.e. projecting it in its $0$-$1$ component. The measurement in the computational basis, denoted as $M_{01}$ is defined as \[ M_0 = \begin{pmatrix} 1 & 0 \\ 0 & 0\end{pmatrix} \qquad
 M_1 = \begin{pmatrix}0 & 0 \\ 0 & 1\end{pmatrix} \]
 And its effect of the state $\kp = \begin{pmatrix}\alpha \\ \beta \end{pmatrix}$ is:
 \begin{align*}
@@ -214,12 +237,20 @@ And its effect of the state $\kp = \begin{pmatrix}\alpha \\ \beta \end{pmatrix}$
 \qquad \text{with probability } \bra{\psi}M_0^\dagger M_1\kp = |\beta^2|
 \end{align*}
 
-Notice that, when measuring the $\kz$ state in the computational basis, the outcome will always be $\kz$ with probability $|\alpha|^2 = 1$, in a completely deterministic behavior. 
-When instead measuring the $\kpl$ or the $\km$ state, we get either $\kz$ or $\ko$, with equal probability $|\alpha|^2 = |\beta|^2 = \left(\oost\right)^2 = \frac{1}{2}$.
-\subsection{Composite quantum systems}
-In the previous sections we characterized 1-qubit systems and how they evolve, describing a computation as a series of unitaries and measurements acting on a 2-dimensional Hilbert space. What said before applies easily to larger quantum systems and higher dimensional Hilbert spaces, once again thanks to an elegant mathematical formulation.
+Notice that, when measuring the $\kz$ state in the computational basis, the outcome will always be $\kz$ with probability $|\alpha|^2 = 1$, in a completely deterministic behaviour. 
+When instead measuring the $\kpl$ state we get either $\kz$ or $\ko$, with equal probability $|\alpha|^2 = |\beta|^2 = \left(\oost\right)^2 = \frac{1}{2}$. The same holds also for the $\km$ state. As already said, $\kpl$ and $\km$ differ only for the relative phase, and the relative phase has no influence on the outcome of a measurement in the computational basis.
 
-If we have two photons, each described by a (2-dimensional) Hilbert space $\calH$, the most natural way to describe the system composed of both photons is as the \textit{tensor product} of Hilbert spaces.	
+
+An other projective measurement is the measurement in the Hadamard basis, $M_\pm$, defined as \[ M_+ = \frac{1}{2}\begin{pmatrix} 1 & 1 \\ 1 & 1\end{pmatrix} \qquad
+M_- = \frac{1}{2}\begin{pmatrix}1 & -1 \\ -1 & 1\end{pmatrix} \]
+
+From the physical point of view, this measurement can be performed composing Hadamard transformations and a measurement in the computational basis: $M_+ = HM_0H$, $M_- = H M_1 H$. Just as $M_{01}$ makes a vector decay in its $\kz$ component or in its $\ko$ component, $M_\pm$ makes a vector decay in its $\kpl$ or $\km$ component. This means that, when measuring $\kpl$ in the Hadamard basis, the outcome will always be $\kpl$ with probability $1$. Notice that a qubit in the state $\kz$ can be considered in an equal superposition of $\kpl$ and $\km$, as $\kz = \oost\kpl + \oost\km$. According to this, measuring $\kz$ in the Hadamard gives the outcomes $\kp$ or $\km$ with half the probability each.
+
+
+\subsection{Composite quantum systems}
+In the previous sections we characterized quantum systems and how they evolve, taking the prototypical example the two-dimensional Hilbert space of a qubit. When dealing hidher-dimensional systems, we can often describe them as \textit{composite system}, made of multiple smaller systems.
+
+If we have for example two photons,  each described by a (2-dimensional) Hilbert space $\calH$, we can describe the system composed of both photons is as the \textit{tensor product} of the 2-dimensional Hilbert spaces.	
 
 If $\calH_n$ is a $n$-dimensional Hilbert space, and $\calH_m$ is a $m$ dimensional Hilbert space, their tensor product $\calH_n \otimes \calH_m$ is a $nm$ Hilbert space. If $\{\ket{\psi_1}, \ldots \ket{\psi_n}\}$ is a basis of $\calH_n$, and $\{\ket{\phi_1}, \ldots\ket{\phi_m}\}$ is a base of $\calH_m$, then a basis of $\calH_n \otimes \calH_m$ is\[\big\{\ket{\psi_i}\otimes\ket{\phi_j} \mid i \in [1, \ldots n], j \in [1, \ldots m] \big\}\]
  where $\kp \otimes \kf$ denotes the Kronecker product. We will often omit the tensor symbol, writing $\ket{\psi}\ket{\phi}$ or also $\ket{\psi\phi}$ instead of $\kp\otimes\kf$. We can now state the last postulate we need:
@@ -248,7 +279,7 @@ A quantum state in $\calH_1 \otimes \calH_2$ is said \textit{separable} when can
  \end{pmatrix}
 \]
 
-One of the defining characteristics of quantum systems is that not all states in $\Hto{2}$ are separable. The existence of such states, called \textit{entangled} states, implies that a composite system can not always be described as simply the juxtaposition of two smaller states. When a qubit $q_1$ is entangled with an other qubit $q_2$, its evolution depends not only on the transformations applied to $q_1$, but also on the transformations applied on $q_2$, that could be even light-years away. This surprising result does not allow faster then light communication, as we will see in the next section.
+Some of the defining characteristics of quantum systems derive from the fact that not all states in $\Hto{2}$ are separable. The existence of such states, called \textit{entangled} states, implies that a composite system can not always be described as simply the juxtaposition of two smaller states. When a qubit $q_1$ is entangled with an other qubit $q_2$, its evolution depends not only on the transformations applied to $q_1$, but also on the transformations applied on $q_2$, that could be even light-years away. This surprising result does not allow faster then light communication, as we will see in the next section.
 
 The classical example of an entangled state is the so called $\ket{\Phi^+}$ \textit{Bell state}:
 \[\ket{\Phi^+} = \oost\ket{00} + \oost\ket{11} = \oost\begin{pmatrix}
@@ -280,30 +311,42 @@ One of the most common two-qubit unitary that is not just the composition of one
 \end{pmatrix}
 \]
 
-This matrix applies a $X$ transformation on the second qubit only if the first one is $\ko$. This means that if the first bit is in a superposition of $\kz$ and $\ko$, after applying this transformation the whole system will be in a superposition: or the two bits are left equal, or the second one has been flipped. As an example, we can show how the CNOT transformation is used to create entanglement.
+This matrix applies a "controlled not" operator on the second qubit. That is, it leaves the second qubit unaltered if the first one is $\ko$, and applies an $X$ transformation on the second qubit if the first one is $\ko$. Together with linearity, this means that if the first bit is in a superposition of $\kz$ and $\ko$, after applying this transformation the whole system will be in a superposition of two states: one where the two bits are left unaffected, one where the second one has been flipped. As an example, we can show how the CNOT transformation is used to create entanglement.
 \begin{gather*}
-\cnot \ket{00} = \ket{00} \qquad \cnot \ket{10} = \ket{11} \\
+\cnot \ket{00} = \ket{00} \qquad \cnot \ket{10} = \ket{11} 
+\\
 \cnot \ket{+0} = \oost\big(\cnot\ket{00} + \cnot\ket{10}\big) = \oost
-\big(\ket{00} + \ket{11}\big) = \ket{\Phi^+}\\
+\big(\ket{00} + \ket{11}\big) = \ket{\Phi^+}
+\\
 \cnot \ket{-0} = \oost\big(\cnot\ket{00} - \cnot\ket{10}\big) = \oost
 \big(\ket{00} - \ket{11}\big) = \ket{\Phi^-}
+\\
+\cnot \ket{+1} = \oost\big(\cnot\ket{01} + \cnot\ket{11}\big) = \oost
+\big(\ket{01} + \ket{10}\big) = \ket{\Psi^+}
+\\
+\cnot \ket{-1} = \oost\big(\cnot\ket{01} - \cnot\ket{11}\big) = \oost
+\big(\ket{01} - \ket{10}\big) = \ket{\Psi^-}
 \end{gather*}
 
-.\subsection{Density operator formalism}
+$\ket{\Phi^+}, \ket{\Phi^-}, \ket{\Psi^+}$ and 
+$\ket{\Psi^-}$ are four different ortonormal entangled vectors, and form the so called \textit{Bell basis} of $\calH^{\otimes 2}$.
 
-The formalism presented so far describes quantum system in terms of unit vectors and unitary transformations. There is an alternative, more general formulation, the \textit{density operator formalism}, in which states are represented as positive operators, and transformations as linear maps from operators to operators, i.e. superoperators.
+\subsection{Density operator formalism}
 
-The main advantage of this formulation is that represents also \textit{partial information} about a quantum system. When describing open systems, that are systems which interact with the external environment, it is often impossible to have complete knowledge on the state of our systems. Instead, one could know that the open system is either in state $\kp$, with a certain probability $p$, or in state $\kf$, with probability $1-p$. In other words, we know that the system is in a \textit{probabilistic mixture of states}, called an \textit{ensemble} of states, or also a \textit{mixed state}.
+The formalism presented so far describes quantum system in terms of unit vectors and linear transformations. There is an alternative, more general formulation, the \textit{density operator formalism}, in which states are represented as positive operators, and transformations as linear maps from operators to operators, i.e. superoperators.
+
+The main advantage of this formulation is that it represents also \textit{partial information} about a quantum system. When describing open systems, that are systems which interact with the external environment, it is often impossible to have complete knowledge on the state of our systems. Instead, one could know that the open system is either in state $\kp$, with a certain probability $p$, or in state $\kf$, with probability $1-p$. In other words, we know that the system is in a \textit{probabilistic mixture of states}, called an \textit{ensemble} of states, or also a \textit{mixed state}. A typical application of mixed states is in presence of noisy channels, where if a qubit with state $\kp$ is sent through the channel, it will arrive with the same state with a probability near to one, but not exactly one.
+
 
 In general, given an $n$-dimensional Hilbert space $\calH$, an \textit{ensemble} of quantum states is a set:
 \[\{(\ket{\psi_i}, p_i)\} \]
 of quantum states in $\calH$, each with a different probability, such that $\forall i \, p_i > 0$ and $\sum_i p_i \leq 1$. Notice that when $\sum_i p_i = 1$, we have a probability distribution of states, when $\sum_i p_i < 1$, we have a so called subprobability distribution.
 
-Each ensemble defines a density operator, that is a matrix in $\mathbb{C}^{n \times n}$, i.e. an operator $\calH \rightarrow \calH$. The ensemble $\{(\ket{\psi_i}, p_i)\}$, with $\ket{\psi_i} \in \calH$ defines the density operator: 
+Each ensemble defines a density operator, that is a matrix in $\mathbb{C}^{n \times n}$, i.e. an operator $\calH \rightarrow \calH$. The ensemble $\{(\ket{\psi_i}, p_i)\}$, where $\ket{\psi_i} \in \calH$, defines the density operator: 
 \[
 	\rho = \sum_i p_i \proj{\psi_i}
 \]
-where $\ketbra{\psi}{\phi}$ denotes the matrix multiplication between the column vector $\kp$ and the row vector $\bra{\phi}$, known as the \textit{outer product}. Notice that this construction is not injective, as there are different ensembles that correspond to the same density operator. We indicate with $\calDH$ the set of density operators of $\calH$.
+where $\ketbra{\psi}{\phi}$ denotes the matrix product between the column vector $\kp$ and the row vector $\bra{\phi}$, known as the \textit{outer product}. Notice that this construction is not injective, as there are different ensembles that correspond to the same density operator. We indicate with $\calDH$ the set of density operators of $\calH$.
 
 Density operators enjoy two useful properties (see \cite{nielsen_chuang_2010}): \begin{enumerate}
 \item The trace of $\rho$ is the sum of the probabilities of the ensemble $tr(\rho) = \sum_i p_i \leq 1$.
@@ -313,20 +356,20 @@ Density operators enjoy two useful properties (see \cite{nielsen_chuang_2010}): 
 
 Positive semidefinite operators are always diagonalizable with eigenvalues real and positives. So, each positive semidefinite operator with trace $\leq 1$ represents at least one ensemble, with the eigenvectors as states and the corresponding eigenvalues as probabilities.
 
+One of the main application of density operators is to describe the state of a subsystem of a composite quantum system. When dealing with composite system, we write $\rho \otimes \sigma \in \mathcal{D}(\calH_1 \otimes \calH_2)$, to denote the density matrix given by the Kronecker product of $\rho$ and $\sigma$. Notice that, if $\rho = \sum_{i=1}^n p_i\proj{\psi_i}$ and $\sigma = \sum_{j=1}^m p_j\proj{\phi_j}$, then 
+\[\rho \otimes \sigma = \sum_{i=1}^n\sum_{j=1}^m p_ip_j \proj{\psi_i\phi_j}\]
 
-One of the main application of density operators is to describe the state of a subsystem of a composite quantum system.
-
-Suppose a composite system, made of two subsystem $A$ and $B$, with state space  $\calH = \calH_A \otimes \calH_B$.  Given a generic $\rho^{AB} \in \calH$, that describes the state of the whole system, the operator $\rho^A$ that describes the subsystem $A$ is obtained as 
+Suppose a composite system, made of two subsystem $A$ and $B$, with state space  $\calH = \calH_A \otimes \calH_B$. A generic  Given a generic (not necessarily separable) $\rho^{AB} \in \calH$, describing the state of the whole system, the operator $\rho^A$ that describes the subsystem $A$ is obtained as 
 \[
 	\rho^A = tr_B(\rho^{AB})
 \]
 where the $tr_B$ is called the \textit{partial trace over $B$}, and is defined by 
 \[
- tr_B\big(\proj{\psi} \otimes \proj{\phi}\big) = \proj{\psi}tr\big(\proj{\phi}\big)
+ tr_B\big(\ketbra{\psi}{\psi'} \otimes \ketbra{\phi}{\phi'}\big) = \ketbra{\psi}{\psi'}tr\big(\ketbra{\phi}{\phi'}\big)
 \]
 together with linearity. $\rho^A$ is called the \textit{reduced density operator} of system $A$.
 
-When applied to a separable state $\rho^A \otimes \rho^B$, the partial trace $tr_B$ leaves $\rho^A$ unaltered. When applied to an entangled state, instead, it produces a probabilistic mixture of states, because "forgetting" the information on the state of subsystem $B$ leaves us with only partial information on subsystem $A$. The canonical example is the bell state $\rho = \frac{1}{2} \proj{00} + \frac{1}{2}\proj{11} \in \calH_A \otimes \calH_B$: 
+When applied to a separable state $\rho^A \otimes \rho^B$, the partial trace $tr_B$ gives exactly $\rho^A$. When applied to an entangled state, instead, it produces a probabilistic mixture of states, because "forgetting" the information on the state of subsystem $B$ leaves us with only partial information on subsystem $A$. The canonical example is the bell state $\rho = \frac{1}{2} \proj{00} + \frac{1}{2}\proj{11} \in \calH_A \otimes \calH_B$: 
 
 \begin{align*}
 tr_B(\rho) &= \frac{1}{2} tr_B\big(\proj{00}\big) + \frac{1}{2}tr_B\big(\proj{11}\big)  \\
@@ -334,6 +377,9 @@ tr_B(\rho) &= \frac{1}{2} tr_B\big(\proj{00}\big) + \frac{1}{2}tr_B\big(\proj{11
 	&= \frac{1}{2} \proj{0}tr\big(\proj{0}\big) + \frac{1}{2}\proj{1}tr\big(\proj{1}\big) \\
 	&= \frac{1}{2} \big(\proj{0} + \proj{1}\big) = \frac{1}{2}I
 \end{align*}
+
+
+The state $\frac{1}{2}I$ is called the \textit{maximally mixed state}, as it gives us no information on the system. It can be seen as an ensemble of states $\kz$ and $\ko$ both with probability one half, but could also indicate an ensemble of $\kpl$ and $\km$ with the same probability, or even en ensemble of $\kz$, $\ko$, $\kpl$ and $\km$, and so on. 
 
 \note{superoperators definitions}
 
@@ -343,7 +389,7 @@ Let $\calH_A$ and $\calH_B$ be Hilbert spaces. Given $\mathcal{E}: \mathcal{D}(\
 	(\sop \otimes \mathcal{F})(\rho_A \otimes \rho_B) = \sop(\rho_A)\otimes \mathcal{F}(\rho_B)
 \]
 
-The superoperator $\mathcal{E} \otimes \mathcal{F}$ can be applied to arbitrary density operators $\rho$, expressed as sum of separable states, by linearity.
+The superoperator $\mathcal{E} \otimes \mathcal{F}$ can be applied to arbitrary density operators $\rho$, by linearity.
 
 
 Superoperators on $\calH$: all the maps $\sop: \calDH \rightarrow \calDH$ satifying:

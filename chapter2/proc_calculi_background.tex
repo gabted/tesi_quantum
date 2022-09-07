@@ -31,14 +31,14 @@ Let $\langle S , Act, \rightarrow \rangle$ be a LTS. Then a symmetric relation $
 \begin{center}
 if $s \xrightarrow{\alpha} s'$ then $t \xRightarrow{\alpha} t'$ for some $t'$ such that $s' \rel t'$
 \end{center}
-Two states $s, t \in S$ are said to be \textit{weakly bisimilar}, written $s \approx t$, if exists a weak bisimulation $\rel$ such that $s \rel t$. 
+Two states $s, t \in S$ are said to be \textit{weakly bisimilar}, written $s \approx t$, if a weak bisimulation $\rel$ exists such that $s \rel t$. 
 
 
 Let $\langle S , Act, \rightarrow \rangle$ be a LTS. Then a symmetric relation $\rel \subseteq S \times S$ is a \textit{branching bisimulation} if and only if, whenever $s \rel t$, then 
 \begin{center}
 if $s \xrightarrow{\alpha} s'$ then $t \xRightarrow t' \xrightarrow{\alpha} t''$ for some $t', t''$ such that $s \rel t'$ and $s' \rel t''$
 \end{center}
-Two states $s, t \in S$ are said to be \textit{branching bisimilar}, written $s \simeq t$, if exists a branching bisimulation $\rel$ such that $s \rel t$.
+Two states $s, t \in S$ are said to be \textit{branching bisimilar}, written $s \simeq t$, if a branching bisimulation $\rel$ exists such that $s \rel t$.
 
 \subsection{Probabilistic LTS} \label{pLTS}
 
@@ -51,7 +51,7 @@ The \textit{support} of $\Delta \in \distr(S)$ is defined as $\lceil\Delta\rceil
 	\end{cases}
 \]
 
-Given a set $\{p_i\}$ of probabilities (i.e. $\sum_i p_i = 1$ and $p_i > 0$ for each $i$), we define the convex combination of distributions:
+Given a set $\{p_i\}$ of probabilities (i.e. $\sum_i p_i = 1$ and $p_i > 0$ for each $i$), we define the \textit{convex combination} of distributions as the distribution obtained as
 \[
 \left(\sum_i p_i \Delta_i\right)(s) = \sum_i p_i \Delta_i(s)
 \]
@@ -74,7 +74,7 @@ two possible way to transform a pLTS in a LTS: \begin{itemize}
 \end{itemize}
 
 
-Given a relation $\rel \subseteq S \times S$, we define its \textit{lifting} $\mathring{\rel} \subseteq \distr(S) \times \distr(S)$ as the smaller linear relation such that $s \rel t$ implies $overline{s} \mathring{\rel} \overline{t}$.
+Given a relation $\rel \subseteq S \times S$, we define its \textit{lifting} $\mathring{\rel} \subseteq \distr(S) \times \distr(S)$ as the smaller linear relation such that $s \rel t$ implies $\overline{s} \mathring{\rel} \overline{t}$.
 
 %With abuse of notation, we denote with the same symbol also the lifting of relations $\rel \subseteq S \times \distr(S)$. Given a relation $\rel \subseteq S \times \distr(S)$, we define its \textit{lifting} $\mathring{\rel} \subseteq \distr(S) \times \distr(S)$ as the smaller linear relation such that $s \rel \Delta$ implies $\overline{s} \mathring{\rel} \Delta$.
 
@@ -87,7 +87,7 @@ Given $\rel \subseteq S \times S$, then $\Delta \lrel \Theta$ if ans only if: \b
 \item $\Theta = \sum_{i\in I}p_i\overline{t_i}$ 
 \end{enumerate}
 
-Given an equivalence $\rel \subseteq S \times S$, then $\Delta \lrel \Theta$ if ans only if, for all equivalence classes $C \in S/R$
+Given an equivalence $\rel \subseteq S \times S$, then $\Delta \lrel \Theta$ if and only if, for all equivalence classes $C \in S/R$
 \[\sum_{s\in C} \Delta(s) = \sum_{s\in C} \Theta(s)\]
 
 
@@ -105,12 +105,12 @@ A \textit{Reduction System} (RS) is a couple $\langle S,  \rightarrow \rangle$ w
 We call \textit{barb} a predicate on states, often used to capture a certain notion of "observable property".
 Given a barb $b$, we write $s\downarrow_b$ to say that $s$ statisfies the predicate $b$, i.e. expresses that property.
 
-Let $\langle S , Act, \rightarrow \rangle$ be a LTS, and $B$ a set of barbs. Then a symmetric relation $\rel \subseteq S \times S$ is a \textit{barbed bisimulation} if and only if, whenever $s \rel t$, then 
+Let $\langle S , \rightarrow \rangle$ be a RS, and $B$ a set of barbs. Then a symmetric relation $\rel \subseteq S \times S$ is a \textit{barbed bisimulation} if and only if, whenever $s \rel t$, then 
 \begin{itemize}
 \item If $s \downarrow_b$ for some barb $b \in B$, then $t \downarrow_b$ \\
-\item If $s \xrightarrow{\alpha} s'$ then $t \xrightarrow{\alpha} t'$ for some $t'$ such that $s' \rel t'$
+\item If $s \rightarrow s'$ then $t \rightarrow t'$ for some $t'$ such that $s' \rel t'$
 \end{itemize}
-Two states $s, t \in S$ are said to be \textit{barbed bisimilar}, written $s \sim_b t$, if exists a barbed bisimulation $\rel$ such that $s \rel t$.
+Two states $s, t \in S$ are said to be \textit{barbed bisimilar}, written $s \sim_b t$, if a barbed bisimulation $\rel$ exists such that $s \rel t$.
 
 Given a set of contexts, two states $s, t \in S$ are said to be \textit{barbed congruent} if for any context $C[]$, it holds that $C[s] \sim_b C[t]$. 
 

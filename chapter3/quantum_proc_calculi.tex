@@ -4,7 +4,7 @@ In classical process calculi, the operational semantics is given in terms of tra
 \[
 	\langle q_0, \ldots, q_n = \rho, P\rangle
 \] 
-in which $P$ is a process containing $q_0 \ldots q_n$ as free quantum variables, and $\rho \in \mathcal{D}(\Hto{n})$  describes the state of the qubits manipulated by $P$. The same approach is used in (almost) all the other calculi proposed so far, and has become somewhat standard.
+in which $P$ is a process containing $q_0 \ldots q_n$ as free quantum variables, and $\rho \in \mathcal{D}(\Hto{n})$  describes the state of the qubits manipulated by $P$. The same approach is used in (almost) all the other calculi proposed so far, and has become somewhat standard. We will often write $\widetilde{q}$ to denote the $n$-tuple $q_1 \ldots q_n$. 
 
 This idea captures the imperative, stateful nature of quantum computation, in which a sequence of transformations are applied to the quantum variables (the qubits), treated as a mutable data structure.
 In QPAlg, processes can be contructed with the usual actions of vaule passing calculi, $c?x$, $c!v$, but also with \textit{quantum action}, like $X, Z, H, M_{01}$, that correspond to applying unitaries or measurement to the underlying quantum state: \[ \langle q = \rho, H[q].P \rangle \xrightarrow{\tau} \langle q = H\rho H^\dagger, P \rangle\]
@@ -15,7 +15,7 @@ The usual rule for reception, in fact, would be
 \[ c?x.P \xrightarrow{c?v} P[v/x]  \qquad \text{ for any value } v
 \]
 In this way, if $Q$ contains two occurrences of $x$, each of them gets instantiated with a different, independent copy of the value $v$. But if the value $v$ was a quantum state $\rho$, this would require duplicating the quantum information, which is impossible due to the no-cloning theorem. The solution proposed in various quantum calculi is substituting just the name of the variable, duplicating only the "pointers" to the same value.
-\[ \langle q_1, \ldots q_n = \rho, c?x.P \rangle \xrightarrow{c?q} \confw{q_1, \ldots q_n = \rho, P[q/x]} \qquad \text{ for any } q \in q_0 \ldots q_n
+\[ \langle \widetilde{q} = \rho, c?x.P \rangle \xrightarrow{c?q} \confw{\widetilde{q} = \rho, P[q/x]} \qquad \text{ for any } q \in \widetilde{q}
 \]
 
 Notice that this idea requires the peculiar assumption that the \textit{value} recived from the external environment is already represented in the the configuration. In QPAlg and in other early works [qccs2006] there was a different rule, where the state vector is extended with a new value received from the environment. This approach was abandoned in more recent calculi, because extending the state vector when a qubit is received (or shrinking it when a qubit is sent) works poorly when exchanging entangled qubits. 
@@ -40,11 +40,11 @@ QPAlg follows the "probabilistic-transition" approach, so the distribution state
 The last relevant detail of the rules of QPAlg, shared also by the other calculi, is the treatment of parallel composition. Due to entangled state, the parallel operator is not entirely compositional. That is, the behaviour of $P\parallel Q$ cannot be described simply as the interleaving of $P$ and $Q$.
 
 Only if two processes $P$ and $Q$ act on separable qubits, in fact, it would possible to treat them independently
-\[ \infer{\langle p,q=\rho\otimes\sigma, P\parallel Q\rangle \xrightarrow{\alpha} \langle p,q=\rho'\otimes\sigma, P'\parallel Q\rangle}{\langle p=\rho, P\rangle \xrightarrow{\alpha} \langle p=\rho', P'\rangle}\]
+\[ \infer{\langle \widetilde{p},\widetilde{q}=\rho\otimes\sigma, P\parallel Q\rangle \xrightarrow{\alpha} \langle \widetilde{p},\widetilde{q}=\rho'\otimes\sigma, P'\parallel Q\rangle}{\langle \widetilde{p}=\rho, P\rangle \xrightarrow{\alpha} \langle \widetilde{p}=\rho', P'\rangle}\]
 
 
 But when $p, q$ are entangled, the quantum actions of $P$ cannot always be considered "local" to the process, as they effect also the value of $q$ (despite being labelled as internal transition). So in QPAlg a more general rule is used:
-\[\infer{\langle p,q=\nu, P\parallel Q\rangle \xrightarrow{\alpha} \langle p,q=\nu', P'\parallel Q\rangle}{\langle p, q=\nu, P\rangle \xrightarrow{\alpha} \langle p, q=\nu', P'\rangle}\]
+\[\infer{\langle \widetilde{p},\widetilde{q}=\nu, P\parallel Q\rangle \xrightarrow{\alpha} \langle \widetilde{p},\widetilde{q}=\nu', P'\parallel Q\rangle}{\langle \widetilde{p}, \widetilde{q}=\nu, P\rangle \xrightarrow{\alpha} \langle \widetilde{p}, \widetilde{q}=\nu', P'\rangle}\]
 where quantum actions of $P$ must be intended as transformations on the whole Hilbert space $\calH_p \otimes \calH_q$.
 
 
@@ -108,7 +108,7 @@ In [feng2006], the authors present qCCS, applying the ideas present in QPAlg and
 In the first work on qCCS where presented two different rules for quantum input, one adding a qubit to the configuration, the other assuming that the qubit is already present in the configuration. As already said, only the second rule was used in subsequent works.
 
 
-All the characteristic of QPAlg and CQP, in terms of configurations, parallel composition and communication are also present in CQP. The main difference between qCCS and the previous calculi is its "probabilistic state" approach to treat probabilities and nondeterminism.
+All the characteristic of QPAlg and CQP, in terms of configurations, parallel composition and communication are also present in CQP. The main difference between qCCS and the previous calculi is its "probabilistic state" approach to treat probabilities and nondeterminism. \note{bisogna parlare anche della ricorsione}.
 
 
 Like in QPAlg, a process can be constructed with \textit{quantum action}, that in qCC  are unitaries, superoperators and measurements. A measurement introduces a new classical variable to represent the outcome, and evolves in a distribution of configurations

@@ -1,5 +1,58 @@
 \subsection{QPAlg}
 
+In [QPAlg2006], the authors propose a probabilistic branching bisimulation, that deals with quantum communication equating the reduced density matrix of sent qubits. In other words, when a process $P$ performs an output transition $c!v$, for a classical value $v$, a bisimilar process $Q$ should perform an output transition on the same channel with the same value. When a process $P$ performs an output transition $c!x$, for a \textit{quantum name} $x$, $Q$ is not required to output the same \textit{name} $x$, it should instead send a qubit with the same \textit{state} of $x$. The chosen way to define the state of qubit $q$ in the configuration with (global) state $q, q_1 \ldots q_n = \rho$ is the reduced density matrix of $q$, i.e. $tr_{q_1 \ldots q_n}(\rho)$.
+
+\note{non so se metterla
+\begin{definition}{QPAlg bisimulation}
+A symmetric relation $\rel$ between configurations $\confw{\widetilde{q} = \rho, P}$, $\confw{\widetilde{q} = \sigma, Q}$ is a probabilistic branching bisimulaton if \begin{itemize}
+\item $\confw{\widetilde{q} = \rho, P} \xrightarrow{c!v} \Delta$ for a classical value $v$, then $\confw{\widetilde{q} = \sigma, Q} \Rightarrow \confw{\widetilde{q} = \sigma', Q'} \xrightarrow{c!v} \Theta$, with $\confw{\widetilde{q} = \rho, P} \rel \confw{\widetilde{q} = \sigma', Q'}$ and $\Delta \lrel \Theta$.  
+\item $\confw{\widetilde{q} = \rho, P} \xrightarrow{c!x} \Delta$ for a quantum name $x$, then $\confw{\widetilde{q} = \sigma, Q} \Rightarrow \confw{\widetilde{q} = \sigma', Q'} \xrightarrow{c!y} \Theta$, with  $tr_{\widetilde{q} - x}(\rho) = tr_{\widetilde{q} - y}(\sigma')$, $\confw{\widetilde{q} = \rho, P} \rel \confw{\widetilde{q} = \sigma', Q'}$ and $\Delta \lrel \Theta$.
+\item The same holds also for classical input and quantum input.
+\end{itemize}
+\end{definition}
+}
+
+The notion of bisimilarity between configuration is given as usual, and two processes $P$ and $Q$ are considered bisimilar, written $P \sim Q$, when $\confw{\widetilde{q} = \rho, P}$ is bisimilar to $\confw{\widetilde{q} = \rho, Q}$ for any $\rho$.
+
+This bisimilarity consider the state of a qubit $Q$ an observable only when it is sent to the external environment. This means that the processes 
+\[ P = M_{01}[q].\nil \qquad Q = M_\pm[q].\nil\]
+are indeed bisimilar, as the qubit $q$ ends up with a different quantum state, but the difference is never observed, because the qubit is never sent.
+
+This bisimilarity is not a congruence with respect to summation and parallel composition. The former is expected with weak or branching bisimulation, and is due to the usual problem 
+\begin{align*}
+c!v.\nil &\sim tau.c!v.\nil \\
+c!v.\nil + d!v &\not\sim tau.c!v.\nil + d!v
+\end{align*}
+
+The problem with parallel composition is instead purely quantum-related, as it is caused by the side effect of measurements and entanglement. for example, the two processes $P$ and $Q$ already seen before are bisimilar, but they are not closed for parallel composition:
+\begin{align*}
+ P &= M_{01}[q_1].\nil &\sim & & Q &= M_\pm[q_1].\nil \\ 
+ P \parallel c!q_2 &=  M_{01}[q_1].\nil \parallel c!q_2 &\not\sim & & Q \parallel c!q_2 &=  M_\pm[q_1].\nil \parallel c!q_2 
+\end{align*} 
+
+When $P\parallel c!q_2$ operates on an entangled state, like the Bell state $\beta = \oost\ket{00} + \oost\ket{11}$, the measurement that happens on $q_1$ has effect on $q_2$, and $q_2$ will decay in state $\kz$ or $\ko$. The same happens when $Q\parallel c!q_2$ operates on the same Bell state, and $q_2$ will decay in state $\kpl$ or $\km$. Since $q_2$ is sent, this difference becomes observable, and the two processes are not bisimilar.
+
 \subsection{qCCS}
 
-\subsection*{CQP}
+The bisimilarity relations proposed for qCCS differ from the one for QPAlg in a number of "classical" details, not related to the quantum properties. First of all, for qCCS are defined strong and weak bisimilarity, not branching bisimilarity. QPAlg addresses probabilistic behaviour with a Larsen-Skou bisimulation, qCCS with a comined-moves bisimulation. \note{(i.e. con la freccia convex closed. Il nome "convex closed bisimulation" non è corretto, perchè la bisimulazione p convex closed grazie al lifting, anche in larsen skou. quello che cambia è la freccia.)}
+
+Besides these "classical" differences in the treatment of silent transitions and probabilities, one key difference telling the two relations apart is the notion of "observable" quantum state. Where in QPAlg the state of a qubit could be observed only when it was sent, in qCCS ste state of a qubit can be observed as soon as the computation has "ended", i.e. there are no more transformation to be applied to that qubit.
+
+In  [Feng2006], two configuration $\confw{\widetilde{q} = \rho, P}$ and $\confw{\widetilde{q} = \sigma, Q}$ being bisimilar required that if $\confw{\widetilde{q} = \rho, P} \not\rightarrow$, then $\confw{\widetilde{q} = \sigma, Q} \not\rightarrow$ and $\rho$ is equal to $\sigma$, up to a permutation of the quantum names in $\widetilde{q}$. 
+
+An equivalent condition was property in [AlgebraOfQUantum], where the quantum actions $U[q]$, $M[q]$ and $\sop[q]$ were considered observable actions, and used as labels of the LTS. Since two bisimilar processes will perform the same observable action, when startig from the same quantum state $\rho$ they will necessarily end up in the same quantum state $\rho'$.
+
+The condition presented in [Feng2006] was too strict, and didn't work well with recursive processes, that are often non-terminating. So in [bisimulation for quantum] a more general condition was proposed, requiring the equality not of the whole quantum state, but only of the qubits that will not be further modified. That is, in a configuration $\confw{q_1, q_2 = \rho, H[q_2].\nil}$, the bit $q_1$ should be regarded as observable, as it does not appear as a free quantum variable in $H[q_2].\nil$. The bit $q_2$, instead, should not be considered when checking for bisimilarity, as it is not in its final state.
+
+More formally, $\confw{\widetilde{q} = \rho, P} $ being bisimilar to $\confw{\widetilde{q} = 	\sigma, Q}$ requires that 
+\[tr_{qv(P)}(\rho) = tr_{qv(Q)}(\sigma)\]
+where $qv(P)$ denotes the free quantum variables of the process $P$.
+%\[env(\confw{\widetilde{q} = \rho, P}) = env(\confw{\widetilde{q} = \sigma, P})\]
+%where $env(\confw{\widetilde{q} = \rho, P} )$ is defined as $tr_{qv(P)}(\rho)$, with $qv(P)$ denoting the free quantum variables of $P$.
+
+This means that the example seen before
+\[ P = M_{01}[q].\nil \qquad Q = M_\pm[q].\nil\]
+
+$P$ and $Q$ are not bisimilar, as they end in a distribution of different quantum states. $\confw{q = \proj{0}, P}$ will evolve in a (Dirac) distribution with quantum state $\kz$, $\confw{q = \proj{0}, Q}$ will evolve in a distribution with $\kpl$ or $\km$. Since the quantum state is observable, we can say that $\kz$ is different from $\kpl$ and $\km$.
+
+\subsection{CQP}
