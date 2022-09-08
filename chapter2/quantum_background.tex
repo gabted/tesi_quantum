@@ -335,7 +335,9 @@ $\ket{\Psi^-}$ are four different ortonormal entangled vectors, and form the so 
 
 The formalism presented so far describes quantum system in terms of unit vectors and linear transformations. There is an alternative, more general formulation, the \textit{density operator formalism}, in which states are represented as positive operators, and transformations as linear maps from operators to operators, i.e. superoperators.
 
-The main advantage of this formulation is that it represents also \textit{partial information} about a quantum system. When describing open systems, that are systems which interact with the external environment, it is often impossible to have complete knowledge on the state of our systems. Instead, one could know that the open system is either in state $\kp$, with a certain probability $p$, or in state $\kf$, with probability $1-p$. In other words, we know that the system is in a \textit{probabilistic mixture of states}, called an \textit{ensemble} of states, or also a \textit{mixed state}. A typical application of mixed states is in presence of noisy channels, where if a qubit with state $\kp$ is sent through the channel, it will arrive with the same state with a probability near to one, but not exactly one.
+The main advantage of this formulation is that it represents also \textit{partial information} about a quantum system. When describing open systems, that are systems which interact with the external environment, it is often impossible to have complete knowledge on the state of our systems. Instead, one could know that the open system is either in state $\kp$, with a certain probability $p$, or in state $\kf$, with probability $1-p$. In other words, we know that the system is in a \textit{probabilistic mixture of states}, called an \textit{ensemble} of states, or also a \textit{mixed state}.
+
+A typical application of mixed states is in presence of noisy channels. Suppose for example a channel that correctly transmits the sent qubit only with probability $0.9$, and with probability $0.1$ is causes a "bit-flip" error, exchanging $\kz$ with $\ko$ and $\ko$ with $\kz$ (that is, the channel applies a $X$ transformation to the qubit with probability $0.1$). If Alice sends a qubit with state $\kz$ to Bob, using this noisy channel, Bob recieves a an ensemble of states, a qubit with a $0.9$ probability of being in state $\kz$, and a $0.1$ probability of being in state $\ko$.
 
 
 In general, given an $n$-dimensional Hilbert space $\calH$, an \textit{ensemble} of quantum states is a set:
@@ -383,16 +385,31 @@ The state $\frac{1}{2}I$ is called the \textit{maximally mixed state}, as it giv
 
 \note{superoperators definitions}
 
+According to the density operator formalism, the state of a quantum system is represented as a density operator. This means that a transformation applied to a quantum system can be formalized as a transformation from and operators to operators, i.e. a \textit{superoperator}.
+
+For example, the noisy bitflip channel described before, that leaves the input qubit unaltered with $0.9$ probability, and applies $X$ to it with $0.1$ probability, can be described as the function $\sop: \calDH \rightarrow \calDH$ defines by
+\[\sop(\rho) = \frac{9}{10} 
+I\rho I
++
+\frac{1}{10}
+X \rho X^\dagger
+\]
+When applied to a qubit with state $\proj{0}$, the output will be 
+\[\sop(\proj{0}) = \frac{9}{10} I \proj{0} I + \frac{1}{10}X \proj{0} X^\dagger = \frac{9}{10} \proj{0} + \frac{1}{10}\proj{1} = 
+\begin{pmatrix} 0.9 & 0 \\ 0 & 0.1 \end{pmatrix} \]
+
+Not all the functions on density matrices are valid superoperators. Before introducing the correct definition, we need an additional notion, the tensor product of two functions.
+
+
 Let $\calH_A$ and $\calH_B$ be Hilbert spaces. Given $\mathcal{E}: \mathcal{D}(\calH_A) \rightarrow \mathcal{D}(\calH_A)$ and $\mathcal{F}: \mathcal{D}(\calH_B) \rightarrow \mathcal{D}(\calH_B)$,  their tensor product $\sop\otimes \mathcal{F}: \mathcal{D}(\calH_A \otimes \calH_B)\rightarrow \mathcal{D}(\calH_A \otimes \calH_B)$ is defined as:
 
 \[
 	(\sop \otimes \mathcal{F})(\rho_A \otimes \rho_B) = \sop(\rho_A)\otimes \mathcal{F}(\rho_B)
 \]
-
 The superoperator $\mathcal{E} \otimes \mathcal{F}$ can be applied to arbitrary density operators $\rho$, by linearity.
 
 
-Superoperators on $\calH$: all the maps $\sop: \calDH \rightarrow \calDH$ satifying:
+We now define the \textit{superoperators on $\calH$} as all the maps $\sop: \calDH \rightarrow \calDH$ satifying:
 \begin{itemize}
 \item $\sop$ is \textit{convex linear}: for any set of probabilities	$\{p_i\}_i$,
 \[\sop\left(\sum_i p_i \rho_i \right) = \sum_i p_i \sop(\rho_i)\]
@@ -400,7 +417,6 @@ Superoperators on $\calH$: all the maps $\sop: \calDH \rightarrow \calDH$ satify
 \item $\sop$ is \textit{trace non-increasing}: for any density operator $\rho \in \calDH$, 
 \[tr\big(\sop(\rho)\big) \leq tr(\rho) \leq 1\].
 \end{itemize}
-
 We call $\calSH$ the set of all superoperators on $\calH$.
 
  	

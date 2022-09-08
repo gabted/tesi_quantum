@@ -1,6 +1,6 @@
-\subsection{QPAlg}
+\subsection{QPAlg/CQP}
 
-In [QPAlg2006], the authors propose a probabilistic branching bisimulation, that deals with quantum communication equating the reduced density matrix of sent qubits. In other words, when a process $P$ performs an output transition $c!v$, for a classical value $v$, a bisimilar process $Q$ should perform an output transition on the same channel with the same value. When a process $P$ performs an output transition $c!x$, for a \textit{quantum name} $x$, $Q$ is not required to output the same \textit{name} $x$, it should instead send a qubit with the same \textit{state} of $x$. The chosen way to define the state of qubit $q$ in the configuration with (global) state $q, q_1 \ldots q_n = \rho$ is the reduced density matrix of $q$, i.e. $tr_{q_1 \ldots q_n}(\rho)$.
+In [QPAlg2006], the authors propose a notion of bisimilarity for QPAlg, that was adapted in [Davidson] for the labelled semantic of CQP. This bisimilarity is based on a probabilistic branching bisimulation, and deals with quantum communication equating the reduced density matrix of sent qubits. In other words, when a process $P$ performs an output transition $c!v$, for a classical value $v$, a bisimilar process $Q$ should perform an output transition on the same channel with the same value. When a process $P$ performs an output transition $c!x$, for a \textit{quantum name} $x$, $Q$ is not required to output the same \textit{name} $x$, it should instead send a qubit with the same \textit{state} of $x$. The chosen way to define the state of qubit $q$ in the configuration with (global) state $q, q_1 \ldots q_n = \rho$ is the reduced density matrix of $q$, i.e. $tr_{q_1 \ldots q_n}(\rho)$.
 
 \note{non so se metterla
 \begin{definition}{QPAlg bisimulation}
@@ -45,14 +45,27 @@ An equivalent condition was property in [AlgebraOfQUantum], where the quantum ac
 The condition presented in [Feng2006] was too strict, and didn't work well with recursive processes, that are often non-terminating. So in [bisimulation for quantum] a more general condition was proposed, requiring the equality not of the whole quantum state, but only of the qubits that will not be further modified. That is, in a configuration $\confw{q_1, q_2 = \rho, H[q_2].\nil}$, the bit $q_1$ should be regarded as observable, as it does not appear as a free quantum variable in $H[q_2].\nil$. The bit $q_2$, instead, should not be considered when checking for bisimilarity, as it is not in its final state.
 
 More formally, $\confw{\widetilde{q} = \rho, P} $ being bisimilar to $\confw{\widetilde{q} = 	\sigma, Q}$ requires that 
-\[tr_{qv(P)}(\rho) = tr_{qv(Q)}(\sigma)\]
-where $qv(P)$ denotes the free quantum variables of the process $P$.
-%\[env(\confw{\widetilde{q} = \rho, P}) = env(\confw{\widetilde{q} = \sigma, P})\]
-%where $env(\confw{\widetilde{q} = \rho, P} )$ is defined as $tr_{qv(P)}(\rho)$, with $qv(P)$ denoting the free quantum variables of $P$.
+\[env(\confw{\widetilde{q} = \rho, P}) = env(\confw{\widetilde{q} = \sigma, P})\]
+where $env(\confw{\widetilde{q} = \rho, P} )$ is the so called \textit{enviroment} of the configuration, and is defined as \[env(\confw{\widetilde{q} = \rho, P}) = tr_{qv(P)}(\rho)\] with $qv(P)$ denoting the free quantum variables of $P$.
 
-This means that the example seen before
+This means that in the example seen before
 \[ P = M_{01}[q].\nil \qquad Q = M_\pm[q].\nil\]
 
 $P$ and $Q$ are not bisimilar, as they end in a distribution of different quantum states. $\confw{q = \proj{0}, P}$ will evolve in a (Dirac) distribution with quantum state $\kz$, $\confw{q = \proj{0}, Q}$ will evolve in a distribution with $\kpl$ or $\km$. Since the quantum state is observable, we can say that $\kz$ is different from $\kpl$ and $\km$.
 
-\subsection{CQP}
+\subsection{Mixed Configuration CQP}
+
+In [Davidson], the author defines the mixed configuration semantic for CQP with the aim of finding a convincing notion of bisimilarity that is also a congruence. As already seen, in this semantics a configuration that performs a quantum  measurement evolves in a "mixed configuration", whereas in the usual semantics it evolves in a distribution. Both mixed configuration and distributions of configurations describe all the various outcomes with their relative probabilities. The difference is that a distribution exhibits immediately this probabilistic behaviour, choosing only  only one of the possible configuration with a probabilistic transition. A mixed configuration, instead, can perform all the usual labelled action, remaining in the state of a mixed configuration, without picking a single outcome and dropping the others.
+
+Mixed configurations represent a probabilisitic mixture of configuration as a signle object, without "looking inside" at the actual configurations and probabilities. In the same way, a mixed state represent a probabilistic mixture of quantum states, and it is impossible to discern which are the states the compose the mixture.
+
+Thanks to the construct of mixed configurations, the author can define a new notion of bisimilarity, that is also a congurence. Like in qCCS, two configurations $\confw{\widetilde{q} = \rho, P}$ and $\confw{\widetilde{q} = \sigma, Q}$ are bisimilar only if \[env(\confw{\widetilde{q} = \rho, P}) = env(\confw{\widetilde{q} = \sigma, Q})\]
+where $env(\confw{\widetilde{q} = \rho, P})$ denotes the reduced density matrix of the qubits not owned by $P$. Differently from qCCS, this condition must hold only when there is an output transition, not at any state.
+
+The main differences between the bisimilarity of qCCS and this proposal is the treatment of mixed configuration. If we see a mixed configuration as a distribution, the environment of a mixed configuration is 
+\[env(\confw{\widetilde{q} = \rho, P} \psum{p} \confw{\widetilde{q} = \sigma, Q}) = p*env(\confw{\widetilde{q} = \rho, P}) + (1-p)*env(\confw{\widetilde{q} = \sigma, Q})\]
+
+Notice that in qCCS there is no notion of environment of distributions, and it is instead required a stronger condition: two distributions $\confw{\widetilde{q} = \rho, P} \psum{p} \confw{\widetilde{q} = \sigma, Q}$ and $\confw{\widetilde{q} = \rho', P'} \psum{p} \confw{\widetilde{q} = \sigma', Q'}$ are bisimilar only if $env(\conf{})$
+
+
+\[ \confw{q_1, q_2 = \proj{\beta}, M_{01}[q_1].c!q} \not\sim \confw{q_1, q_2 = \proj{\beta}, H[q_1].M_\pm[q_1].c!q} \]
