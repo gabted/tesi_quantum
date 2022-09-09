@@ -1,10 +1,16 @@
 \subsection{Process Calculi}
 
-Features: \begin{itemize}
-\item Communication $c!v.P$
-\item Internal Action $\tau.P$
-\item Non-determinism $P + Q$
-\item Parallel Execution $P \parallel Q$
+
+Process Calculus, also known as Process Algebra, is an algebraic approach to model concurrent computation, often focus on the communication between different agents. Each agent is formalized as a \textit{process}, a syntactic element that describes its capabilties. Processes can be composed in different ways, and so form an \textit{algebra of processes}, with various operators for parallel composition, sequential compositions, probabilistic and non-deterministic sum, and so on.
+
+
+All the foundational and most successful process calculi, [ccs, acp, csp, pi-calc] have a number of key features in common \begin{itemize}
+\item \textbf{Nil Process} Each calculus has a \textit{constant process}, usually denoted as $nil$ or $\nil$, that is in a terminal state, can not perform any action.
+\item \textbf{Visible actions} Each calculus has \textit{action prefixes}, usually denotes as $\alpha, \beta, \ldots, \overline{\alpha}, \overline{\beta}, \ldots$. If $P$ is a process, $\alpha.P$ is a process that can perform an action $\alpha$, and then behaves as $P$. The two actions $\alpha$ and $\overline{\alpha}$ are called \textit{coactions}, and denotes two dual vies of the same comunication event. If $\alpha$ is the action of sending a qubit through a channel, $\overline{\alpha}$ is the dual action of recieving that qubit. 
+\item \textbf{Internal Actions} Each calculus defines also a $\tau$ action, called \textit{internal action} or silent action. Process calculi are designed to model the interaction between system, and abstract away from the low level details. A process $\tau.P$ can then performs a silent action, indicating internal operations, not known to an external observer, outside the scope of the system being modelled. 
+%For example, when describing a TCP handshake protocol, only the IP packets sent on the net are represented as visible actions, while the actual construction of the IP packet in an internal action.
+\item \textbf{Non-determinism} Each calculus has a \textit{non-detirministic sum} of processes, denoted as $P + Q$. Such a process can non deterministically "choose" to behave like $P$ or like $Q$. 
+\item \textbf{Parallel Execution} Each calculus has \textit{parallel composition} of processes, denoted as $P \parallel Q$. Such a process represent the concurrent execution of both $P$ and $Q$, and can perform all the actions of $P$ as well as all the action of $Q$, in a interleaving manner. Differently from the nondeterministic sum, after $P\parallel Q$ performs an action of $P$, it can still perfoms the actions of $Q$.
 \end{itemize}
 
 \subsection{Labelled Transition System}
