@@ -383,7 +383,6 @@ tr_B(\rho) &= \frac{1}{2} tr_B\big(\proj{00}\big) + \frac{1}{2}tr_B\big(\proj{11
 
 The state $\frac{1}{2}I$ is called the \textit{maximally mixed state}, as it gives us no information on the system. It can be seen as an ensemble of states $\kz$ and $\ko$ both with probability one half, but could also indicate an ensemble of $\kpl$ and $\km$ with the same probability, or even en ensemble of $\kz$, $\ko$, $\kpl$ and $\km$, and so on. 
 
-\note{superoperators definitions}
 
 According to the density operator formalism, the state of a quantum system is represented as a density operator. This means that a transformation applied to a quantum system can be formalized as a transformation from and operators to operators, i.e. a \textit{superoperator}.
 
@@ -406,7 +405,7 @@ Let $\calH_A$ and $\calH_B$ be Hilbert spaces. Given $\mathcal{E}: \mathcal{D}(\
 \[
 	(\sop \otimes \mathcal{F})(\rho_A \otimes \rho_B) = \sop(\rho_A)\otimes \mathcal{F}(\rho_B)
 \]
-The superoperator $\mathcal{E} \otimes \mathcal{F}$ can be applied to arbitrary density operators $\rho$, by linearity.
+together with linearity.
 
 
 We now define the \textit{superoperators on $\calH$} as all the maps $\sop: \calDH \rightarrow \calDH$ satifying:
@@ -415,21 +414,22 @@ We now define the \textit{superoperators on $\calH$} as all the maps $\sop: \cal
 \[\sop\left(\sum_i p_i \rho_i \right) = \sum_i p_i \sop(\rho_i)\]
 \item $\sop$ is \textit{completely positive}: for any extra Hilbert space $\calH_R$, for any positive $\rho \in \calH_R \otimes \calH$, $(\mathcal{I}_R\otimes \sop)(\rho)$ is also positive, where $\mathcal{I}_R$ is the identity operator on $\mathcal{D}(\calH_R)$.
 \item $\sop$ is \textit{trace non-increasing}: for any density operator $\rho \in \calDH$, 
-\[tr\big(\sop(\rho)\big) \leq tr(\rho) \leq 1\].
+\[tr\big(\sop(\rho)\big) \leq tr(\rho) \leq 1\]
 \end{itemize}
 We call $\calSH$ the set of all superoperators on $\calH$.
 
- 	
-\textit{Löwner order}: we define the partial order $\sqsubseteq$ on $\calDH$ as :
-\[ \rho \sqsubseteq \sigma \text{ if and only if } \sigma-\rho \text{ is positive}\]
 
-\textit{Kraus operator sum}: For any superoperator $\sop \in \calSH$, there exists a (non-unique) finite set of operators $\{E_i\}$, with $1 \leq i \leq dim(\calH)$ such that
+This axiomatic definition of the superoperators on $\calH$ specifies they overall properties, but does not give any suggestion on how a superoperator can be constructed. There exists an alternative, equivalent definition, that says that a superoperator is any function $\sop: \calDH \rightarrow \calDH$ that has a \textit{Kraus operator sum decomposition}.
+
+A function $\sop: \calDH \rightarrow \calDH$ is a superoperator on $\calH$ if and only if it has a Kraus decomposition, i.e. a finite set of operators $\{E_i\}_i$, with $1 \leq i \leq dim(\calH)$ such that
 \begin{gather*}
 \sop(\rho) = \sum_i E_i\rho E_i^\dagger \\
 \sum_i E_i^\dagger E_i \sqsubseteq I_\calH
 \end{gather*}
 
-Although there are possibly multiple Kraus form for any superoperator $\sop \in \calSH$, they are related by a unitary transformation.
+Where $A \sqsubseteq B$ means that $B - A$ is a positive semidefinite matrix, and $T_{calH}$ is the identity linear operator on $\calH$.
+
+Although there are possibly multiple Kraus decompositions for any superoperator $\sop \in \calSH$, they are related by a unitary transformation.
 Formally, for any two set of decompositions $\{C_i\}_i$ and $\{B_j\}_j$, there is a unitary matrix $U = \{u_{ij}\}_{ij}$ such that $C_i = \sum_j u_{ij} B_j$.
 
 Given $\mathcal{E}: \mathcal{D}(\calH_A) \rightarrow \mathcal{D}(\calH_A)$ and $\mathcal{F}: \mathcal{D}(\calH_B) \rightarrow \mathcal{D}(\calH_B)$,
@@ -440,8 +440,31 @@ can be expressed in Kraus form as
   (\mathcal{E} \otimes \mathcal{F})(\rho) = \sum_i \sum_j (E_i \otimes F_j)\,\rho\:(E_i \otimes F_j)^\dag
 \]
 
-Superoperators can describe both unitary transformations and measurements. Given unitary operator $U$ on $\calH$, we can define  the (trace preserving) superoperator $\sop_U \in \calSH$ as:
+
+Using density matrices and superoperators, it is possible to restate all the quantum postulate seen in the previous sections. A physical system is represented by a density matrix $\rho \in \calDH$ with trace $1$. A composite physical  system is described by a density matrix $\rho \in \mathcal{D}(\calH_1 \otimes \calH_2)$. The second and the third postulate can be merged together: the evolution of an open quantum system can always be described by a superoperator. That is, the state $\rho$ of the system at time $t_0$ is related to the state $\rho'$ of the system at time $t_2$ by a superoperator $\sop$ which depends only on the times $t_0$ and $t_1$.
+\[
+	\rho' = \sop(\rho)
+\]
+
+
+
+ Superoperator can in fact describe both unitary transformations and measurements, as well as more general transformations. Given unitary operator $U$ on $\calH$, we can define  the (trace preserving) superoperator $\sop_U \in \calSH$ as:
 \[ \sop_U(\rho) = U \rho U^\dagger\]
 Given a measurement $\{M_m\}_m$, we can define the (trace non-increasing) superoperator $\sop_m \in \calSH$ as 
 \[\sop_m(\rho) = M_m\rho M_m^\dagger\]
 Notice that $\sop_m(\rho)$ is equal to $p_m\rho_m$, where $p_m$ is the probability of the outcome $m$ when measuring the state $\rho$, and $\rho_m$ is the state after outcome $m$ has occurred. 
+
+
+An other class of useful superoperators are noisy channels or noisy gates, i.e. transformation that perform the desired operation only with a high probability. We already seen the noisy bitflip channel: 
+\[\sop(\rho) = (p) 
+I\rho I
++
+(1-p)
+X \rho X^\dagger
+\]
+with Kraus decomposition $\{\sqrt{p}I, \sqrt{1-p}X\}$.
+
+
+Finally, there are also "constant" superoperators, that completely destroy the information of a quantum system, and return always the same state. For example, we will often use a $ Set$ operator like
+\[Set_0(\rho) = \proj{0}\rho\proj{0} + \ketbra{0}{1}\rho\ketbra{1}{0}\]
+that always returns $\proj{0}$ for any possible input.
