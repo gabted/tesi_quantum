@@ -1,4 +1,4 @@
-\subsection{QPAlg/CQP}
+\subsection{QPAlg/CQP}\label{lalire_bisimulation}
 
 In [QPAlg2006], the authors propose a notion of bisimilarity for QPAlg, that was adapted in [Davidson] for the labelled semantic of CQP. This bisimilarity is based on a probabilistic branching bisimulation, and deals with quantum communication equating the reduced density matrix of sent qubits. In other words, when a process $P$ performs an output transition $c!v$, for a classical value $v$, a bisimilar process $Q$ should perform an output transition on the same channel with the same value. When a process $P$ performs an output transition $c!x$, for a \textit{quantum name} $x$, $Q$ is not required to output the same \textit{name} $x$, it should instead send a qubit with the same \textit{state} of $x$. The chosen way to define the state of qubit $q$ in the configuration with (global) state $q, q_1 \ldots q_n = \rho$ is the reduced density matrix of $q$, i.e. $tr_{q_1 \ldots q_n}(\rho)$.
 
@@ -15,28 +15,28 @@ A symmetric relation $\rel$ between configurations $\confw{\widetilde{q} = \rho,
 The notion of bisimilarity between configuration is given as usual, and two processes $P$ and $Q$ are considered bisimilar, written $P \sim Q$, when $\confw{\widetilde{q} = \rho, P}$ is bisimilar to $\confw{\widetilde{q} = \rho, Q}$ for any $\rho$.
 
 This bisimilarity consider the state of a qubit $Q$ an observable only when it is sent to the external environment. This means that the processes 
-\[ P = M_{01}[q].\nil \qquad Q = M_\pm[q].\nil\]
+\[ P = X[q].\nil \qquad Q = Z[q].\nil\]
 are indeed bisimilar, as the qubit $q$ ends up with a different quantum state, but the difference is never observed, because the qubit is never sent.
 
 This bisimilarity is not a congruence with respect to summation and parallel composition. The former is expected with weak or branching bisimulation, and is due to the usual problem 
 \begin{align*}
-c!v.\nil &\sim tau.c!v.\nil \\
-c!v.\nil + d!v &\not\sim tau.c!v.\nil + d!v
+c!v.\nil &\sim \tau.c!v.\nil \\
+c!v.\nil + d!v &\not\sim \tau.c!v.\nil + d!v
 \end{align*}
 
-The problem with parallel composition is instead purely quantum-related, as it is caused by the side effect of measurements and entanglement. for example, the two processes $P$ and $Q$ already seen before are bisimilar, but they are not closed for parallel composition:
+The problem with parallel composition is instead purely quantum-related, as it is caused by the side effect of measurements and entanglement. For example, the two processes $P$ and $Q$ are bisimilar, but $P\parallel c!q_2$ is not bisimilar to $Q \parallel c!q2$:
 \begin{align*}
  P &= M_{01}[q_1].\nil &\sim & & Q &= M_\pm[q_1].\nil \\ 
  P \parallel c!q_2 &=  M_{01}[q_1].\nil \parallel c!q_2 &\not\sim & & Q \parallel c!q_2 &=  M_\pm[q_1].\nil \parallel c!q_2 
 \end{align*} 
 
-When $P\parallel c!q_2$ operates on an entangled state, like the Bell state $\beta = \oost\ket{00} + \oost\ket{11}$, the measurement that happens on $q_1$ has effect on $q_2$, and $q_2$ will decay in state $\kz$ or $\ko$. The same happens when $Q\parallel c!q_2$ operates on the same Bell state, and $q_2$ will decay in state $\kpl$ or $\km$. Since $q_2$ is sent, this difference becomes observable, and the two processes are not bisimilar.
+$P$ and $Q$ are clearly bisimilar, as they do not perform any visible action. But when $P\parallel c!q_2$ operates on an entangled state, like the Bell state $\beta = \oost\ket{00} + \oost\ket{11}$, the measurement that happens on $q_1$ has effect on $q_2$, and $q_2$ will decay in state $\kz$ or $\ko$. The same happens when $Q\parallel c!q_2$ operates on the same Bell state, and $q_2$ will decay in state $\kpl$ or $\km$. Since $q_2$ is sent, this difference becomes observable, and the two processes are not bisimilar.
 
 \subsection{qCCS}
 
-The bisimilarity relations proposed for qCCS differ from the one for QPAlg in a number of "classical" details, not related to the quantum properties. First of all, for qCCS are defined strong and weak bisimilarity, not branching bisimilarity. QPAlg addresses probabilistic behaviour with a Larsen-Skou bisimulation, qCCS with a comined-moves bisimulation. \note{(i.e. con la freccia convex closed. Il nome "convex closed bisimulation" non è corretto, perchè la bisimulazione p convex closed grazie al lifting, anche in larsen skou. quello che cambia è la freccia.)}
+The bisimilarity relations proposed for qCCS differ from the one for QPAlg in a number of "classical" details, not related to the quantum properties. First of all, for qCCS are defined strong and weak bisimilarity, not branching bisimilarity. QPAlg addresses probabilistic behaviour with a Larsen-Skou bisimulation, qCCS with a combined-moves bisimulation.
 
-Besides these "classical" differences in the treatment of silent transitions and probabilities, one key difference telling the two relations apart is the notion of "observable" quantum state. Where in QPAlg the state of a qubit could be observed only when it was sent, in qCCS ste state of a qubit can be observed as soon as the computation has "ended", i.e. there are no more transformation to be applied to that qubit.
+Besides these "classical" differences in the treatment of silent transitions and probabilities, one key difference telling the two relations apart is the notion of "observable" quantum state. Where in QPAlg the state of a qubit could be observed only when it was sent, in qCCS the state of a qubit can be observed as soon as the computation has "ended", i.e. there are no more transformation to be applied to that qubit.
 
 In  [Feng2006], two configuration $\confw{\widetilde{q} = \rho, P}$ and $\confw{\widetilde{q} = \sigma, Q}$ being bisimilar required that if $\confw{\widetilde{q} = \rho, P} \not\rightarrow$, then $\confw{\widetilde{q} = \sigma, Q} \not\rightarrow$ and $\rho$ is equal to $\sigma$, up to a permutation of the quantum names in $\widetilde{q}$. 
 
@@ -44,28 +44,53 @@ An equivalent condition was property in [AlgebraOfQUantum], where the quantum ac
 
 The condition presented in [Feng2006] was too strict, and didn't work well with recursive processes, that are often non-terminating. So in [bisimulation for quantum] a more general condition was proposed, requiring the equality not of the whole quantum state, but only of the qubits that will not be further modified. That is, in a configuration $\confw{q_1, q_2 = \rho, H[q_2].\nil}$, the bit $q_1$ should be regarded as observable, as it does not appear as a free quantum variable in $H[q_2].\nil$. The bit $q_2$, instead, should not be considered when checking for bisimilarity, as it is not in its final state.
 
-More formally, $\confw{\widetilde{q} = \rho, P} $ being bisimilar to $\confw{\widetilde{q} = 	\sigma, Q}$ requires that 
-\[env(\confw{\widetilde{q} = \rho, P}) = env(\confw{\widetilde{q} = \sigma, P})\]
-where $env(\confw{\widetilde{q} = \rho, P} )$ is the so called \textit{enviroment} of the configuration, and is defined as \[env(\confw{\widetilde{q} = \rho, P}) = tr_{qv(P)}(\rho)\] with $qv(P)$ denoting the free quantum variables of $P$.
+More formally, [bisimulation for quantum] defines the notion of \textit{environment} of a configuration, namely the reduced density operator of the values of the qubits not used by the process.
+\[env(\confw{\widetilde{q} = \rho, P}) = tr_{qv(P)}(\rho)\]
 
-This means that in the example seen before
-\[ P = M_{01}[q].\nil \qquad Q = M_\pm[q].\nil\]
 
-$P$ and $Q$ are not bisimilar, as they end in a distribution of different quantum states. $\confw{q = \proj{0}, P}$ will evolve in a (Dirac) distribution with quantum state $\kz$, $\confw{q = \proj{0}, Q}$ will evolve in a distribution with $\kpl$ or $\km$. Since the quantum state is observable, we can say that $\kz$ is different from $\kpl$ and $\km$.
+The bisimilarity of $\confw{\widetilde{q} = \rho, P} $ and $\confw{\widetilde{q} = 	\sigma, Q}$ then requires that 
+$env(\confw{\widetilde{q} = \rho, P}) = env(\confw{\widetilde{q} = \sigma, P})$.
+\note{dire che è una congruenza}
+
+
+
+In genral, for qCCS, in the example seen before
+\[ P = X[q].\nil \qquad Q = Z[q].\nil\]
+
+$P$ and $Q$ are not bisimilar, as they end in different quantum states. $\confw{q = \proj{0}, P}$ will evolve in a configuration with quantum state $\ko$, while $\confw{q = \proj{0}, Q}$ will evolve in a configuration with state $\kz$. Since the quantum state is observable, we can say that $\ko$ is different from $\kz$, and the two processes are not bisimilar.
+
+
+
+\note{aggiungere open}
+
+
+In [symbolic] the authors propose a symbolic semantic for qCCS, that abstracts away from the actual quantum state in the initial configuration. Instead of probabilistic distribution, the concept of \textit{superoperator-valued distribution} is used, i.e. functions that associate to each process a trace non-increasing superoperator. A configuration  representing both the probability that the process is reached, and the transformation that were applied to the quantum state to reach that process.
 
 \subsection{Mixed Configuration CQP}
 
-In [Davidson], the author defines the mixed configuration semantic for CQP with the aim of finding a convincing notion of bisimilarity that is also a congruence. As already seen, in this semantics a configuration that performs a quantum  measurement evolves in a "mixed configuration", whereas in the usual semantics it evolves in a distribution. Both mixed configuration and distributions of configurations describe all the various outcomes with their relative probabilities. The difference is that a distribution exhibits immediately this probabilistic behaviour, choosing only  only one of the possible configuration with a probabilistic transition. A mixed configuration, instead, can perform all the usual labelled action, remaining in the state of a mixed configuration, without picking a single outcome and dropping the others.
 
-Mixed configurations represent a probabilisitic mixture of configuration as a signle object, without "looking inside" at the actual configurations and probabilities. In the same way, a mixed state represent a probabilistic mixture of quantum states, and it is impossible to discern which are the states the compose the mixture.
+In [Davidson], the author provides a labelled semantic and a bisimilarity notion of CQP, but that bisimilarity is not a congruence with respect to parallel composition, as seen in section \ref{lalire_bisimulation}. In [Davidson], the author defines the mixed configuration semantic for CQP, and on that system describes a bisimilarity that is also a congruence. This bisimilarity, similar to the one in QPAlg, is a probabilistic branching bisimilarity, that observes the quantum values only when they are sent. Differently from the previous proposal, it also requires the equality of the "environment" of a configuration, like in qCCS.
 
-Thanks to the construct of mixed configurations, the author can define a new notion of bisimilarity, that is also a congurence. Like in qCCS, two configurations $\confw{\widetilde{q} = \rho, P}$ and $\confw{\widetilde{q} = \sigma, Q}$ are bisimilar only if \[env(\confw{\widetilde{q} = \rho, P}) = env(\confw{\widetilde{q} = \sigma, Q})\]
-where $env(\confw{\widetilde{q} = \rho, P})$ denotes the reduced density matrix of the qubits not owned by $P$. Differently from qCCS, this condition must hold only when there is an output transition, not at any state.
 
-The main differences between the bisimilarity of qCCS and this proposal is the treatment of mixed configuration. If we see a mixed configuration as a distribution, the environment of a mixed configuration is 
+Recall that in this semantics a configuration that performs a quantum  measurement evolves in a "mixed configuration", i.e. a sort of probabilistic distribution of configurations, in which the probabilities are not immediately observable.  
+
+
+Both mixed configuration and distributions of configurations describe all the various outcomes with their relative probabilities. The difference is that a distribution exhibits immediately this probabilistic behaviour, choosing only  only one of the possible configuration with a probabilistic transition. A mixed configuration, instead, can perform all the usual labelled action, remaining in the state of a mixed configuration, without picking a single outcome and dropping the others.
+
+
+Reguarding bisimilairity, the consequence is that the configuration $\conf$, bisimilar to the configuration $\conf'$, must exhibit the same the probabilistic moves of $\conf'$ only when the outcome is sent, and not immediately after the measurement.
+
+Also the environment of $\conf$ must be equal to the environment of $\conf'$ only when $\conf$ and $\conf'$ perform an output transition. Note that, since mixed configurations must be treated as a single state, the notion of environment must be extended accordingly. If $\confw{\widetilde{q} = \rho, P} \psum{p} \confw{\widetilde{q} = \sigma, Q}$ is a mixed configuration, the environment is defined as:
 \[env(\confw{\widetilde{q} = \rho, P} \psum{p} \confw{\widetilde{q} = \sigma, Q}) = p*env(\confw{\widetilde{q} = \rho, P}) + (1-p)*env(\confw{\widetilde{q} = \sigma, Q})\]
 
-Notice that in qCCS there is no notion of environment of distributions, and it is instead required a stronger condition: two distributions $\confw{\widetilde{q} = \rho, P} \psum{p} \confw{\widetilde{q} = \sigma, Q}$ and $\confw{\widetilde{q} = \rho', P'} \psum{p} \confw{\widetilde{q} = \sigma', Q'}$ are bisimilar only if $env(\conf{})$
+and the environment of a configuration is defined as the reduced density operator of the qubits not used owned by the process.
 
+This bisimulation is coarser than the one in qCCS, and arguably captures more appropriately the expected behevioural equivalence of quantum processes. For this bisimulation, for example, it holds that 
+\begin{align*}
+ P &= M_{01}[q_1].\nil &\sim & & Q &= M_\pm[q_1].\nil \\ 
+ P \parallel c!q_2 &=  M_{01}[q_1].\nil \parallel c!q_2 &\sim & & Q \parallel c!q_2 &=  M_\pm[q_1].\nil \parallel c!q_2 
+\end{align*} 
 
-\[ \confw{q_1, q_2 = \proj{\beta}, M_{01}[q_1].c!q} \not\sim \confw{q_1, q_2 = \proj{\beta}, H[q_1].M_\pm[q_1].c!q} \]
+In fact, since the qubit $q_1$ is lost, an external observer can rely only on $q_2$ to distinguish $P$ and $Q$, which is not possible because of quantum properties of mixed states. 
+
+As a drawback, this result is obtained through a considerably not-standard approach, diverging from the usual rules of probabilistic calculi. Recovering this result in the usual framework of pLTS remains an interesting open problem.
