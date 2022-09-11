@@ -50,10 +50,6 @@ where quantum actions of $P$ must be intended as transformations on the whole Hi
 
 
 \subsection{CQP}
-\note{Ha senso mettere prima il contributo principale, e poi i dettagli minori (e il confronto con qpalg), o viceversa?}
-
-
-\note{contributo principale}
 In [CQP2005], the authors presented their calculus Communicating Quantum Process. The main contribution of their work is the introduction of affine type system, used to restrict the set of possible processes of the algebra to the "admissible" ones. Under the assumption that Alice, Bob and Charlie are in three different physical location, in fact, the process \[Alice = b!q.c!q.P\] should not be well typed, because Bob could read from the $b$ channel, Charlie from the $c$ channel, and there will be duplication of quantum information. 
 
 
@@ -74,7 +70,7 @@ An important remark is that the typing rules are intended to model processes in 
 \[ H[q].P \parallel Y[q].Q\]
 are reasonable, and their behaviour would be described as usual as race condition between the to processes acting on the same shared data.
 
-\note{dettagli minori}
+
 All the characteristic of QPAlg, in terms of configurations, probabilistic branching and parallel composition are also present in CQP. Differently from QPAlg, CQP  describes \textit{closed quantum systems}, without an unknown environment. That is, there are no transitions $\xrightarrow{c?x}$ or $\xrightarrow{c!v}$, all the communication happens as synchronization between processes. According to this, CQP semantics is described as a reduction system, where the transitions corresponds either to internal actions or infra-process communication.  
 
 
