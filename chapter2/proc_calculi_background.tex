@@ -181,27 +181,69 @@ The second, most recent approach, is known as the \textit{distribution transform
 \]
 So, for a distribution to evolve, it is necessary that all the precesses in its support can perform the same action $\alpha$. A distribution like $\alpha.P \psum{\frac{1}{2}} \beta.Q$, for example, has no outgoing transition.
 
-Notice that the addition of this rule is equivalent to lifting the transition relation $\rightarrow \subseteq S \times Act \times \distr(S)$ to a relation $\mathring{\rightarrow} \subseteq \distr(S) \times Act \times \distr(S)$. Since each state $s \in S$ can be also seen as a distribution $\overline{s} \in \distr(S)$, this lifting relation de facto defines a "complete" LTS of distributions $\langle \distr(S), Act, \mathring{\rightarrow}\rangle$. Observe that $\rigtharrow_{cc} \subset \mathring{\rightarrow}$, and in fat this distribution transformation semantic is more often than not associated to a Segala bisimilarity.
+Notice that the addition of this rule is equivalent to lifting the transition relation $\rightarrow \subseteq S \times Act \times \distr(S)$ to a relation $\mathring{\rightarrow} \subseteq \distr(S) \times Act \times \distr(S)$. Since each state $s \in S$ can be also seen as a distribution $\overline{s} \in \distr(S)$, this lifting relation de facto defines a "complete" LTS of distributions $\langle \distr(S), Act, \mathring{\rightarrow}\rangle$. Observe that $\rightarrow_{cc} \subset \mathring{\rightarrow}$, and in fat this distribution transformation semantic is more often than not associated to a Segala bisimilarity.
 
 
 
 \subsection{Reduction systems}
 
-A \textit{Reduction System} (RS) is a couple $\langle S,  \rightarrow \rangle$ where \begin{itemize}
+In the early works on process calculus, bisimilarity in its various form was adopted as the mainstream notion of behavioural equivalence. Starting from [cite barbed bisim], a different notion of equivalence was considered, conceptually simpler and more general, under the name
+of \textbf{barbed congruence}, or barbed congruence. According to this notion, two processes are equivalent if they can not be distinguished by an external observer. That is, two processes $P$ and $Q$ are equivalent if, under any context $B[]$, $B[P]$ and $B[Q]$ express the same observable behaviour, based on a general concept of "observable", called \textit{barb}.
+
+We will first introduce the \textit{reduction semantic} for process calculi, and then show how it can be used to define barbed equivalence. 
+
+A reduction semantic for a process calculus [milner function as a process, chemical abstract machine], is an alternative way to define the dynamics of a process, using a \textit{Reduction system} instead of a Labelled Transition System. 
+
+A \textit{Reduction System} (RS), or unlabelled transition system, is a couple $\langle S,  \rightarrow \rangle$ where \begin{itemize}
 \item $S$ is a set of states
 \item $\rightarrow 	\subseteq S\times S$ is the transition relation.
+\end{itemize} 
 
-We call \textit{barb} a predicate on states, often used to capture a certain notion of "observable property".
-Given a barb $b$, we write $s\downarrow_b$ to say that $s$ statisfies the predicate $b$, i.e. expresses that property.
+In a reduction system, like lambda calculus and all other term-rewriting, a reduction is possible only when the two subtemrs that interacts are syntactically contiguous, i.e. they form a redex. 
 
+It is possible to define a reduction system for a process calculus like value-passing CCS, for example identifying the redexes:
+\[ \tau.P \rightarrow P \qquad c!v.P \parallel c?x.Q \rightarrow P \parallel Q[v/x]\]
+together with the usual rules
+\[ \infer{P \parallel Q \rightarrow P'\parallel Q}{P \rightarrow P'}
+\qquad
+\infer{P + Q \rightarrow P'}{P \rightarrow P'}\]
+
+In process calculi, thanks to the labelled semantic, subprocesses are allowed to interact also when they are syntactically "distant", like $c!v.\nil \parallel d?x.\nil \parallel c?x.P$. So in order to define a reduction system as the one above, it is necessary to introduce a way to ignore the syntactic arrangement and "reorder" the subprocess as needed.  This is achieved considering the reduction system modulo a \textit{structural congruence relation}. In the case of value-passing CCS, this relaction could be the smallest equivalence relation that is closed for $\alpha$-conversion and satisfies  
+\begin{gather*}
+P\parallel\nil \equiv P \qquad P\parallel Q \equiv Q \parallel P \qquad P\parallel(Q\parallel R) \equiv (P \parallel Q) \parallel R \\
+P + \nil \equiv P \qquad P + Q \equiv Q + P \qquad P + (Q + R) \equiv (P + Q) + R
+\end{gather*}
+
+Notice that the reduction system presented above, together with the structural congruence relation, determines exactly the $\xrightarrow{\tau}$ transition of the LTS semantics presented in the previous section. Reduction systems are in fact often used to describe the dynamics of calculi with tho interaction with an "outside environment", so no input and output transitions, only inter-process communication.
+
+
+Obiously, a bisimularity relation defined on a reduction system is a very coarse relation, that simply consider the number of computational steps a process can make. To recover the notion of strong LTS-bisimilarity in the reduction semantics setting, it is necessary to recover some of the "observational power" of labelled bisimulations, through the concept of \textit{barbs}.
+
+We call \textit{barb} a predicate on states, often used to capture a certain notion of "observable property". Given a barb $b$, we write $s\downarrow_b$ to say that $s$ statisfies the predicate $b$, i.e. expresses that property. For value-passing CCS, a suitable observable property is "$P$ is capable to send any value con channel $c$". That is, we define the barb $c$ as the predicate 
+\[\{P \mid \exists v, P' \ P \xrightarrow{c!v} P'\}\]
+%or equivalently, 
+%\[P \downarrow_c \text{ if and only if } P \xrightarrow{c!v} P'\]
+It is important to remark that in this case we defined, for simplicity, a barb as a property based on a preexisting labelled semantic. In all the most recent calculus the semantic of a process can be formulated directly as a reduction system, and the barbs are usually syntactic in nature.
+
+Given a set of barbs, i.e. a set of observable properties, is possible to define a \textit{barbed bisimulation}.
 Let $\langle S , \rightarrow \rangle$ be a RS, and $B$ a set of barbs. Then a symmetric relation $\rel \subseteq S \times S$ is a \textit{barbed bisimulation} if and only if, whenever $s \rel t$, then 
 \begin{itemize}
-\item If $s \downarrow_b$ for some barb $b \in B$, then $t \downarrow_b$ \\
+\item If $s \downarrow_b$ for some barb $b \in B$, then $t \downarrow_b$
 \item If $s \rightarrow s'$ then $t \rightarrow t'$ for some $t'$ such that $s' \rel t'$
 \end{itemize}
 Two states $s, t \in S$ are said to be \textit{barbed bisimilar}, written $s \sim_b t$, if a barbed bisimulation $\rel$ exists such that $s \rel t$.
 
-Given a set of contexts, two states $s, t \in S$ are said to be \textit{barbed congruent} if for any context $C[]$, it holds that $C[s] \sim_b C[t]$. 
+Barbed bisimilarity is often not useful per se, as for example $c!0.b!0.\nil \sim_b c!0.b!0.\nil$, since they both express the barb $\downarrow_c$, and have no outgoing transition. Barbed bisimulation is commonly used as the discriminating property of a contextual equivalence, called \textit{barbed equivalence}.
 
-\note{Sarebbe meglio definire i contesti su processi, non su stati, probabilmente ridefinirò tutte le bisimulazioni come relazioni su processi non su stati.}
-\end{itemize} 
+A context is a "process with a hole", for example $B[] = [] \parallel R$ or $B[] = [] + R$, where $R$ is any process. Given a context $B[]$, we define as $B[P]$ as the process obtained "filling" the hole with $P$, i.e. substituting $P$ in place of $[]$.
+
+Given a set of contexts, two processes $P$ and $Q$ are said to be \textit{barbed equivalent}, or barbed congruent, written $P \simeq_b Q$, if for any context $C[]$, it holds that $C[P] \sim_b C[Q]$. With the previously defined barb $\downarrow_c$, and choosing just parallel context of the form $[] \parallel R$, it is possible to prove that
+\[P \simeq_b Q \text{ if and only if } P \sim Q\]
+that is, barbed equivalence is exactly the same as labelled bisimilarity.
+
+To sum up, a reduction semantic allows to define a barbed equivalence relation, that: \begin{itemize}
+\item Has the same power of labelled bisimilarity, but is defined in terms of a simpler transition system, inspired by term rewriting system.
+\item Is "parametric" with respect to different barbs and different contexts, allowing for different observational power for the same calculus.
+\item Is based on the very general concept of contextual equivalence, and it is used as the prototype of "natural, standard behavioural equivalence" for a lot of new calculi.
+\item Is more difficult to prove, as it involves a universal quantification on all possible context, whereas proving bisimilarity requires as usual only to provide a bisimulation.
+\end{itemize}

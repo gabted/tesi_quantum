@@ -2,15 +2,15 @@
 
 In [QPAlg2006], the authors propose a notion of bisimilarity for QPAlg, that was adapted in [Davidson] for the labelled semantic of CQP. This bisimilarity is based on a probabilistic branching bisimulation, and deals with quantum communication equating the reduced density matrix of sent qubits. In other words, when a process $P$ performs an output transition $c!v$, for a classical value $v$, a bisimilar process $Q$ should perform an output transition on the same channel with the same value. When a process $P$ performs an output transition $c!x$, for a \textit{quantum name} $x$, $Q$ is not required to output the same \textit{name} $x$, it should instead send a qubit with the same \textit{state} of $x$. The chosen way to define the state of qubit $q$ in the configuration with (global) state $q, q_1 \ldots q_n = \rho$ is the reduced density matrix of $q$, i.e. $tr_{q_1 \ldots q_n}(\rho)$.
 
-\note{non so se metterla
-\begin{definition}{QPAlg bisimulation}
-A symmetric relation $\rel$ between configurations $\confw{\widetilde{q} = \rho, P}$, $\confw{\widetilde{q} = \sigma, Q}$ is a probabilistic branching bisimulaton if \begin{itemize}
-\item $\confw{\widetilde{q} = \rho, P} \xrightarrow{c!v} \Delta$ for a classical value $v$, then $\confw{\widetilde{q} = \sigma, Q} \Rightarrow \confw{\widetilde{q} = \sigma', Q'} \xrightarrow{c!v} \Theta$, with $\confw{\widetilde{q} = \rho, P} \rel \confw{\widetilde{q} = \sigma', Q'}$ and $\Delta \lrel \Theta$.  
-\item $\confw{\widetilde{q} = \rho, P} \xrightarrow{c!x} \Delta$ for a quantum name $x$, then $\confw{\widetilde{q} = \sigma, Q} \Rightarrow \confw{\widetilde{q} = \sigma', Q'} \xrightarrow{c!y} \Theta$, with  $tr_{\widetilde{q} - x}(\rho) = tr_{\widetilde{q} - y}(\sigma')$, $\confw{\widetilde{q} = \rho, P} \rel \confw{\widetilde{q} = \sigma', Q'}$ and $\Delta \lrel \Theta$.
-\item The same holds also for classical input and quantum input.
-\end{itemize}
-\end{definition}
-}
+%\note{non so se metterla
+%\begin{definition}{QPAlg bisimulation}
+%A symmetric relation $\rel$ between configurations $\confw{\widetilde{q} = \rho, P}$, $\confw{\widetilde{q} = \sigma, Q}$ is a probabilistic branching bisimulaton if \begin{itemize}
+%\item $\confw{\widetilde{q} = \rho, P} \xrightarrow{c!v} \Delta$ for a classical value $v$, then $\confw{\widetilde{q} = \sigma, Q} \Rightarrow \confw{\widetilde{q} = \sigma', Q'} \xrightarrow{c!v} \Theta$, with $\confw{\widetilde{q} = \rho, P} \rel \confw{\widetilde{q} = \sigma', Q'}$ and $\Delta \lrel \Theta$.  
+%\item $\confw{\widetilde{q} = \rho, P} \xrightarrow{c!x} \Delta$ for a quantum name $x$, then $\confw{\widetilde{q} = \sigma, Q} \Rightarrow \confw{\widetilde{q} = \sigma', Q'} \xrightarrow{c!y} \Theta$, with  $tr_{\widetilde{q} - x}(\rho) = tr_{\widetilde{q} - y}(\sigma')$, $\confw{\widetilde{q} = \rho, P} \rel \confw{\widetilde{q} = \sigma', Q'}$ and $\Delta \lrel \Theta$.
+%\item The same holds also for classical input and quantum input.
+%\end{itemize}
+%\end{definition}
+%}
 
 The notion of bisimilarity between configuration is given as usual, and two processes $P$ and $Q$ are considered bisimilar, written $P \sim Q$, when $\confw{\widetilde{q} = \rho, P}$ is bisimilar to $\confw{\widetilde{q} = \rho, Q}$ for any $\rho$.
 
