@@ -1,9 +1,10 @@
 \subsection{Process Calculi and LTS}
 
 
-Process Calculus, also known as Process Algebra, is an algebraic approach to model concurrent computation, often focus on the communication between different agents. Each agent is formalized as a \textit{process}, a syntactic element that describes its capabilties. Processes can be composed in different ways, and so form an \textit{algebra of processes}, with various operators for parallel composition, sequential compositions, probabilistic and non-deterministic sum, and so on.
+Process Calculus, also known as Process Algebra, is an algebraic approach to model concurrent computation, often focus on the communication between different agents. Each agent is formalized as a \textit{process}, a syntactic element that describes its capabilities. Processes can be composed in different ways, and so form an \textit{algebra of processes}, with various operators for parallel composition, sequential compositions, probabilistic and non-deterministic sum, and so on.
 
-All the foundational and most successful process calculi, [ccs, acp, csp, pi-calc] have a number of key features in common \begin{itemize}
+All the foundational and most successful process calculi \cite{milnerCalculusCommunicatingSystems1980, bergstraAlgebraCommunicatingProcesses1985, 
+hoareCommunicatingSequentialProcesses1978, milnerCommunicatingMobileSystems1999},  have a number of key features in common \begin{itemize}
 \item \textbf{Nil Process}: Each calculus has a \textit{constant process}, usually denoted as $nil$ or $\nil$, that is in a terminal state, can not perform any action.
 \item \textbf{Visible Actions}: Each calculus has \textit{action prefixes}, usually denotes as $\alpha, \beta, \ldots, \overline{\alpha}, \overline{\beta}, \ldots$. If $P$ is a process, $\alpha.P$ is a process that can perform an action $\alpha$, and then behaves as $P$. The two actions $\alpha$ and $\overline{\alpha}$ are called \textit{coactions}, and denotes two dual vies of the same comunication event. If $\alpha$ is the action of sending a qubit through a channel, $\overline{\alpha}$ is the dual action of receiving that qubit. 
 \item \textbf{Internal Actions} Each calculus defines also a $\tau$ action, called \textit{internal action} or silent action. Process calculi are designed to model the interaction between system, and abstract away from the low level details. A process $\tau.P$ can then performs a silent action, indicating internal operations, not known to an external observer, outside the scope of the system being modelled. 
@@ -14,7 +15,7 @@ All the foundational and most successful process calculi, [ccs, acp, csp, pi-cal
 
 \end{itemize}
 
-To give a running example of a calculus with these features, we will define syntax and semantics of \textit{value-passing CCS}[cite].
+To give a running example of a calculus with these features, we will define syntax and semantics of \textit{value-passing CCS} \cite{hennessyTheoryCommunicatingProcesses1993}.
 
 \begin{align*}
   P \Coloneqq \nil \mid c!v. P \mid c?x.P \mid \tau.P \mid P + P \mid P \parallel P
@@ -79,7 +80,7 @@ The two processes \[P = \alpha.\nil + \tau.\beta.\nil \qquad Q = \alpha.\nil + \
 
 \subsection{Probabilistic LTS} \label{pLTS}
 
-The usual concepts of process calculus has been successfully extended to model probabilistic systems. We will present in this section the most common definitions of probabilistic LTS and probabilistic bisimulation, following the comprehensive analysis of [exploringProbabilisticBis, LogicalMetric].
+The usual concepts of process calculus has been successfully extended to model probabilistic systems. We will present in this section the most common definitions of probabilistic LTS and probabilistic bisimulation, following the comprehensive analysis of \cite{hennessyExploringProbabilisticBisimulations2012, dengLogicalMetricAlgorithmic2011}.
 
 \subsubsection{Probabilistic Lifting}
 First of all, we give some preliminary mathematical definitions about probabilistic distributions, and about the very general concept of \textit{lifting} a relation between object to a relation between distribution of objects.
@@ -171,7 +172,7 @@ The first, arguably more standard approach is \textit{probabilistic branching}, 
 \[ \sum_i p_i \overline{s_i} \quad
 \substack{  p_i  \\  \rightsquigarrow } 
 \quad s_i \]
-Where a distribution of processes "picks" just one process, evolving with a \textit{probabilistic transition}. This approach, used also in probabilistic model checking [prism], gives a probability to the single transition, and so allows to define a probabilistic measure for a whole path of computation.
+Where a distribution of processes "picks" just one process, evolving with a \textit{probabilistic transition}. This approach, used also in probabilistic model checking \cite{kwiatkowskaPRISMVerificationProbabilistic2011}, gives a probability to the single transition, and so allows to define a probabilistic measure for a whole path of computation.
 
 With such a rule, a pLTS $\langle S, Act, \rightarrow\rangle$ can be "completed" to a bipartite LTS, where the states are either processer or distribution of processes, the $\rightarrow$ transition goes from states to distribution, with a label in $Act_\tau$, and the $\rightsquigarrow$ transition goes from distributions to states, with $0 \leq p \leq 1$ as a label. 
 
@@ -187,12 +188,12 @@ Notice that the addition of this rule is equivalent to lifting the transition re
 
 \subsection{Reduction systems}
 
-In the early works on process calculus, bisimilarity in its various form was adopted as the mainstream notion of behavioural equivalence. Starting from [cite barbed bisim], a different notion of equivalence was considered, conceptually simpler and more general, under the name
+In the early works on process calculus, bisimilarity in its various form was adopted as the mainstream notion of behavioural equivalence. Starting from \cite{milnerBarbedBisimulation1992}, a different notion of equivalence was considered, conceptually simpler and more general, under the name
 of \textbf{barbed congruence}, or barbed congruence. According to this notion, two processes are equivalent if they can not be distinguished by an external observer. That is, two processes $P$ and $Q$ are equivalent if, under any context $B[]$, $B[P]$ and $B[Q]$ express the same observable behaviour, based on a general concept of "observable", called \textit{barb}.
 
 We will first introduce the \textit{reduction semantic} for process calculi, and then show how it can be used to define barbed equivalence. 
 
-A reduction semantic for a process calculus [milner function as a process, chemical abstract machine], is an alternative way to define the dynamics of a process, using a \textit{Reduction system} instead of a Labelled Transition System. 
+A reduction semantic for a process calculus \cite{milnerFunctionsProcesses1990, berryChemicalAbstractMachine1989}, is an alternative way to define the dynamics of a process, using a \textit{Reduction system} instead of a Labelled Transition System. 
 
 A \textit{Reduction System} (RS), or unlabelled transition system, is a couple $\langle S,  \rightarrow \rangle$ where \begin{itemize}
 \item $S$ is a set of states
