@@ -55,6 +55,7 @@ sorting=nyt
 
 %process algebras
 \newcommand{\ITE}[3]{\textbf{If }{#1}\textbf{ Then } {#2} \textbf{ Else } {#3}}
+\newcommand{\bigzero}{\mbox{\normalfont\bfseries 0}}
 \newcommand{\qsum}[1]{\tensor[_{#1}]{\boxplus}{}}
 \newcommand{\psum}[1]{\tensor[_{#1}]{\oplus}{}}
 \newcommand{\nil}{\mathbf{0}}
@@ -67,8 +68,11 @@ sorting=nyt
 \newcommand{\blank}{{-}}
 \newcommand{\qlift}[1]{\stackrel{\scriptscriptstyle \boxplus}{#1}}
 \newcommand{\slift}[1]{\stackrel{\scriptscriptstyle \circ}{#1}}
+\newcommand{\sqlift}[1]{\hat{#1}}
 \newcommand{\barb}[3]{#3\downarrow_{#1, #2}}
 \newcommand{\proc}[1]{\text{\textbf{#1}}}
+\newcommand{\ite}[3]{\textbf{if } #1 \textbf{ then } #2 \textbf{ else } #3}
+
 
 \newcommand{\distr}{\mathcal{D}}
 
@@ -169,28 +173,31 @@ sorting=nyt
 
 \chapter{Linear qCCS}
 
-\section{Definitions}
-\input{chapter4/definitions.tex}
+\section{The Language}
+\input{chapter4/syntax_types}
 
 \section{Semantics}
 \input{chapter4/semantics}
 \input{chapter4/typesystem_theorems}
 
-\section{Contextual Equivalence}
+\section{Exploring Behavioural Equivalence}
+\input{chapter4/exploring_equivalence}
+
+\section{Bisimulation}
 \input{chapter4/bisimulation}
 
-\section{Examples}
-\input{chapter4/examples.tex}
+\section{Comparison}
+\input{chapter4/comparison.tex}
 
 
 
-%\chapter{chapter 5}
-%In cerca di una process algebra minimale
-%senza configurazioni	
-%con distribuzioni
-%
-%\section{Quantum Transition System}
-%\input{chapter5/qts.tex}
+\chapter{chapter 5}
+In cerca di una process algebra minimale
+senza configurazioni	
+con distribuzioni
+
+\section{Quantum Transition System}
+\input{chapter5/qts.tex}
 
 \chapter{Conclusions}
 \printbibliography[

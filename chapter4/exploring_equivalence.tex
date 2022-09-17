@@ -1,0 +1,58 @@
+\subsection{The problem of mixed states}
+
+We show that the usual way of defining behavioural equivalence through $\sim_{LC}$ and $\sim_{LC-cm}$ does not work in the quantum case.
+This because probabilistic mixtures of quantum states are represented in two alternative ways, i.e., using density operators and using distributions of configurations.
+Two different representations of the same mixture should be equivalent, but this is not always the case in the literature.
+
+\begin{example}
+	Consider the following configurations and distributions.
+	\begin{align*}
+		\conf &= \confw{\ketbra{0}{0}, Set_{\ketbra{+}{+}}(q).M_{0,1}(q \triangleright x).(c!0 \parallel discard(q))}\\
+		\conf' &= \confw{\ketbra{0}{0}, Set_{\frac{1}{2} I}(q).\tau.(c!0 \parallel discard(q))}\\
+		\Delta &= \overline{\confw{\ketbra{0}{0}, c!0 \parallel discard(q)}} \psum{1/2} \overline{\confw{\ketbra{1}{1}, c!0 \parallel discard(q)}}\\
+		\Delta' &= \overline{\confw{1/2 I, c!0 \parallel discard(q)}}
+	\end{align*}
+	It is trivial that $\conf \sim_{LC} \conf'$ iff $\Delta	\slift{\sim}_{LC} \Delta'$.
+	It seems obvious that the former should hold.
+	Indeed the behaviour of $\confw{\rho, c!0 \parallel discard(q)}$ does not depend on $\rho$.
+	Unfortunately, this is not the case for $\slift{\sim}_{LC}$ (and similarly, neither for $\slift{\sim}_{LC-cm}$).
+\end{example}
+Indeed, $\conf$ and $\conf'$ of the previous example are not bisimilar according to~\cite{Feng:2012, Deng:2012}.
+
+A related problem is that a density operator may represent different probabilistic ensambles, that are indistinguishable according to quantum theory.
+\begin{example}
+	Consider the following distributions.
+	\begin{align*}
+		\Delta &= \overline{\confw{\ketbra{0}{0}, c!q}} \psum{1/2} \overline{\confw{\ketbra{1}{1}, c!q}}\\
+		\Delta' &= \overline{\confw{\ketbra{+}{+}, c!q}} \psum{1/2} \overline{\confw{\ketbra{-}{-}, c!q}}
+	\end{align*}
+	The two distributions only send a qbit on the channel $c$, and the qbit may be in state $\ket{0}$ or $\ket{1}$ for $\Delta$ ($\ket{+}$ or $\ket{-}$ for $\Delta'$) with equal probability.
+	It seems reasonable that $\Delta$ and $\Delta'$ cannot be distinguished by an external observer receiving the qbit.
+	This because the received qbit is in the probabilistic mixture $\{(\ket{0}, 1/2), (\ket{1}, 1/2)\}$ for $\Delta$ and $\{(\ket{+}, 1/2), (\ket{-}, 1/2)\}$ respectively for $\Delta'$, but the two mixtures are both represented by the same density operator $1/2 I = 1/2 \ketbra{0}{0} + 1/2 \ketbra{1}{1} = 1/2 \ketbra{+}{+} + 1/2 \ketbra{-}{-}$.
+	Unfortunately, this is not the case for $\slift{\sim}_{LC}$ (and similarly, neither for $\slift{\sim}_{LC-cm}$).
+\end{example}
+Once more, \cite{Feng:2012, Deng:2012} distinguish the two distributions, hence, e.g., the two processes $Set_{\frac{1}{2} I}(q).M_{0,1}[q \triangleright x].c!q$ and $Set_{\frac{1}{2} I}(q).M_{+,-}[q \triangleright x].c!q$ are not considered bisimilar.
+
+\subsection{The problem of non-determinism}
+
+We present here a strange behaviour that common process algebras express when mixing quantum states and non-deterministic choice.
+Assume a distribution obtained by tracing out one qubit of a bell pair $\ket{\Phi^+} = 1/\sqrt{2}(\ket{00} + \ket{11})$.
+This can be obtained, e.g., with the following configuration $\confw{\ket{\Phi^+}, discard(q_0) \parallel \dots}$.
+The qbit is in a probabilistic ensamble of pure states, represented with the density opertator $1/2 I$, which stands for both $\{(\ket{0}, 1/2), (\ket{1}, 1/2)\}$ and $\{(\ket{+}, 1/2), (\ket{-}, 1/2)\}$.
+The two ensambles are indeed indistinguishable from the quantum point of view.
+However, the two express a different behaviour according to a trivial semantics that just applies probabilistic reasoning to quantum processes, as shown in the following.
+\begin{example}
+	Let the processes $P$ and $Q$ and distributions $\Delta$, $\Theta$ be
+	\begin{align*}
+		P\ =\ &M_{0,1}[q \triangleright x] . \ite{x=0}{z!0}{u!0}\\
+		Q\ =\ &M_{+,-}[q \triangleright x] . \ite{x=0}{p!0}{m!0}\\
+		\Delta\ =\ &\confw{\ketbra{0}{0}, P + Q} \psum{1/2} \confw{\ketbra{1}{1}, P + Q}\\
+		\Theta\ =\ &\confw{\ketbra{+}{+}, P + Q} \psum{1/2} \confw{\ketbra{-}{-}, P + Q}
+	\end{align*}
+	There is a way of performing the non deterministic choice such that $\Delta \rightarrow \confw{\ketbra{0}{0}, z!0}$ with probability $1/2$, $\Delta \rightarrow \confw{\ketbra{+}{+}, p!0}$ and $\Delta \rightarrow \confw{\ketbra{-}{-}, m!0}$ both with probability $1/4$.
+	The apparent contradiction is that $\Theta$ cannot replicate this behaviour.
+\end{example}
+
+Apparently, the previous example seems to contradict the common understanding of indistinguishability of quantum states.
+To recover it, either this behaviour must be expressed by both $\Delta$ and $\Theta$, or by none of them, resulting in two different notions of non deterministic choice.
+Actually, something strange happens in the example, namely, the non deterministic choice is performed in the two probabilistic branches.
