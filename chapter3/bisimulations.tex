@@ -34,7 +34,7 @@ $P$ and $Q$ are clearly bisimilar, as they do not perform any visible action. Bu
 
 \subsection{qCCS}
 
-The bisimilarity relations proposed for qCCS differ from the one for QPAlg in a number of "classical" details, not related to the quantum properties. First of all, for qCCS are defined strong and weak bisimilarity, not branching bisimilarity. QPAlg addresses probabilistic behaviour with a Larsen-Skou bisimulation, qCCS with a combined-moves bisimulation.
+The bisimilarity relations proposed for qCCS differ from the one for QPAlg in a number of "classical" details, not related to the quantum properties. First of all, for qCCS are defined strong and weak bisimilarity, not branching bisimilarity. QPAlg addresses probabilistic behaviour with a Larsen-Skou bisimulation, qCCS with a combined-moves bisimulation. \note{qCCS richiede l'uguaglianza dei quantum names, QPAlg solo dei valori sottostanti.}
 
 Besides these "classical" differences in the treatment of silent transitions and probabilities, one key difference telling the two relations apart is the notion of "observable" quantum state. Where in QPAlg the state of a qubit could be observed only when it was sent, in qCCS the state of a qubit can be observed as soon as the computation has "ended", i.e. there are no more transformation to be applied to that qubit.
 
