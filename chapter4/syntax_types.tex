@@ -66,14 +66,14 @@ Channel types: $\set{\hat{\mathcal{Q}}, \hat{\mathbb{N}}, \hat{\mathbb{B}}}$
 {\Gamma; \Sigma \vdash \mathcal{E}(\widetilde{x}) . P}
 {\mathcal{E}: Op(n) & |\widetilde{x}| = n & \forall i, j \ldotp x_i \neq x_j & \Sigma \vdash \widetilde{x} & \Gamma; \Sigma \vdash P} \\[0.2cm]
 \infer[\mbox{\footnotesize\scshape QMeas}]{\Gamma; \Sigma \vdash M(\widetilde{x} \rhd y) . P}
-{\forall i, j \ldotp x_i \neq x_j & \text{$y$ fresh} & \Sigma \vdash \widetilde{x} & \Gamma, y : \mathbb{N}; \Sigma \vdash P} \\[0.2cm]
+{\forall i, j \ldotp x_i \neq x_j & \note{\text{$y$ fresh}} & \Sigma \vdash \widetilde{x} & \Gamma, y : \mathbb{N}; \Sigma \vdash P} \\[0.2cm]
 \infer[\mbox{\footnotesize\scshape CRecv}]
 {\Gamma, c : \hat{T}; \Sigma \vdash c?x . P}
-{\text{$x$ fresh} & T \neq \mathcal{Q} & \Gamma, x : T; \Sigma \vdash P} 
+{\note{\text{$x$ fresh}} & T \neq \mathcal{Q} & \Gamma, x : T; \Sigma \vdash P} 
 \qquad
 \infer[\mbox{\footnotesize\scshape QRecv}]
 {\Gamma, c : \hat{\mathcal{Q}}; \Sigma \vdash c?x . P}
-{\text{$x$ fresh} & \Gamma, x : \mathcal{Q}; \Sigma, x \vdash P} 
+{\note{\text{$x$ fresh}} & \Gamma, x : \mathcal{Q}; \Sigma, x \vdash P} 
 \\[0.2cm]
 \infer[\mbox{\footnotesize\scshape CSend}]{\Gamma, c : \hat{T}; \emptyset \vdash c!e}{T \neq \mathcal{Q} & \Gamma \vdash e : T} \qquad
 \infer[\mbox{\footnotesize\scshape QSend}]{c : \hat{\mathcal{Q}}, e:\mathcal{Q} ; \set{e} \vdash c!e}{} \\[0.2cm]
@@ -85,10 +85,11 @@ Channel types: $\set{\hat{\mathcal{Q}}, \hat{\mathbb{N}}, \hat{\mathbb{B}}}$
 \infer[\mbox{\footnotesize\scshape Restrict}]{\Gamma - c; \Sigma \vdash P \setminus c}{\Gamma; \Sigma \vdash P} \\[0.3cm]
 \end{gather*}
 
-Where $$\Gamma - c = \begin{cases}
+Where $\Sigma, x$ denotes the disjoint union of $\Sigma$ and $\{x\}$, and
+\[\Gamma - c = \begin{cases}
 \Gamma \setminus \{c : \hat{T}\} \text{ if } c: \hat{T} \in \Gamma \text{ for some } \hat{T} \\
 \Gamma \text{ otherwise}
-\end{cases}$$
+\end{cases}\]
 
 We say that the channel name $c$ is \textit{bound} in $P\setminus c$, and it is \textit{free} when it isn't bound by any restriction operator. We denote with $fc(P)$ the set of free channels of $P$.
 
