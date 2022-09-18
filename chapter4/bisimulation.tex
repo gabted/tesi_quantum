@@ -95,6 +95,18 @@ Intuitively, we give rules for exchanging the probabilistic combination $\psum{p
 	Let \emph{saturated probabilistic barbed bisimilarity} $\approx_{SPB}$ be the largest saturated probabilistic barbed bisimulation.
 \end{definition}
 
+\note{
+Comunque, anche usando la freccia $\rightarrow_q$, mi sa che comunque serve una nozione di lifting quantum della relazione. Infatti, supponiamo una semplice bisimulazione LS con freccia quantum: $\conf \rel 	\conf'$ implica \begin{itemize}
+\item $\conf\downarrow_c$ implica $\conf'\downarrow_c$
+\item $B[\conf] \rightarrow_q \Delta$ implica $B[\conf'] \rightarrow_q \Delta'$ e $\Delta \lrel \Delta'$ (solo lifting prob.)
+\end{itemize}
+ le configurazioni $ \conf = \confw{\proj{\beta}, M_{01}[q \rhd x].disc(q)  } $ e 
+ $\conf' = \confw{\proj{\beta}, M_\pm[q \rhd x].disc(q)}$ non sono bisimili. 
+ Infatti, è vero che $\conf \rightarrow_q \confw{\proj{00} \psum{\frac{1}{2}} \proj{11}, disc(q)}$, e allora $\conf'$ ha la transizione $\conf' \rightarrow_q \confw{\proj{++} \psum{\frac{1}{2}} \proj{--}, disc(q)}$ e possiamo dimostrare che sono uguali, in qualche modo. Ma $\conf$ ha anche la transizione $\conf \rightarrow_q \confw{\proj{00}, disc(q)} \psum{\frac{1}{2}} \confw{\proj{00}, disc(q)}$, che va in una distribuzione, e a questo punto la relazione liftata $\lrel$ vuole uan distribuzione di configurazioni  bisimili punto a punto.
+
+Quindi abbiamo comunque bisogno di una relazione liftata $\sqlift{\rel}$, cioè una relazione fra classi di distribuzioni, che però rende le bisimulazioni non chiuse per composizione.
+}
+
 By writing $\sop \in TSO(\hilbert_{\Sigma})$, we mean that $\sop(\rho) = \sum_{i \in I} (I_{\overline{\Sigma}} \otimes A_i) \rho (I_{\overline{\Sigma}} \otimes A_i)^{\dagger}$.
 
 %{\color{red} Per la misura come non-trace preserving, che noi usiamo nella regola di misura della semantica, abbiamo la stessa proprieta', in particolare, rispetto alla versione trace-preserving avremmo semplicemente che la sommatoria sara' composta da meno elementi.}
