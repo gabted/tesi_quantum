@@ -116,7 +116,7 @@ sorting=nyt
 \section{LTS and quantum states}
 \input{chapter3/quantum_proc_calculi}
 
-\section{Bisimulation}
+\section{Bisimulation}\label{stateOfTheAr_Bisimulation}
 \input{chapter3/bisimulations}
 
 
@@ -176,13 +176,11 @@ sorting=nyt
 We present a new quantum process calculus, designed to resolve the ambiguities and differences present in the other proposal. This allows to investigate more deeply the different notions of behavioural equivalence of quantum systems. 
 This novel calculus goes under the name of Linear qCCS, as it is an asynchronous version of qCCS, but employs a linear type system, similar to the affine type system for CQP.
 
+We will present the syntax, type system and semantics for Linear qCCS (from now on, lqCCS). We will explore different peculiarities of behavioural equivalence of quantum systems, reformulating the examples seen in the previous chapter in the common language of lqCCS. This will lead us to a general, context-based notion of behavioural equivalence, namely barbed saturated bisimulation \note{(per adesso)}.
+
+\note{da estendere}
+
 \section{The Language}
-
-Linear qCCS (from now on, lqCCS) allows only for \textit{asynchronous communication} \cite{boudolAsynchronyPicalculus1992}, meaning that after an output action there cannot be other action. In a asyncrhonous calculus a process like $c!v_1.c!v_2.P$ is not a valid process, and is often written as $P \parallel c!v_1\parallel c!v_2$. This means that the output actions are "non-blocking", the process $P$ can perform other steps of the computation without having to wait the "reception" of the sent value. An other consequence is that $P$ has no control on the order in which $v_1$ and $v_2$ are received. \note{the advantages of asynchronous calculus are ...}
-
-\note{ha tutte le feature quantum: superoperatori e misure, e tutte le feature classiche, somme e paralleli. Ha anche un costrutto condizionale al posto della guarda di qCCS. NOn ha processi ricorsivi.}
-
-
 \input{chapter4/syntax_types}
 
 \section{Semantics}
@@ -200,7 +198,7 @@ Linear qCCS (from now on, lqCCS) allows only for \textit{asynchronous communicat
 
 
 
-\chapter{chapter 5}
+\chapter{Minimal Process Calculus}
 In cerca di una process algebra minimale
 senza configurazioni	
 con distribuzioni
