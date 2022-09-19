@@ -1,3 +1,13 @@
+\begin{definition}
+  Assume a fixed set  $QVar = {q_1, q_2, \ldots q_n}$ of quantum variables, where each variable $q_i$ refers to a unique qubit with state space $\calH_i$. We denote as $\calH_{QVar}$ the $2^n$-dimensional Hilbert space $\bigoplus_{i=1}^n \calH_i$.
+
+Let $P$ be a process and $\rho \in \mathcal{D}(\calH_{QVar})$ an arbitrary partial density operator. $\Gamma; \Sigma \vdash \langle \rho, P \rangle$ iff $\Gamma; \Sigma \vdash P$ and $\Sigma \subseteq QVar$.
+
+  Let $I$ be an arbitrary index set. $\Gamma; \Sigma \vdash \boxplus_{i \in I} \langle \rho_i, P_i \rangle$ iff for each $i \in I$ such that $\rho_i \neq \mathbf{0}$,
+  then $\Gamma; \Sigma \vdash \langle \rho_i, P_i \rangle$.
+\end{definition}
+
+
 \subsection{Reduction System}
 
 We consider as a \textit{value} any expressions $n \in \mathbb{N},\  b \in \mathbb{B},\  q \in  \text{QNames}$, and use $v$ as a metavariable for them.
