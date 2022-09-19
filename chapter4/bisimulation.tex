@@ -95,18 +95,6 @@ Intuitively, we give rules for exchanging the probabilistic combination $\psum{p
 	Let \emph{saturated probabilistic barbed bisimilarity} $\approx_{SPB}$ be the largest saturated probabilistic barbed bisimulation.
 \end{definition}
 
-\note{
-Comunque, anche usando la freccia $\rightarrow_q$, mi sa che comunque serve una nozione di lifting quantum della relazione. Infatti, supponiamo una semplice bisimulazione LS con freccia quantum: $\conf \rel 	\conf'$ implica \begin{itemize}
-\item $\conf\downarrow_c$ implica $\conf'\downarrow_c$
-\item $B[\conf] \rightarrow_q \Delta$ implica $B[\conf'] \rightarrow_q \Delta'$ e $\Delta \lrel \Delta'$ (solo lifting prob.)
-\end{itemize}
- le configurazioni $ \conf = \confw{\proj{\beta}, M_{01}[q \rhd x].disc(q)  } $ e 
- $\conf' = \confw{\proj{\beta}, M_\pm[q \rhd x].disc(q)}$ non sono bisimili. 
- Infatti, è vero che $\conf \rightarrow_q \confw{\proj{00} \psum{\frac{1}{2}} \proj{11}, disc(q)}$, e allora $\conf'$ ha la transizione $\conf' \rightarrow_q \confw{\proj{++} \psum{\frac{1}{2}} \proj{--}, disc(q)}$ e possiamo dimostrare che sono uguali, in qualche modo. Ma $\conf$ ha anche la transizione $\conf \rightarrow_q \confw{\proj{00}, disc(q)} \psum{\frac{1}{2}} \confw{\proj{00}, disc(q)}$, che va in una distribuzione, e a questo punto la relazione liftata $\lrel$ vuole uan distribuzione di configurazioni  bisimili punto a punto.
-
-Quindi abbiamo comunque bisogno di una relazione liftata $\sqlift{\rel}$, cioè una relazione fra classi di distribuzioni, che però rende le bisimulazioni non chiuse per composizione.
-}
-
 By writing $\sop \in TSO(\hilbert_{\Sigma})$, we mean that $\sop(\rho) = \sum_{i \in I} (I_{\overline{\Sigma}} \otimes A_i) \rho (I_{\overline{\Sigma}} \otimes A_i)^{\dagger}$.
 
 %{\color{red} Per la misura come non-trace preserving, che noi usiamo nella regola di misura della semantica, abbiamo la stessa proprieta', in particolare, rispetto alla versione trace-preserving avremmo semplicemente che la sommatoria sara' composta da meno elementi.}
@@ -270,59 +258,116 @@ An established notion of behavioural equivalence between quantum processes is th
 \end{theorem}
 
 
-From Davidson we expect that $\confw{\beta, M_{0,1}[q_0 \triangleright x] . c ! q_0 \parallel discard(q_1)} \approx_{SPB} \confw{\beta, M_{0,1}[q_0 \triangleright x] . c ! q_0 \parallel discard(q_1)}$.
+From Davidson we expect that $\confw{\beta, M_{0,1}[q_0 \triangleright x] . c ! q_0 \parallel discard(q_1)} \approx_{SPB} \confw{\beta, M_{0,1}[q_0 \triangleright x] . c ! q_0 \parallel discard(q_1)}$. To prove this result, we need some preliminary lemmas.
 
-{\color{red} se li invio entrambi?}
-%The converse does not hold.
-%This is because $tr_{\Sigma}(\conf) = tr_{\Sigma}(\conf')$ is strictly stronger than our closure on contexts, given that it requires the state of qbits to be equivalent
+\newcommand{\discQ}{disc(\widetilde{q})}
+\newcommand{\trQ}{tr_{\widetilde{q}}}
 
-%\begin{definition}[FD-barbed congruence]
-%	A probabilistic barbed bisimulation $\rel \subseteq \conf \times \conf$ is a \emph{FD-barbed congruence} if $\conf \rel \conf'$ implies that 
-%	\begin{itemize}
-%		\item $(\conf \parallel P) \rel (\conf' \parallel P)$ for any process $P$ with $qv(P)$ disjoint from $qv(\conf) \cup qv(\conf')$ 
-%		\item $\sop (\conf) \rel \sop (\conf')$ for any $\sop \in TSO(\hilbert_{\overline{qv(\conf)}})$
-%	\end{itemize}
-%\end{definition}
-%
-%The following congruence was proposed in~\cite{Deng:2012} by Feng and Deng.
-%\begin{definition}
-%	Let FD-congruence is the largest relation $\approx_{FD} \subseteq \conf \times \conf$ which is barb preserving, reduction closed, compositional and such that if $\conf \rel \conf'$ implies $qv(\conf) = qv(\conf')$ and $env(\conf) = env(\conf')$.
-%\end{definition}
-%
-%\begin{definition}[open FD-simulation and bisimulation]
-%	A relation $\rel \subseteq \conf \times \conf$ is an \emph{open FD-simulation} if $\conf \rel \conf'$ implies that $qv(\conf) = qv(\conf')$, $env(\conf) = env(\conf')$ and, for all $\sop \in TSO(\hilbert_{\overline{qv(\conf)}})$,
-%	\begin{itemize}
-%		\item whenever $\sop(\conf) \xrightarrow{\alpha} \Delta$, there is some $\Delta'$ such that $\sop(\conf') \xrightarrow{\alpha} \Delta'$ and $\Delta \slift{\rel} \Delta'$.
-%	\end{itemize}
-%
-%	A relation $\rel \subseteq \conf \times \conf$ is an \emph{open FD-bisimulation} iff $\rel$ and $\rel^{-1}$ are open FD-simulations.
-%	
-%	Let FD-open bisimilarity $\approx_{oFD}$ be the largest FD-open bisimulation. 
-%\end{definition}
-%
-%The following theorem is proved in~\cite{Deng:2012}.
-%\begin{theorem}
-%	$\conf \approx_{FD} \conf'$ iff $\conf \approx_{oFD} \conf'$
-%\end{theorem}
+\note{vanno sistemate le parentesi, e comunque si potrebbe anche scrivere nel capitolo del background quantum}
+\begin{lemma}\label{trace_and_sop}
+Let $\sigma \in  \mathcal{D}(\calH_{\widetilde{p}} \otimes \calH_{\widetilde{q}})$, with $\widetilde{p} = p_0 \ldots p_{n-1}$ and $\widetilde{q} = q_0 \ldots q_{m-1}$. Then, for any \textit{trace non-increasing} superoperator $\sop_{\widetilde{p}} \in \mathcal{S}(\calH_{\widetilde{p}})$
+\[ \trQ((\sop_{\widetilde{p}} \otimes \mathcal{I}_{\widetilde{q}})(\sigma)) = \sop_{\widetilde{p}}(\trQ(\sigma))
+\]
+\end{lemma}
+\begin{proof}
+We know that $\sigma$ is a probabilistic mixture of pure states, $\sigma = \sum_l p_l \proj{\psi_l}$, and each pure state is a linear combination of separable states 
+\[\sigma = \sum_l p_l \sum_{p = 0}^{2^n-1} \sum_{q = 0}^{2^m-1} \lambda_{pq} \proj{pq}\]
+and we know that $\sop_{\widetilde{p}}$ has a Kraus decomposition 
+\[\sop_{\widetilde{p}}(\rho) = \sum_k A_k \rho A_k^\dagger\]
+Then we can write 
+\hspace*{-2cm}\begin{align*}
+\trQ((\sop_{\widetilde{p}} \otimes \mathcal{I}_{\widetilde{q}})(\sigma)) &= \sop_{\widetilde{p}}(\trQ(\sigma)) 
+\\ 
+\trQ((\sop_{\widetilde{p}} \otimes \mathcal{I}_{\widetilde{q}})\left(\sum_l p_l \sum_{p = 0}^{2^n-1} \sum_{q = 0}^{2^m-1} \lambda_{pq} \proj{pq}\right)) &= \sop_{\widetilde{p}}(\trQ\left(\sum_l p_l \sum_{p = 0}^{2^n-1} \sum_{q = 0}^{2^m-1} \lambda_{pq} \proj{pq}\right))
+\\
+\sum_l p_l \trQ((\sop_{\widetilde{p}} \otimes \mathcal{I}_{\widetilde{q}})\left( \sum_{p = 0}^{2^n-1} \sum_{q = 0}^{2^m-1} \lambda_{pq} \proj{pq}\right)) 
+&= \sum_l p_l \sop_{\widetilde{p}}(\trQ\left( \sum_{p = 0}^{2^n-1} \sum_{q = 0}^{2^m-1} \lambda_{pq} \proj{pq}\right))
+\\
+\trQ(\sum_k (A_k \otimes I_{\widetilde{q}})\left( \sum_{p = 0}^{2^n-1} \sum_{q = 0}^{2^m-1} \lambda_{pq} \proj{pq}\right)(A_k \otimes I_{\widetilde{q}})^\dagger )
+&= \sum_k A_k\left( \sum_{p = 0}^{2^n-1} \sum_{q = 0}^{2^m-1} \lambda_{pq} \trQ(\proj{pq})\right) A_k^\dagger 
+\\
+\trQ(\sum_k  \left( \sum_{p = 0}^{2^n-1} \sum_{q = 0}^{2^m-1} \lambda_{pq} (A_k \otimes I_{\widetilde{q}}) \proj{pq} (A_k \otimes I_{\widetilde{q}})^\dagger  \right) )
+&= \sum_k A_k\left( \sum_{p = 0}^{2^n-1} \sum_{q = 0}^{2^m-1} \lambda_{pq} \trQ(\proj{pq})\right) A_k^\dagger
+\\
+\trQ(\sum_k  \left( \sum_{p = 0}^{2^n-1} \sum_{q = 0}^{2^m-1} \lambda_{pq} (A_k\ket{p})\ket{q}(\bra{p}A_k^\dagger) \bra{q} \right) )
+&= \sum_k A_k\left( \sum_{p = 0}^{2^n-1} \sum_{q = 0}^{2^m-1} \lambda_{pq} \proj{p}\braket{q | q}\right)A_k^\dagger
+\\
+\sum_{p = 0}^{2^n-1} \sum_{q = 0}^{2^m-1} \lambda_{pq} \sum_k \trQ( (A_k\ket{p})\ket{q}(\bra{p}A_k^\dagger) \bra{q} ) 
+&= \sum_k  \sum_{p = 0}^{2^n-1} \sum_{q = 0}^{2^m-1} \lambda_{pq} \sum_k  A_k \proj{p} A_k^\dagger 
+\\
+\sum_{p = 0}^{2^n-1} \sum_{q = 0}^{2^m-1} \lambda_{pq} \sum_k (A_k \proj{p} A_k^\dagger) 
+&=  \sum_{p = 0}^{2^n-1} \sum_{q = 0}^{2^m-1} \lambda_{pq} \sop_{\widetilde{p}} (\proj{p})
+\\
+\sum_{p = 0}^{2^n-1} \sum_{q = 0}^{2^m-1} \lambda_{pq} \sop_{\widetilde{p}}(\proj{p})
+&=  \sum_{p = 0}^{2^n-1} \sum_{q = 0}^{2^m-1} \lambda_{pq} \sop_{\widetilde{p}} (\proj{p})
+\end{align*}
 
-%\begin{definition}[Barbed Simulation]
-%  A relation $\mathcal{R}_{\Gamma, \Sigma}$ is called a \emph{barbed simulation} if it is closed under the $\boxplus$-operator and for each
-%  pair of configurations $\langle \rho, P \rangle$, $\langle \sigma, Q \rangle$, well-typed under the context $\Gamma; \Sigma$, it holds that:
-%  \begin{enumerate}
-%    \item if $\langle \rho, P \rangle \longrightarrow \boxplus_{i \in I} \langle \rho_i, P_i \rangle$, then
-%      $\langle \sigma, Q \rangle \longrightarrow \boxplus_{j \in J} \langle \sigma_j, Q_j \rangle$, and
-%      $\forall i \in I \ldotp \exists j \in J \ldotp \langle \rho_i, P_i \rangle \mathcal{R}_{\Gamma, \Sigma} \langle \sigma_j, Q_j \rangle $;
-%    \item if $\langle \rho, P \rangle \downarrow_{p, c}, then \langle \sigma, Q \rangle \downarrow_{p, c}$.
-%  \end{enumerate}
-%\end{definition}
-% 
-%\begin{definition}[Barbed Bisimulation]
-%  A relation $\mathcal{R}_{\Gamma, \Sigma}$ is called a \emph{barbed bisimulation} if it's symmetric, closed under the $\boxplus$-operator and for each
-%  pair of configurations $\langle \rho, P \rangle$, $\langle \sigma, Q \rangle$, well-typed under the context $\Gamma, \Sigma$ it holds that:
-%  \begin{enumerate}
-%    \item if $\langle \sigma, \rho \rangle \longrightarrow \boxplus_{i \in I} \langle \rho_i, P_i \rangle$, then
-%      $\langle \sigma, q \rangle \longrightarrow \boxplus_{i \in I} \langle \sigma_i, Q_i \rangle$, and
-%      $\forall i \in I \ldotp \langle \rho_i, P_i \rangle \mathcal{R}_{\Gamma, \Sigma} \langle \sigma_i, Q_i \rangle$;
-%    \item if $\langle \rho, P \rangle \downarrow_{p, c}, then \langle \sigma, Q \rangle \downarrow_{p, c}$.
-%  \end{enumerate}
-%\end{definition}
+Where we made use of the fact that both $\trQ$ and matrix multiplication are closed for linearity.
+\end{proof}
+
+\note{va sistemata la notazione dei pedici dei superoperatori.}
+\begin{lemma}\label{lemma_transition_partial_trace}
+Let $\sigma \in  \mathcal{D}(\calH_{\widetilde{p}} \otimes \calH_{\widetilde{q}})$, and $\rho = tr_{\widetilde{q}}(\sigma) \in \calH_{\widetilde{p}}$. Then, for any process 
+\[ \confw{\rho, P} \rightarrow \bigoplus_i p_i \confw{\rho_i, P_i} 
+\qquad\Leftrightarrow\qquad
+\confw{\sigma, P\parallel \discQ} \rightarrow \bigoplus p_i \confw{\sigma_i, P_i\parallel \discQ}
+\]
+and $\forall i \ \rho_i = \trQ(\sigma_i)$
+\end{lemma}
+\begin{proof}
+We proceed by induction on $\rightarrow$. For the simple base cases {\footnotesize\scshape SemTau} and {\footnotesize\scshape SemReduce}, where the quantum state remains unchanged, we have 
+\begin{align*}
+\confw{\rho, \tau.P} \rightarrow \confw{\rho, P}
+&\Leftrightarrow
+\confw{\sigma, \tau.P\parallel \discQ} \rightarrow \confw{\sigma, P\parallel \discQ}
+\\
+ \confw{\rho, c?x.P\parallel c!v} \rightarrow \confw{\rho, P[v / x]}
+&\Leftrightarrow
+\confw{\sigma, c?x.P\parallel c!v \parallel \discQ} \rightarrow \confw{\sigma, P[v / x]\parallel \discQ}
+\end{align*}
+
+and in both cases $\rho' = \rho = \trQ(\sigma)$.
+
+For the base case {\footnotesize\scshape SemQOp} we have 
+\[\confw{\rho, \sop(\widetilde{p}).P} \rightarrow \confw{\sop_{\widetilde{p}}(\rho), P}
+\qquad\Leftrightarrow\qquad
+\confw{\sigma, \sop(\widetilde{p}).P\parallel \discQ} \rightarrow \confw{\sop_{\widetilde{p}}(\sigma), P\parallel \discQ}\]
+where $\rho' = \sop_{\widetilde{p}}(\rho) = \sop_{\widetilde{p}}(\trQ(\sigma))$ and $\sigma' = \sop_{\widetilde{p}}\otimes \mathcal{I}_{\widetilde{q}}(\sigma)$, and so we have $\rho' = \trQ(\sigma') = \trQ(\sop_{\widetilde{p}}\otimes \mathcal{I}_{\widetilde{q}}(\sigma))$ thanks to lemma \ref{trace_and_sop}.
+
+
+The base case {\footnotesize\scshape SemQMeasure} is similar, we have 
+\begin{gather*}
+\confw{\rho, M[\widetilde{p} \rhd x].P} \rightarrow \bigoplus p_m\confw{p_m^{-1}\sop_m(\rho), P} \\
+\Leftrightarrow \\
+\confw{\sigma, M[\widetilde{p} \rhd x].P\parallel \discQ} \rightarrow \bigoplus p'_m \confw{p_m^{-1}\sop_m(\sigma), P\parallel \discQ}
+\end{gather*}
+where thanks to lemma \ref{trace_and_sop}, we have $p_m = tr(\sop_m(\rho)) = tr(\sop_m(\trQ(\sigma))) = tr(\trQ(\sop_m \otimes \mathcal{I}_{\widetilde{q}}(\sigma)))$ and $\forall i \ \rho_i = \trQ(\sigma_i)$, as in the previous case.
+
+The inductive cases are all trivial, as none of them modifies the quantum values $\rho$ and $\sigma$.
+\end{proof}
+
+\newcommand{\relTrQ}{\rel_{\trQ}}
+\begin{lemma}
+Let $\sigma \in \mathcal{D}(\calH_{\widetilde{p}} \otimes \calH_{\widetilde{q}})$. If $\rel$ is a bisimulation, then $\rel_{\trQ}$ is a bisimulation, where $\rel_{\trQ}$ is defined as
+\[\rel_{\trQ} = \set{\Big(\confw{\sigma, P \parallel \discQ}, \confw{\nu, Q \parallel \discQ}\Big) \quad\mid\quad \confw{\trQ(\sigma), P} \rel \confw{\trQ(\nu), Q}}\]
+\end{lemma}
+\begin{proof}
+To show that $\rel_{\trQ}$ is a bisimulation, we need first of all to show that is symmetric, which is when $\rel$ is symmetric. The we suppose that $\confw{\sigma, P \parallel \discQ} \relTrQ \confw{\nu, Q \parallel \discQ}$ and have to show that \begin{itemize}
+\item For any barb $b$, if $\confw{\sigma, P \parallel \discQ} \downarrow_b$ then $\confw{\nu, Q \parallel \discQ} \downarrow_b$. We have that $\confw{\sigma, P \parallel \discQ} \downarrow_b \Leftrightarrow \confw{\trQ(\sigma), P} \downarrow b$, $\confw{\nu, Q \parallel \discQ} \downarrow_b \Leftrightarrow \confw{\trQ(\nu), Q} \downarrow b$, and 
+$\confw{\trQ(\sigma), P} \rel \confw{\trQ(\nu), Q}$, so they all express the same barbs.
+\item For any $R$, if $\confw{\sigma, P \parallel R \parallel \discQ} \rightarrow \Delta$, then $\confw{\nu, Q \parallel R \parallel \discQ} \rightarrow \Theta$, and $\Delta \slift{\relTrQ} \Theta$. Notice that $\discQ$ can not evolve, and so we start from the hypothesis $\confw{\sigma, P \parallel R \parallel \discQ} \rightarrow \bigoplus p_i \confw{\sigma_i, P_i \parallel \discQ}$. Then, from lemma \ref{lemma_transition_partial_trace}, we know that $\confw{\trQ(\sigma), P\parallel R} \rightarrow \bigoplus p_i \confw{\trQ(\sigma_i), P_i}$. But since $\confw{\trQ(\sigma), P} \rel \confw{\trQ(\nu), Q}$, and $\rel$ is a saturated bisimulation, it must be that $\confw{\trQ(\nu), Q\parallel R} \rightarrow \bigoplus p_i \confw{\xi_i, Q_i}$ with $\confw{\trQ(\sigma_i), P_i} \rel \confw{\xi_i, Q_i}$ for each $i$. But using the same lemma \ref{lemma_transition_partial_trace} in the other direction, we get $\confw{\nu, Q \parallel R \parallel \discQ} \rightarrow \bigoplus p_i \confw{\nu_i, Q_i \parallel \discQ}$ with $\xi_i = \trQ(\nu_i)$. In conclusion, for each transition $\confw{\sigma, P \parallel R \parallel \discQ} \rightarrow \bigoplus p_i \confw{\sigma_i, P_i \parallel \discQ}$ exists a transition $\confw{\nu, Q \parallel R \parallel \discQ} \rightarrow \bigoplus p_i \confw{\nu_i, Q_i \parallel \discQ}$ such that $\forall i \confw{\trQ(\sigma_i), P_i} \rel \confw{\trQ(\nu_i), Q_i}$, and so from the definiton of $\relTrQ$ together with probabilistic lifting we get $\bigoplus p_i \confw{\sigma_i, P_i \parallel \discQ} \slift{\relTrQ} \bigoplus p_i \confw{\nu_i, Q_i \parallel \discQ}$.
+\end{itemize}
+\end{proof}
+
+\note{è così immediato che si potrebbe anche integrare nel lemma sopra.}
+\begin{theorem}
+If $\confw{\trQ(\sigma), P} \sim \confw{\trQ(\nu), Q}$ then $\confw{\sigma, \P \parallel \discQ} \sim \confw{\nu, Q \parallel \discQ}$.
+\end{theorem}
+\begin{proof}
+It easily follows from the previous theorem, if $\confw{\trQ(\sigma), P} \sim \confw{\trQ(\nu), Q}$ then there exists a bisimulation $\rel$ such that $\confw{\trQ(\sigma), P} \rel \confw{\trQ(\nu), Q}$, therefore $\confw{\sigma, \P \parallel \discQ} \relTrQ \confw{\nu, Q \parallel \discQ}$ for a bisimulation $\relTrQ$, and so $\confw{\sigma, \P \parallel \discQ}$ and $\confw{\nu, Q \parallel \discQ}$ are bisimilar.
+\end{proof}
+
+\note{con questo teorema si può quasi dimostrare che $\confw{\beta, M_{01}[q].discard(q)} \sim \confw{\beta, M_{+-}[q].discard'(q)}$. Esprimono le stesse barbe, e messi in parallelo con $R$, se eseguono la misura finiscono nelle solite distribuzioni $\proj{00} \psum{1/2} \proj{11}$ vs $\proj{++} \psum{1/2} \proj{--}$. Queste distribuzioni le possiamo riscrivere come singole configurazioni con stati misti $\confw{\proj{00}\psum{1/2}\proj{11}, R\parallel discard(q)}$ e $\confw{\proj{++}\psum{1/2}\proj{--}, R\parallel discard'(q)}$, e queste due configurazioni sono bisimili per il teorema appena dimostrato.
+
+Manca soltanto dire cosa succede se il contesto $R$ fa qualcosa. Se non coinvolge i qubit, allora è una transizione inattiva, si può ignorare. Se coinvolge i qubit, bisognerebbe dimostrare che non distingue niente. Nello specifico, se fa delle unitarie, non cambia nulla, e se fa una misura, distrgge l'entanglement e non può più distinguere, credo.
+}
