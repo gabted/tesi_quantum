@@ -1,16 +1,33 @@
+
+Assume a fixed set  $QN = {q_1, q_2, \ldots q_n}$ of quantum names, where each name $q_i$ refers to a unique qubit with state space $\calH_i$. We denote as $\calH_{QN}$ the $2^n$-dimensional Hilbert space $\bigoplus_{i=1}^n \calH_i$.
+
+Assume also a fixed typing contest $\Gamma_c = \set{c_i: \widehat{T_i}}_i$, containing typing assumptions for a finite set of classical and quantum channels.
+
 \begin{definition}
-  Assume a fixed set  $QVar = {q_1, q_2, \ldots q_n}$ of quantum variables, where each variable $q_i$ refers to a unique qubit with state space $\calH_i$. We denote as $\calH_{QVar}$ the $2^n$-dimensional Hilbert space $\bigoplus_{i=1}^n \calH_i$.
+Let $P$ be a process and $\rho \in \mathcal{D}(\calH_{QN})$ an arbitrary density operator. We say that a configuration $\confw{\rho, P}$ is well typed, given a set of quantum names $QN$ and a set of typed channels $\Gamma_c$, if $\Gamma_c; \Sigma \vdash P$ and $\Sigma \subseteq QN$.
 
-Let $P$ be a process and $\rho \in \mathcal{D}(\calH_{QVar})$ an arbitrary partial density operator. $\Gamma; \Sigma \vdash \langle \rho, P \rangle$ iff $\Gamma; \Sigma \vdash P$ and $\Sigma \subseteq QVar$.
-
-  Let $I$ be an arbitrary index set. $\Gamma; \Sigma \vdash \boxplus_{i \in I} \langle \rho_i, P_i \rangle$ iff for each $i \in I$ such that $\rho_i \neq \mathbf{0}$,
-  then $\Gamma; \Sigma \vdash \langle \rho_i, P_i \rangle$.
+%  Let $I$ be an arbitrary index set. $\Gamma; \Sigma \vdash \boxplus_{i \in I} \langle \rho_i, P_i \rangle$ iff for each $i \in I$ such that $\rho_i \neq \mathbf{0}$, then $\Gamma; \Sigma \vdash \langle \rho_i, P_i \rangle$.
 \end{definition}
+
+Notice that the context $\Gamma_c$ contains only assignment for channels, not for classical variables. This means that in well typed configuration, since $\Gamma_c; \Sigma \vdash P$, $P$ does not contain any free classical variable, and all the free quantum variables are reference to a qubit of the configuration.
 
 
 \subsection{Reduction System}
 
-We consider as a \textit{value} any expressions $n \in \mathbb{N},\  b \in \mathbb{B},\  q \in  \text{QNames}$, and use $v$ as a metavariable for them.
+We consider as a \textit{value} any expressions $n \in \mathbb{N},\  b \in \mathbb{B},\  v \in  \text{Var}$, and use $v$ as a metavariable for them.
+
+We define a big step semantic for classical and quantum expression in the usual way. We write $e \Downarrow v$ to indicate that the expression $e$ evaluates to value $v$. Recall that the only quantum expression admitted by the type system are quantum variables.
+
+\begin{gather*}
+\infer[\mbox{\footnotesize\scshape Var}]{x \Downarrow x}{} \qquad
+    \infer[\mbox{\footnotesize\scshape Nat}]{n \Downarrow n}{} \qquad
+    \infer[\mbox{\footnotesize\scshape Bool}]{b \Downarrow b}{}  \qquad
+\\[0.3cm]
+    \infer[\mbox{\footnotesize\scshape Or}]{(e_1 \lor e_2) \Downarrow b}{e_1 \Downarrow b_1 & e_2 \Downarrow b_2 & b = b_1 \lor b_2} \qquad
+    \infer[\mbox{\footnotesize\scshape Neg}]{\neg e \Downarrow b}{e \Downarrow b_1 & b = \neg b_1} \\[0.3cm]
+    \infer[\mbox{\footnotesize\scshape Leq}]{(e_1 \leq e_2) \Downarrow b}{e_1 \Downarrow n_1 & e_2 \Downarrow n_2 & b = n_1 \leq n_2}
+\end{gather*}
+
 
 	\begin{gather*}
     \infer[\mbox{\footnotesize\scshape ParNil}]{P \parallel nil \equiv P}{} \qquad
@@ -30,13 +47,6 @@ We consider as a \textit{value} any expressions $n \in \mathbb{N},\  b \in \math
 	\end{gather*}	
 
   \begin{gather*}
-    \infer[\mbox{\footnotesize\scshape SemVar}]{x \Downarrow x}{} \qquad
-    \infer[\mbox{\footnotesize\scshape SemNat}]{n \Downarrow n}{} \qquad
-    \infer[\mbox{\footnotesize\scshape SemBool}]{b \Downarrow b}{}  \qquad
-    \infer[\mbox{\footnotesize\scshape SemQC}]{q \Downarrow q}{} \\[0.3cm]
-    \infer[\mbox{\footnotesize\scshape SemOr}]{(e_1 \lor e_2) \Downarrow b}{e_1 \Downarrow b_1 & e_2 \Downarrow b_2 & b = b_1 \lor b_2} \qquad
-    \infer[\mbox{\footnotesize\scshape SemNeg}]{\neg e \Downarrow b}{e \Downarrow b_1 & b = \neg b_1} \\[0.3cm]
-    \infer[\mbox{\footnotesize\scshape SemLEq}]{(e_1 \leq e_2) \Downarrow b}{e_1 \Downarrow n_1 & e_2 \Downarrow n_2 & b = n_1 \leq n_2} \\[0.3cm]
     \infer[\mbox{\footnotesize\scshape SemTau}]{\langle \rho, \tau . P \rangle \longrightarrow \langle \rho, P \rangle}{} \\[0.3cm]
     \infer[\mbox{\footnotesize\scshape SemRename}]{\langle \rho, P \{f\} \rangle \longrightarrow \langle \rho', P' \{f\}\rangle}{\langle \rho, f(P) \rangle \longrightarrow \langle \rho', f(P') \rangle} \qquad
     \infer[\mbox{\footnotesize\scshape SemRestrict}]{\langle \rho, P \setminus L \rangle \longrightarrow \langle \rho, P' \setminus L \rangle}{\langle \rho, P \rangle \longrightarrow \langle \rho', P' \rangle} \\[0.3cm]
