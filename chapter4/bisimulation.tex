@@ -1,103 +1,46 @@
-Density operators represents equivalence classes over probabilistic mixtures of quantum states.
-The implicit equivalence relation is $\{(\ket{\phi_i}, p_i)\}_i \cong \{(\ket{\phi_j}, p_j)\}$ iff $\sum_{i} p_i \ketbra{\phi_i}{\phi_i} = \sum_{j} p_j \ketbra{\phi_j}{\phi_j}$.
-The physical justification of this equivalence is that different mixtures resulting in the same density operator cannot be distinguished since they behave the same.
-
-The same equivalence relation is trivially extended to configurations, where the use of density operators for the quantum state allows a common representation of different configurations with an equivalent mixtures of quantum states. 
-We extend here this equivalence relation to distributions of configurations.
-Intuitively, we give rules for exchanging the probabilistic combination $\psum{p}$ in the state of some configurations for probabilistic combination of configurations, and vice-versa. 
-
-\begin{definition}
-	A \emph{quantum distribution} is an equivalence class $\mathbf{\Delta}$ of probabilistic distributions $\Delta$ over quantum configurations defined by the minimal equivalence relation such that:
-	\begin{itemize}
-		\item $(\overline{\confw{\rho, P}} \psum{p} \overline{\confw{\sigma, P}}) \equiv \overline{\confw{p \rho + (1-p)\sigma, P}}$; and
-%		\item $(\overline{\confw{\rho \otimes \sigma, P}} \psum{p} \overline{\confw{\rho \otimes \sigma', Q}}) \equiv (\overline{\confw{\rho \otimes \delta, P}} \psum{p} \overline{\confw{\rho \otimes \delta', Q}})$ if $\Gamma, \Sigma \vdash P$, $\Gamma, \Sigma \vdash Q$, $\rho \in \hilbert_\Sigma$, and $p \sigma + (1 - p) \sigma' =  p \sigma + (1 - p) \sigma' = p \delta + (1 - p) \delta'$; and	
-		\item $\Delta_i\ \equiv\ \Theta_i$, $i = 1, 2$, implies $\Delta_1 \psum{p} \Delta_2 \equiv\ \Theta_1 \psum{p} \Theta_2$.
-	\end{itemize}
-	We write $Q(Conf)$ for quantum distributions over configurations.
-\end{definition}
-
-\begin{definition}
-	Given $\rel \subseteq Conf \times Conf$ be a relation over quantum configurations, let its quantum lifting be the minimal relation $\sqlift{\rel} \subseteq Q(Conf) \times Q(Conf)$ over quantum distributions such that $\Delta\ \slift{\rel}\ \Theta$ with $\Delta \in \mathbf{\Delta}$ and $\Theta \in \mathbf{\Theta}$ implies $\mathbf{\Delta}\ \sqlift{\rel}\ \mathbf{\Theta}$.
-\end{definition}
-
-%\begin{lemma}
-%	For any $\rel$, $\slift{\rel}$ is left and right decomposable, i.e.,
-%	\begin{itemize}
-%		\item $(\Delta_1 \psum{p} \Delta_2) \slift{\rel} \Theta$ implies $\Theta = \Theta_1 \psum{p} \Theta_2$ and $\Delta_i \slift{\rel} \Theta_i$, $i = 1, 2$; and
-%		\item $\Delta \slift{\rel} (\Theta_1 \psum{p} \Theta_2)$ implies $\Delta = \Delta_1 \psum{p} \Delta_2$ and $\Delta_i \slift{\rel} \Theta_i$, $i = 1, 2$.
-%	\end{itemize}
-%\end{lemma}
-%\begin{proof}
-%	We prove only the first point, the second being immediately derivable.
-%\end{proof}
-
-\begin{theorem}
-	Let $\rel \subseteq Conf \times Conf$ be an equivalence relation over quantum configurations, then $\sqlift{\rel}$ is an equivalence relations over distributions of quantum configurations.
-\end{theorem}
-\begin{proof}
-	Reflexivity and symmetry holds by definition given that $\rel$ is an equivalence relation.
-	For transitivity, assume $\Delta \slift{\rel} \Theta \slift{\rel} \Xi$.
-	{\color{red} decomponibilita' non vale con le definizioni che abbiamo dato...}
-\end{proof}
-{\color{red} TODO: capire come gestire il fatto che vogiamo che $\approx$ sia una relazione di equivalenza.}
-
-%\begin{definition}
-%	Given $\rel \subseteq Conf \times Conf$ be a relation over quantum configurations, let its quantum lifting be the minimal relation $\slift{\rel} \subseteq D(Conf) \times D(Conf)$ such that
-%	\begin{itemize}
-%		\item $\conf\ \rel\ \conf'$ implies $\overline{\conf}\ \slift{\rel}\ \overline{\conf'}$;
-%		\item $\Delta_i\ \slift{\rel}\ \Theta_i$, $i = 1, 2$, implies $\Delta_1 \psum{p} \Delta_2 \slift{\rel}\ \Theta_1 \psum{p} \Theta_2$;
-%		\item $(\overline{\confw{\rho, P}} \psum{p} \overline{\confw{\sigma, P}}) \slift{\rel} \overline{\confw{p \rho + (1-p)\sigma, P}}$;
-%		\item $\overline{\confw{p \rho + (1-p)\sigma, P}} \slift{\rel} (\overline{\confw{\rho, P}} \psum{p} \overline{\confw{\sigma, P}})$.
-%	\end{itemize} 
-%\end{definition}
-
-%\begin{theorem}
-%	Let $\rel \subseteq Conf \times Conf$ be an equivalence relation over quantum configurations, $\slift{\rel}$ is an equivalence relations over distributions of quantum configurations.
-%\end{theorem}
-%\begin{proof}
-%	Reflexivity and symmetry holds by definition given that $\rel$ is an equivalence relation.
-%	For transitivity, assume $\Delta \slift{\rel} \Theta \slift{\rel} \Xi$.
-%	{\color{red} decomponibilita' non vale con le definizioni che abbiamo dato...}
-%\end{proof}
-
-
-%In the following we write $qv(P)$ or $qv(\confw{\rho, P})$ for the set of free quantum variables in $P$, and $env(\confw{\rho, P})$ for $tr_{qv(P)}(\rho)$.
+\subsection{Probabilistic Saturated Bisimilarity}
 
 \begin{definition}[Barb]
-	A \emph{barb} is a predicate $\downarrow_{c}$ over configurations where $\langle \rho, P \rangle \downarrow_{c}$ iff $P \equiv c!x + Q \parallel R$ for some $x$, and processes $Q$, $R$.
-%	A \emph{barb} is a predicate $\downarrow_{p, c}$ over configurations where $\langle \rho, P \rangle \downarrow_{p, c}$ iff $tr(\rho) = p$ and
-%	$P \equiv c!x + Q \parallel R$ for some $x$, and processes $Q$, $R$.
+	A \emph{barb} is a predicate $\downarrow_{c}$ over well typed processes, defined as follows: $P \downarrow_{c}$ if and only if $P \equiv c!e \parallel R$ for some expression $e$, and processes $R$.
 \end{definition}
 
-%\begin{definition}[Barb Preserving Relation]
-%	A relation $\rel \subseteq \conf \times \conf$ is \emph{barb preserving} if $\conf \rel \conf'$ implies that $\barb{p}{c}{\conf}$ iff $\barb{p}{c}{\conf'}$
-%	for any $p \in [0,1]$ and any classical channel $c$.
+%\begin{definition}[Barb on configuration]
+%	A \emph{barb} is a predicate $\downarrow_{c}$ over configurations, defined as follows: $\langle \rho, P \rangle \downarrow_{c}$ iff $P \equiv c!x + Q \parallel R$ for some $x$, and processes $Q$, $R$.
 %\end{definition}
 
-%\begin{definition}[Probabilistic Barbed Bisimulation]
-%	A symmetric relation $\rel_{\Gamma, \Sigma} \subseteq \conf \times \conf$ is \emph{probabilistic barbed bisimulation} if $\conf \rel \conf'$, with $\conf, \conf'$ well-typed under the context $\Gamma; \Sigma$, implies that 
-%	\begin{itemize}
-%		\item if $\conf \downarrow_{c}$ then $\conf' \downarrow_{c}$; and 
-%		\item whenever $\conf \xrightarrow{\tau} \Delta$, there exists $\Delta'$ such that $\conf' \xrightarrow{\tau} \Delta'$ and $\Delta \slift{\rel} \Delta'$
-%%		\item whenever $\conf' \xrightarrow{\tau} \Delta'$, there exists $\Delta$ such that $\conf \xrightarrow{\tau} \Delta$ and $\Delta \slift{\rel} \Delta'$
-%	\end{itemize}
-%\end{definition}
-
-{\color{red} Non capisco dove, ma ci vuole: if $\confw{\rho, P} \approx \confw{\rho', P'}$ then $\confw{\sigma \otimes \rho, P} \approx \confw{\sigma \otimes \rho', P'}$}
+If $\conf = \confw{\rho, P}$ is a configuration, we will often write $C\downarrow_c$ instead of $P\downarrow_c$, and $B[\conf]$ instead of $\confw{\rho, B[P]}$.
 
 \begin{definition}[Saturated Probabilistic Barbed Bisimilarity]
-	A symmetric relation $\rel \subseteq \conf \times \conf$ is \emph{saturated probabilistic barbed bisimulation} if $\conf\ \rel\ \conf'$ implies that $\conf, \conf'$ are well-typed under a typing context $\Gamma; \Sigma$, and for any context $C[\_] \in Context_{\Gamma, \Sigma}$
+	A symmetric relation $\rel \subseteq \conf \times \conf$ is \emph{saturated probabilistic barbed bisimulation} if $\confw{\rho, P} \ \rel\ \confw{\sigma, Q}$ implies that $P$ and $Q$  are well-typed under the same typing context $\Gamma; \Sigma$, and for any context $B[\_]_{\Gamma, \Sigma}$
 	\begin{itemize}
-		\item if $C[\conf] \downarrow_{c}$ then $C[\conf'] \downarrow_{c}$; and 
-		\item whenever $C[\conf] \xrightarrow{\tau} \Delta \in \mathbf{\Delta}$, there exists $\Delta' \in \mathbf{\Delta'}$ such that $C[\conf'] \xrightarrow{\tau} \Delta'$ and $\mathbf{\Delta}\ \sqlift{\rel}\ \mathbf{\Delta'}$
-		%		\item whenever $\conf' \xrightarrow{\tau} \Delta'$, there exists $\Delta$ such that $\conf \xrightarrow{\tau} \Delta$ and $\Delta \slift{\rel} \Delta'$
+		\item If $P \downarrow_{c}$ then $Q \downarrow_{c}$
+		\item If $\confw{\rho, B[P]} \rightarrow \Delta$, there exists $\Delta' $ such that $\conf{\sigma, B[Q]} \rightarrow \Delta'$ and $\mathbf{\Delta}\ \sqlift{\rel}\ \mathbf{\Delta'}$
 	\end{itemize}
-	Let \emph{saturated probabilistic barbed bisimilarity} $\approx_{SPB}$ be the largest saturated probabilistic barbed bisimulation.
+	Let \emph{probabilistic saturated bisimilarity} $\sim_{PS}$ be the union of all saturated probabilistic barbed bisimulation.
 \end{definition}
 
-By writing $\sop \in TSO(\hilbert_{\Sigma})$, we mean that $\sop(\rho) = \sum_{i \in I} (I_{\overline{\Sigma}} \otimes A_i) \rho (I_{\overline{\Sigma}} \otimes A_i)^{\dagger}$.
 
-%{\color{red} Per la misura come non-trace preserving, che noi usiamo nella regola di misura della semantica, abbiamo la stessa proprieta', in particolare, rispetto alla versione trace-preserving avremmo semplicemente che la sommatoria sara' composta da meno elementi.}
+\begin{example}
+	Consider the following, wrong definition of quantum teleportation:
+	\begin{align*}
+		\proc{A} &\Coloneqq \text{in}_a?x.\text{CNOT}(q_0, x).\text{H}(q_0).M(x,q_0 \rhd n).(\text{m}_a!n \parallel out_{a_1}! q_0 \parallel out_{a_2}! x )\\
+    \proc{B} &\Coloneqq \text{in}_b?x.\text{m}_a?n.
+       \\ & \ite{n = 0}{\sigma_0(x).\text{out}_b!x\\&\quad}
+      {\ite{n = 1}{\sigma_1(x).\text{out}_b!x\\&\qquad}
+          {\ite{n = 2}{\sigma_2(x).\text{out}_b!x}{\sigma_3(x).\text{out}_b!x}}
+      } \\
+		\proc{S} &\Coloneqq \text{H}(q_1).\text{CNOT}(q_1, q_2).(\text{in}_a!q_1 \parallel \text{in}_b!q_2) \\
+		\proc{Tel} &\Coloneqq (A \parallel B \parallel S) \setminus \Set{\text{in}_a, \text{in}_b, \text{m}_a } \\
+		\proc{TelSpec} &\Coloneqq \text{SWAP}(q_0,q_2).(\text{out}_b!q_2 \parallel out_{a_1}! q_0 \parallel out_{a_2}! q_1)
+	\end{align*}
+	We have that $\proc{Tel} \not\approx_{SPB} \proc{TelSpec}$.
+	Consider indeed a context:
+  \[ B[\blank] = out_{a_1} ? x . M[x \rhd y] . \ite{y = 1}{c!y}{nil}. \]
+\end{example}
+
+
+
+By writing $\sop \in TSO(\hilbert_{\Sigma})$, we mean that $\sop(\rho) = \sum_{i \in I} (I_{\overline{\Sigma}} \otimes A_i) \rho (I_{\overline{\Sigma}} \otimes A_i)^{\dagger}$.
 
 \begin{lemma}\label{lemma:sop}
 	For any pair of configurations $\conf, \conf'$ well-typed under $\Gamma; \Sigma$, and for any $\sop \in TSO(\hilbert_{\overline{\Sigma}})$,
@@ -137,67 +80,6 @@ By writing $\sop \in TSO(\hilbert_{\Sigma})$, we mean that $\sop(\rho) = \sum_{i
 	\[
 	(B_{p\times p} \otimes I_{q\times q}) (I_{p\times p} \otimes A_{q\times q}) = B_{p\times p} \otimes A_{q \times q} = (I_{p\times p} \otimes A_{q\times q}) (B_{p\times p} \otimes I_{q\times q})
 	\]	
-	
-	
-%	Take
-%	\begin{align*}
-%		&(B_{p\times p} \otimes I_{q\times q}) (I_{p\times p} \otimes A_{q\times q}) =\\
-%		&\left(\begin{array}{c c c}
-%			B_{1,1} I_{q\times q} & \dots & B_{1,p} I_{q\times q}\\
-%			\dots & & \dots\\
-% 			B_{p,1} I_{q\times q} & \dots & B_{p,p} I_{q\times q}\\
-%	\end{array}\right)
-%\left(
-%\begin{array}{c c c c c }
-%	A_{q\times q} & \bigzero & \bigzero & \dots & \bigzero \\
-%	\bigzero & A_{q\times q} & \bigzero & \dots & \bigzero \\
-%	\dots & \dots & \dots & \dots & \dots \\
-%	\bigzero & \dots & \dots & \dots & A_{q\times q} \\
-%\end{array}
-%\right),
-%\end{align*}
-%and take the element at column $i$, row $j$.
-%Note that it is $B_{i,j} I_{q\times q} A_{q\times q}$.
-%Take then
-%\begin{align*}
-%	&(I_{p\times p} \otimes A_{q\times q}) (B_{p\times p} \otimes I_{q\times q}) =\\
-%	&\left(
-%	\begin{array}{c c c c c }
-%		A_{q\times q} & \bigzero & \bigzero & \dots & \bigzero \\
-%		\bigzero & A_{q\times q} & \bigzero & \dots & \bigzero \\
-%		\dots & \dots & \dots & \dots & \dots \\
-%		\bigzero & \dots & \dots & \dots & A_{q\times q} \\
-%	\end{array}
-%	\right)
-%	\left(\begin{array}{c c c}
-%		B_{1,1} I_{q\times q} & \dots & B_{1,p} I_{q\times q}\\
-%		\dots & & \dots\\
-%		B_{p,1} I_{q\times q} & \dots & B_{p,p} I_{q\times q}\\
-%	\end{array}\right),
-%\end{align*}
-%and take the element at column $i$, row $j$.
-%Note that it is $A_{q\times q} B_{i,j} I_{q\times q}$.
-%The thesis follow by linearity and commutativity of the identity.
-
-%\begin{align*}
-%&\left(
-%\begin{array}{c c c c }
-%	B_{1,1} I_{q\times q} A_{q\times q} & B_{1,2} I_{q\times q} A_{q\times q} & \dots & B_{1,p} I_{q\times q} A_{q\times q} \\
-%	B_{2,1} I_{q\times q} A_{q\times q} & B_{2,2} I_{q\times q} A_{q\times q} & \dots & B_{2,p} I_{q\times q} A_{q\times q} \\
-%	\dots & \dots & \dots & \dots\\
-%	B_{p,1} I_{q\times q} A_{q\times q} & B_{p,2} I_{q\times q} A_{q\times q} & \dots & B_{p,p} I_{q\times q} A_{q\times q} \\
-%\end{array}
-%\right) = \\
-%&\left(
-%\begin{array}{c c c c }
-%	A_{q\times q} B_{1,1} I_{q\times q} & A_{q\times q} B_{1,2} I_{q\times q} & \dots & A_{q\times q} B_{1,p} I_{q\times q} \\
-%	A_{q\times q} B_{2,1} I_{q\times q} & A_{q\times q} B_{2,2} I_{q\times q} & \dots & A_{q\times q} B_{2,p} I_{q\times q} \\
-%	\dots & \dots & \dots & \dots\\
-%	A_{q\times q} B_{p,1} I_{q\times q} & A_{q\times q} B_{p,2} I_{q\times q} & \dots & A_{q\times q} B_{p,p} I_{q\times q} \\
-%\end{array}
-%\right) = \\
-%\end{align*}
-
 The proof for rule {\scshape SemQMeas} is the same, considering every $m \in \{0, \dots, 2^{\widetilde{x}}\}$ separately.
 \end{proof}
 
@@ -213,7 +95,7 @@ The proof for rule {\scshape SemQMeas} is the same, considering every $m \in \{0
 	\end{enumerate}
 \end{theorem}
 \begin{proof}
-	The proof of point \ref{point:thmchinese1} follows by transitivity and Lemma~\ref{lemma:sop}.
+	The proof of point \ref{point:thmchinese1} follows by transitivity and Lemma~\ref{lemma:sop}. \note{questa dimostrazione va bene per la probabilistic bisimulation, ma non per la quantum bisimulation, quindi la cambierei direttamente con quella nuova}
 	\[
 	 \sop (\conf)\ \approx_{SPB}\ \conf\ \approx_{SPB}\ \conf'\ \approx_{SPB}\ \sop (\conf') 
 	\]
@@ -224,41 +106,24 @@ The proof for rule {\scshape SemQMeas} is the same, considering every $m \in \{0
 	It is clear that $B[\conf] \not\approx_{SPB} B[\conf']$. Contradiction.
 \end{proof}
 
-\begin{example}
-	Consider the following, wrong definition of quantum teleportation:
-	\begin{align*}
-		\proc{A} &\Coloneqq \text{in}_a?x.\text{CNOT}(q_0, x).\text{H}(q_0).M(x,q_0 \rhd n).(\text{m}_a!n \parallel out_{a_1}! q_0 \parallel out_{a_2}! x )\\
-    \proc{B} &\Coloneqq \text{in}_b?x.\text{m}_a?n.
-       \\ & \ite{n = 0}{\sigma_0(x).\text{out}_b!x\\&\quad}
-      {\ite{n = 1}{\sigma_1(x).\text{out}_b!x\\&\qquad}
-          {\ite{n = 2}{\sigma_2(x).\text{out}_b!x}{\sigma_3(x).\text{out}_b!x}}
-      } \\
-		\proc{S} &\Coloneqq \text{H}(q_1).\text{CNOT}(q_1, q_2).(\text{in}_a!q_1 \parallel \text{in}_b!q_2) \\
-		\proc{Tel} &\Coloneqq (A \parallel B \parallel S) \setminus \Set{\text{in}_a, \text{in}_b, \text{m}_a } \\
-		\proc{TelSpec} &\Coloneqq \text{SWAP}(q_0,q_2).(\text{out}_b!q_2 \parallel out_{a_1}! q_0 \parallel out_{a_2}! q_1)
-	\end{align*}
-	We have that $\proc{Tel} \not\approx_{SPB} \proc{TelSpec}$.
-	Consider indeed a context:
-  \[ B[\blank] = out_{a_1} ? x . M[x \rhd y] . \ite{y = 1}{c!y}{nil}. \]
-\end{example}
+%An established notion of behavioural equivalence between quantum processes is the Deng-Feng bisimilarity, here we focus on the strong version of it.
+%\begin{definition}[Deng-Feng Bisimilarity]
+%	A symmetric relation $\rel \subseteq \conf \times \conf$ is \emph{Deng-Feng bisimulation} if $\conf\ \rel\ \conf'$ implies that $\conf, \conf'$ are well-typed under a typing context $\Gamma; \Sigma$, and for any context $C[\blank] \in Context_{\Gamma, \Sigma}$
+%	\begin{itemize}
+%		\item $tr_{\Sigma}(\conf) = tr_{\Sigma}(\conf')$;
+%		\item if $C[\sop(\conf)] \downarrow_{c}$ then $C[\sop(\conf')] \downarrow_{c}$; and
+%		\item whenever $C[\sop(\conf)] \xrightarrow{\tau} \Delta$, there exists $\Delta'$ such that $C[\sop(\conf')] \xrightarrow{\tau} \Delta'$ and $\Delta \slift{\rel} \Delta'$
+%	\end{itemize}
+%	Let \emph{Deng-Feng bisimilarity} $\approx_{DF}$ be the largest saturated probabilistic barbed bisimulation.
+%\end{definition}
+%
+%\begin{theorem}
+%	For any pair of configurations $\conf, \conf'$, $\conf \approx_{DF} \conf'$ iff $\conf \approx_{SPB} \conf'$.
+%\end{theorem}
 
-An established notion of behavioural equivalence between quantum processes is the Deng-Feng bisimilarity, here we focus on the strong version of it.
-\begin{definition}[Deng-Feng Bisimilarity]
-	A symmetric relation $\rel \subseteq \conf \times \conf$ is \emph{Deng-Feng bisimulation} if $\conf\ \rel\ \conf'$ implies that $\conf, \conf'$ are well-typed under a typing context $\Gamma; \Sigma$, and for any context $C[\blank] \in Context_{\Gamma, \Sigma}$
-	\begin{itemize}
-		\item $tr_{\Sigma}(\conf) = tr_{\Sigma}(\conf')$;
-		\item if $C[\sop(\conf)] \downarrow_{c}$ then $C[\sop(\conf')] \downarrow_{c}$; and
-		\item whenever $C[\sop(\conf)] \xrightarrow{\tau} \Delta$, there exists $\Delta'$ such that $C[\sop(\conf')] \xrightarrow{\tau} \Delta'$ and $\Delta \slift{\rel} \Delta'$
-	\end{itemize}
-	Let \emph{Deng-Feng bisimilarity} $\approx_{DF}$ be the largest saturated probabilistic barbed bisimulation.
-\end{definition}
+\note{altre dimostrazioni che la chiusura per superoperatori non serve a niente}
 
-\begin{theorem}
-	For any pair of configurations $\conf, \conf'$, $\conf \approx_{DF} \conf'$ iff $\conf \approx_{SPB} \conf'$.
-\end{theorem}
-
-
-From Davidson we expect that $\confw{\beta, M_{0,1}[q_0 \triangleright x] . c ! q_0 \parallel discard(q_1)} \approx_{SPB} \confw{\beta, M_{0,1}[q_0 \triangleright x] . c ! q_0 \parallel discard(q_1)}$. To prove this result, we need some preliminary lemmas.
+A useful proof techinque: $\sim$ is closed for additional discarded qubits. 
 
 \newcommand{\discQ}{disc(\widetilde{q})}
 \newcommand{\trQ}{tr_{\widetilde{q}}}
@@ -360,14 +225,79 @@ $\confw{\trQ(\sigma), P} \rel \confw{\trQ(\nu), Q}$, so they all express the sam
 \end{proof}
 
 \note{è così immediato che si potrebbe anche integrare nel lemma sopra.}
-\begin{theorem}
-If $\confw{\trQ(\sigma), P} \sim \confw{\trQ(\nu), Q}$ then $\confw{\sigma, \P \parallel \discQ} \sim \confw{\nu, Q \parallel \discQ}$.
+\begin{theorem}[$\sim$ is closed for additional discarded qubits]\label{bisim_closed_by_discard}
+If $\confw{\trQ(\sigma), P} \sim \confw{\trQ(\nu), Q}$ then $\confw{\sigma, P \parallel \discQ} \sim \confw{\nu, Q \parallel \discQ}$.
 \end{theorem}
 \begin{proof}
-It easily follows from the previous theorem, if $\confw{\trQ(\sigma), P} \sim \confw{\trQ(\nu), Q}$ then there exists a bisimulation $\rel$ such that $\confw{\trQ(\sigma), P} \rel \confw{\trQ(\nu), Q}$, therefore $\confw{\sigma, \P \parallel \discQ} \relTrQ \confw{\nu, Q \parallel \discQ}$ for a bisimulation $\relTrQ$, and so $\confw{\sigma, \P \parallel \discQ}$ and $\confw{\nu, Q \parallel \discQ}$ are bisimilar.
+It easily follows from the previous lemma, if $\confw{\trQ(\sigma), P} \sim \confw{\trQ(\nu), Q}$ then there exists a bisimulation $\rel$ such that $\confw{\trQ(\sigma), P} \rel \confw{\trQ(\nu), Q}$, therefore $\confw{\sigma, P \parallel \discQ} \relTrQ \confw{\nu, Q \parallel \discQ}$ for a bisimulation $\relTrQ$, and so $\confw{\sigma, P \parallel \discQ}$ and $\confw{\nu, Q \parallel \discQ}$ are bisimilar.
 \end{proof}
+
+\note{esempio di applciazione di questa tecnica?}
+
+\subsection{Quantum Saturated Bisimilarity}
+
+Density operators represents equivalence classes over probabilistic mixtures of quantum states.
+The implicit equivalence relation is $\{(\ket{\phi_i}, p_i)\}_i \cong \{(\ket{\phi_j}, p_j)\}$ iff $\sum_{i} p_i \ketbra{\phi_i}{\phi_i} = \sum_{j} p_j \ketbra{\phi_j}{\phi_j}$.
+The physical justification of this equivalence is that different mixtures resulting in the same density operator cannot be distinguished since they behave the same.
+
+The same equivalence relation is trivially extended to configurations, where the use of density operators for the quantum state allows a common representation of different configurations with an equivalent mixtures of quantum states. 
+We extend here this equivalence relation to distributions of configurations.
+Intuitively, we give rules for exchanging the probabilistic combination $\psum{p}$ in the state of some configurations for probabilistic combination of configurations, and vice-versa. 
+
+\begin{definition}
+	A \emph{quantum distribution} is an equivalence class $\mathbf{\Delta}$ of probabilistic distributions $\Delta$ over quantum configurations defined by the minimal equivalence relation such that:
+	\begin{itemize}
+		\item $(\overline{\confw{\rho, P}} \psum{p} \overline{\confw{\sigma, P}}) \equiv \overline{\confw{p \rho + (1-p)\sigma, P}}$; and
+%		\item $(\overline{\confw{\rho \otimes \sigma, P}} \psum{p} \overline{\confw{\rho \otimes \sigma', Q}}) \equiv (\overline{\confw{\rho \otimes \delta, P}} \psum{p} \overline{\confw{\rho \otimes \delta', Q}})$ if $\Gamma, \Sigma \vdash P$, $\Gamma, \Sigma \vdash Q$, $\rho \in \hilbert_\Sigma$, and $p \sigma + (1 - p) \sigma' =  p \sigma + (1 - p) \sigma' = p \delta + (1 - p) \delta'$; and	
+		\item $\Delta_i\ \equiv\ \Theta_i$, $i = 1, 2$, implies $\Delta_1 \psum{p} \Delta_2 \equiv\ \Theta_1 \psum{p} \Theta_2$.
+	\end{itemize}
+	We write $Q(Conf)$ for quantum distributions over configurations.
+\end{definition}
+
+\begin{definition}
+	Given $\rel \subseteq Conf \times Conf$ be a relation over quantum configurations, let its quantum lifting be the minimal relation $\sqlift{\rel} \subseteq Q(Conf) \times Q(Conf)$ over quantum distributions such that $\Delta\ \slift{\rel}\ \Theta$ with $\Delta \in \mathbf{\Delta}$ and $\Theta \in \mathbf{\Theta}$ implies $\mathbf{\Delta}\ \sqlift{\rel}\ \mathbf{\Theta}$.
+\end{definition}
+
+
+\note{FALSO: 
+\begin{theorem}
+	Let $\rel \subseteq Conf \times Conf$ be an equivalence relation over quantum configurations, then $\sqlift{\rel}$ is an equivalence relations over distributions of quantum configurations.
+\end{theorem}
+\begin{proof}
+	Reflexivity and symmetry holds by definition given that $\rel$ is an equivalence relation.
+	For transitivity, assume $\Delta \slift{\rel} \Theta \slift{\rel} \Xi$.
+\end{proof}}
+
+
+%\begin{definition}[Probabilistic Barbed Bisimulation]
+%	A symmetric relation $\rel_{\Gamma, \Sigma} \subseteq \conf \times \conf$ is \emph{probabilistic barbed bisimulation} if $\conf \rel \conf'$, with $\conf, \conf'$ well-typed under the context $\Gamma; \Sigma$, implies that 
+%	\begin{itemize}
+%		\item if $\conf \downarrow_{c}$ then $\conf' \downarrow_{c}$; and 
+%		\item whenever $\conf \xrightarrow{\tau} \Delta$, there exists $\Delta'$ such that $\conf' \xrightarrow{\tau} \Delta'$ and $\Delta \slift{\rel} \Delta'$
+%%		\item whenever $\conf' \xrightarrow{\tau} \Delta'$, there exists $\Delta$ such that $\conf \xrightarrow{\tau} \Delta$ and $\Delta \slift{\rel} \Delta'$
+%	\end{itemize}
+%\end{definition}
+
+\begin{definition}[Quantum Saturated Bisimilarity]
+	A symmetric relation $\rel \subseteq \conf \times \conf$ is \emph{quantum saturated bisimulation} if $\conf\ \rel\ \conf'$ implies that $\conf, \conf'$ are well-typed under a typing context $\Gamma; \Sigma$, and for any context $B[\_]_{\Gamma, \Sigma}$
+	\begin{itemize}
+		\item if $B[\conf] \downarrow_{c}$ then $B[\conf'] \downarrow_{c}$; and 
+		\item whenever $B[\conf] \xrightarrow{\tau} \Delta \in \mathbf{\Delta}$, there exists $\Delta' \in \mathbf{\Delta'}$ such that $C[\conf'] \xrightarrow{\tau} \Delta'$ and $\mathbf{\Delta}\ \sqlift{\rel}\ \mathbf{\Delta'}$
+		%		\item whenever $\conf' \xrightarrow{\tau} \Delta'$, there exists $\Delta$ such that $\conf \xrightarrow{\tau} \Delta$ and $\Delta \slift{\rel} \Delta'$
+	\end{itemize}
+	Let \emph{saturated probabilistic barbed bisimilarity} $\approx_{SPB}$ be the largest saturated probabilistic barbed bisimulation.
+\end{definition}
+
+
+
+
+
+From Davidson we expect that $\confw{\beta, M_{0,1}[q_0 \triangleright x] . c ! q_0 \parallel discard(q_1)} \approx_{SPB} \confw{\beta, M_{0,1}[q_0 \triangleright x] . c ! q_0 \parallel discard(q_1)}$. To prove this result, we need can use theorem \ref{bisim_closed_by_discard}
+
 
 \note{con questo teorema si può quasi dimostrare che $\confw{\beta, M_{01}[q].discard(q)} \sim \confw{\beta, M_{+-}[q].discard'(q)}$. Esprimono le stesse barbe, e messi in parallelo con $R$, se eseguono la misura finiscono nelle solite distribuzioni $\proj{00} \psum{1/2} \proj{11}$ vs $\proj{++} \psum{1/2} \proj{--}$. Queste distribuzioni le possiamo riscrivere come singole configurazioni con stati misti $\confw{\proj{00}\psum{1/2}\proj{11}, R\parallel discard(q)}$ e $\confw{\proj{++}\psum{1/2}\proj{--}, R\parallel discard'(q)}$, e queste due configurazioni sono bisimili per il teorema appena dimostrato.
 
 Manca soltanto dire cosa succede se il contesto $R$ fa qualcosa. Se non coinvolge i qubit, allora è una transizione inattiva, si può ignorare. Se coinvolge i qubit, bisognerebbe dimostrare che non distingue niente. Nello specifico, se fa delle unitarie, non cambia nulla, e se fa una misura, distrgge l'entanglement e non può più distinguere, credo.
 }
+
+
