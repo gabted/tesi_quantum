@@ -232,7 +232,22 @@ If $\confw{\trQ(\sigma), P} \sim \confw{\trQ(\nu), Q}$ then $\confw{\sigma, P \p
 It easily follows from the previous lemma, if $\confw{\trQ(\sigma), P} \sim \confw{\trQ(\nu), Q}$ then there exists a bisimulation $\rel$ such that $\confw{\trQ(\sigma), P} \rel \confw{\trQ(\nu), Q}$, therefore $\confw{\sigma, P \parallel \discQ} \relTrQ \confw{\nu, Q \parallel \discQ}$ for a bisimulation $\relTrQ$, and so $\confw{\sigma, P \parallel \discQ}$ and $\confw{\nu, Q \parallel \discQ}$ are bisimilar.
 \end{proof}
 
-\note{esempio di applciazione di questa tecnica?}
+Theorem \ref{bisim_closed_by_discard} is useful to prove bisimilarity for some simple processes. For example, it can be used to prove that $P = H[q].discard(q)$ and $Q = X[q].discard(q)$ are bisimilar.
+
+Given that $\emptyset, {q} \vdash P$ and $\emptyset, {q} \vdash Q$, we show that
+\[\rel = \big\{\confw{\sigma, B[P]}, \confw{\sigma, B[Q]} \mid \sigma \in \mathcal{D}(\calH_{QN}), B[\blank]_{\emptyset; \set{q}} \text{ typed context}\big\}^S\ \cup \sim_{PS}
+\]
+is a probabilistic saturated bisimulation, where $\rel^S$ denotes the symmetric closure of a relation $\rel$. From this follows trivially that $\confw{\sigma, P} \sim_{PS} \confw{\sigma, Q}$ for any $\sigma$, and so $P$ and $Q$ are bisimilar processes.
+
+$\rel$ is a \textit{saturated} relations, meaning that if $\conf \rel \conf'$, then $B[\conf] \rel B[\conf']$ for any $B$. So, to prove that $\rel$ is a probabilistic saturated bisimulation, we just need to show that $\rel$ is a probabilistic bisimulation.
+
+Suppose that $\confw{\sigma, R \parallel P} \rel \confw{\sigma, R \parallel Q}$, and that $\confw{\sigma, R \parallel P} \rightarrow \sum_i p_i \conf_i$.\begin{itemize}
+\item If the reductions happens in $R$, it must be of the form $\confw{\sigma, R \parallel P} \rightarrow \sum_i p_i \confw{\sigma_i, R' \parallel P}$, but then there exists a transition $\confw{\sigma, R \parallel Q} \rightarrow \sum_i p_i \confw{\sigma_i, R_i \parallel Q}$, and for each $i$, $\confw{\sigma_i, R_i \parallel P} \rel \confw{\sigma_i, R_i \parallel Q}$ by definition of $\rel$.
+\item If the reductions happens in $P$, it must be 
+ $\confw{\sigma, R \parallel H[q].disc(q)} \rightarrow \confw{\sop_{H, q}(\sigma), R \parallel disc(q)}$, but then  $\confw{\sigma, R \parallel X[q].disc(q)} \rightarrow \confw{\sop_{X, q}(\sigma), R \parallel disc(q)}$, where $\sop_{H, q}$ is the superoperator that applies the H transformation only on qubit $q$, and $\sop_{Z, q}$ is the superoperator that applies the Z transformation only on qubit $q$. 
+Since $tr_q(\sop_{H, q}(\sigma)) = tr_q(\sop_{Z, q}(\sigma)) = tr_q(\sigma)$ for lemma \note{LEMMA}, we have that $\confw{\sop_{H, q}(\sigma), R \parallel disc(q)} \sim_{PS} \confw{\sop_{X, q}(\sigma), R \parallel disc(q)}$ for lemma \ref{trace_and_sop}, and so $\confw{\sop_{H, q}(\sigma), R \parallel disc(q)} \rel \confw{\sop_{X, q}(\sigma), R \parallel disc(q)}$ by definition of $\rel$.
+ 
+\end{itemize}
 
 \subsection{Quantum Saturated Bisimilarity}
 
