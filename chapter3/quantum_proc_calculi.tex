@@ -104,14 +104,14 @@ In \cite{fengProbabilisticBisimulationsQuantum2007}, the authors present qCCS, a
 In the first work on qCCS where presented two different rules for quantum input, one adding a qubit to the configuration, the other assuming that the qubit is already present in the configuration. As already said, only the second rule was used in subsequent works.
 
 
-All the characteristic of QPAlg and CQP, in terms of configurations, parallel composition and communication are also present in CQP. The main difference between qCCS and the previous calculi is its "probabilistic state" approach to treat probabilities and nondeterminism. \note{bisogna parlare anche della ricorsione}.
+All the characteristic of QPAlg and CQP, in terms of configurations, parallel composition and communication are also present in CQP. The main difference between qCCS and the previous calculi is its "distribution transformation" approach to treat probabilities and nondeterminism. An other distinctive feature is that qCCS features recursive processes, that are absent in QPAlg and CQP. For the sake of comparison, we will ignore recursive processes in the rest of this chapter.
 
 
 Like in QPAlg, a process can be constructed with \textit{quantum action}, that in qCC  are unitaries, superoperators and measurements. A measurement introduces a new classical variable to represent the outcome, and evolves in a distribution of configurations
 \[ \confw{q = \proj{+}, M_{01}[q \rhd x].P} \xrightarrow{\tau} \confw{q = \proj{0}, P[0/x]} \psum{1/2} \confw{q = \proj{0}, P[1/x]} 
 \]
 
-In \cite{fengProbabilisticBisimulationsQuantum2007}, a distribution of configuration cannot evolve in any manner, but in \cite{fengBisimulationQuantumProcesses2012, dengOpenBisimulationQuantum2012}, the transition relations $\longrightarrow \subseteq Conf \times Act_\tau \times \distr(Conf)$ is lifted to a relation between distribution $\longrightarrow \subseteq \distr(Conf) \times Act_\tau \times \distr(Conf)$, i.e. following the "probabilistic state" approach described in section \ref{pLTS}.
+In \cite{fengProbabilisticBisimulationsQuantum2007}, a distribution of configuration cannot evolve in any manner, but in \cite{fengBisimulationQuantumProcesses2012, dengOpenBisimulationQuantum2012}, the transition relations $\longrightarrow \subseteq Conf \times Act_\tau \times \distr(Conf)$ is lifted to a relation between distribution $\longrightarrow \subseteq \distr(Conf) \times Act_\tau \times \distr(Conf)$, i.e. following the "distribution transformer" approach described in section \ref{pLTS}.
 
 
 Among the various semantics developed for qCCS, in order to find a bisimilarity equation that was also a congruence, in \cite{yingAlgebraQuantumProcesses2010} the authors proposed a simplified fragment of qCCS, without measurements and classical data. The semantic is purely non-deterministic, without probabilistic behaviour, and the superoperators applied are treated as \textit{observable actions}, as possible labels of the transition relation. This calculus is an alternative approach to the other calculi in literature, relying on different assumptions, and we will not treat it in this chapter.
