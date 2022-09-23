@@ -1,0 +1,68 @@
+
+\subsection{Quantum Saturated Bisimilarity}
+
+Density operators represents equivalence classes over probabilistic mixtures of quantum states.
+The implicit equivalence relation is $\{(\ket{\phi_i}, p_i)\}_i \cong \{(\ket{\phi_j}, p_j)\}$ iff $\sum_{i} p_i \ketbra{\phi_i}{\phi_i} = \sum_{j} p_j \ketbra{\phi_j}{\phi_j}$.
+The physical justification of this equivalence is that different mixtures resulting in the same density operator cannot be distinguished since they behave the same.
+
+The same equivalence relation is trivially extended to configurations, where the use of density operators for the quantum state allows a common representation of different configurations with an equivalent mixtures of quantum states. 
+We extend here this equivalence relation to distributions of configurations.
+Intuitively, we give rules for exchanging the probabilistic combination $\psum{p}$ in the state of some configurations for probabilistic combination of configurations, and vice-versa. 
+
+\begin{definition}
+	A \emph{quantum distribution} is an equivalence class $\mathbf{\Delta}$ of probabilistic distributions $\Delta$ over quantum configurations defined by the minimal equivalence relation such that:
+	\begin{itemize}
+		\item $(\overline{\confw{\rho, P}} \psum{p} \overline{\confw{\sigma, P}}) \equiv \overline{\confw{p \rho + (1-p)\sigma, P}}$; and
+%		\item $(\overline{\confw{\rho \otimes \sigma, P}} \psum{p} \overline{\confw{\rho \otimes \sigma', Q}}) \equiv (\overline{\confw{\rho \otimes \delta, P}} \psum{p} \overline{\confw{\rho \otimes \delta', Q}})$ if $\Gamma, \Sigma \vdash P$, $\Gamma, \Sigma \vdash Q$, $\rho \in \hilbert_\Sigma$, and $p \sigma + (1 - p) \sigma' =  p \sigma + (1 - p) \sigma' = p \delta + (1 - p) \delta'$; and	
+		\item $\Delta_i\ \equiv\ \Theta_i$, $i = 1, 2$, implies $\Delta_1 \psum{p} \Delta_2 \equiv\ \Theta_1 \psum{p} \Theta_2$.
+	\end{itemize}
+	We write $Q(Conf)$ for quantum distributions over configurations.
+\end{definition}
+
+\begin{definition}
+	Given $\rel \subseteq Conf \times Conf$ be a relation over quantum configurations, let its quantum lifting be the minimal relation $\sqlift{\rel} \subseteq Q(Conf) \times Q(Conf)$ over quantum distributions such that $\Delta\ \slift{\rel}\ \Theta$ with $\Delta \in \mathbf{\Delta}$ and $\Theta \in \mathbf{\Theta}$ implies $\mathbf{\Delta}\ \sqlift{\rel}\ \mathbf{\Theta}$.
+\end{definition}
+
+
+\note{FALSO: 
+\begin{theorem}
+	Let $\rel \subseteq Conf \times Conf$ be an equivalence relation over quantum configurations, then $\sqlift{\rel}$ is an equivalence relations over distributions of quantum configurations.
+\end{theorem}
+\begin{proof}
+	Reflexivity and symmetry holds by definition given that $\rel$ is an equivalence relation.
+	For transitivity, assume $\Delta \slift{\rel} \Theta \slift{\rel} \Xi$.
+\end{proof}}
+
+
+%\begin{definition}[Probabilistic Barbed Bisimulation]
+%	A symmetric relation $\rel_{\Gamma, \Sigma} \subseteq \conf \times \conf$ is \emph{probabilistic barbed bisimulation} if $\conf \rel \conf'$, with $\conf, \conf'$ well-typed under the context $\Gamma; \Sigma$, implies that 
+%	\begin{itemize}
+%		\item if $\conf \downarrow_{c}$ then $\conf' \downarrow_{c}$; and 
+%		\item whenever $\conf \xrightarrow{\tau} \Delta$, there exists $\Delta'$ such that $\conf' \xrightarrow{\tau} \Delta'$ and $\Delta \slift{\rel} \Delta'$
+%%		\item whenever $\conf' \xrightarrow{\tau} \Delta'$, there exists $\Delta$ such that $\conf \xrightarrow{\tau} \Delta$ and $\Delta \slift{\rel} \Delta'$
+%	\end{itemize}
+%\end{definition}
+
+\begin{definition}[Quantum Saturated Bisimilarity]
+	A symmetric relation $\rel \subseteq \conf \times \conf$ is \emph{quantum saturated bisimulation} if $\conf\ \rel\ \conf'$ implies that $\conf, \conf'$ are well-typed under a typing context $\Gamma; \Sigma$, and for any context $B[\_]_{\Gamma, \Sigma}$
+	\begin{itemize}
+		\item if $B[\conf] \downarrow_{c}$ then $B[\conf'] \downarrow_{c}$; and 
+		\item whenever $B[\conf] \xrightarrow{\tau} \Delta \in \mathbf{\Delta}$, there exists $\Delta' \in \mathbf{\Delta'}$ such that $C[\conf'] \xrightarrow{\tau} \Delta'$ and $\mathbf{\Delta}\ \sqlift{\rel}\ \mathbf{\Delta'}$
+		%		\item whenever $\conf' \xrightarrow{\tau} \Delta'$, there exists $\Delta$ such that $\conf \xrightarrow{\tau} \Delta$ and $\Delta \slift{\rel} \Delta'$
+	\end{itemize}
+	Let \emph{saturated probabilistic barbed bisimilarity} $\approx_{SPB}$ be the largest saturated probabilistic barbed bisimulation.
+\end{definition}
+
+
+
+
+
+From Davidson we expect that $\confw{\beta, M_{0,1}[q_0 \triangleright x] . c ! q_0 \parallel discard(q_1)} \approx_{SPB} \confw{\beta, M_{0,1}[q_0 \triangleright x] . c ! q_0 \parallel discard(q_1)}$. To prove this result, we need can use theorem \ref{bisim_closed_by_discard}
+
+
+\note{con questo teorema si può quasi dimostrare che $\confw{\beta, M_{01}[q].discard(q)} \sim \confw{\beta, M_{+-}[q].discard'(q)}$. Esprimono le stesse barbe, e messi in parallelo con $R$, se eseguono la misura finiscono nelle solite distribuzioni $\proj{00} \psum{1/2} \proj{11}$ vs $\proj{++} \psum{1/2} \proj{--}$. Queste distribuzioni le possiamo riscrivere come singole configurazioni con stati misti $\confw{\proj{00}\psum{1/2}\proj{11}, R\parallel discard(q)}$ e $\confw{\proj{++}\psum{1/2}\proj{--}, R\parallel discard'(q)}$, e queste due configurazioni sono bisimili per il teorema appena dimostrato.
+
+Manca soltanto dire cosa succede se il contesto $R$ fa qualcosa. Se non coinvolge i qubit, allora è una transizione inattiva, si può ignorare. Se coinvolge i qubit, bisognerebbe dimostrare che non distingue niente. Nello specifico, se fa delle unitarie, non cambia nulla, e se fa una misura, distrgge l'entanglement e non può più distinguere, credo.
+}
+
+

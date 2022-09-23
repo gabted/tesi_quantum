@@ -73,6 +73,9 @@ sorting=nyt
 \newcommand{\proc}[1]{\text{\textbf{#1}}}
 \newcommand{\ite}[3]{\textbf{if } #1 \textbf{ then } #2 \textbf{ else } #3}
 
+%bisimulation symbols
+\newcommand{\simps}{\sim_{PS}}
+
 
 \newcommand{\distr}{\mathcal{D}}
 
@@ -187,11 +190,13 @@ We will present the syntax, type system and semantics for Linear qCCS (from now 
 \input{chapter4/semantics}
 \input{chapter4/typesystem_theorems}
 
-\section{Exploring Behavioural Equivalence}
-\input{chapter4/exploring_equivalence}
 
-\section{Bisimilarity}\label{bisimulation_chapter4}
-\input{chapter4/bisimulation}
+
+\section{Behavioural Equivalence}\label{bisimulation_chapter4}
+\input{chapter4/intro}
+\input{chapter4/probabilistic_bisimilarity}
+\input{chapter4/exploring_equivalence}
+\input{chapter4/quantum_bisimilarity}
 
 \section{Comparison}
 \input{chapter4/comparison.tex}

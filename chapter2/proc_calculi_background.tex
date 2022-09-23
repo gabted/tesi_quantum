@@ -186,7 +186,7 @@ Notice that the addition of this rule is equivalent to lifting the transition re
 
 
 
-\subsection{Reduction systems}
+\subsection{Reduction systems}\label{bkg_reduction_system}
 
 In the early works on process calculus, bisimilarity in its various form was adopted as the mainstream notion of behavioural equivalence. Starting from \cite{milnerBarbedBisimulation1992}, a different notion of equivalence was considered, conceptually simpler and more general, under the name
 of \textbf{barbed congruence}, or barbed congruence. According to this notion, two processes are equivalent if they can not be distinguished by an external observer. That is, two processes $P$ and $Q$ are equivalent if, under any context $B[]$, $B[P]$ and $B[Q]$ express the same observable behaviour, based on a general concept of "observable", called \textit{barb}.
@@ -234,7 +234,7 @@ Let $\langle S , \rightarrow \rangle$ be a RS, and $B$ a set of barbs. Then a sy
 \end{itemize}
 Two states $s, t \in S$ are said to be \textit{barbed bisimilar}, written $s \sim_b t$, if a barbed bisimulation $\rel$ exists such that $s \rel t$.
 
-Barbed bisimilarity is often not useful per se, as for example $c!0.b!0.\nil \sim_b c!0.b!0.\nil$, since they both express the barb $\downarrow_c$, and have no outgoing transition. Barbed bisimulation is commonly used as the discriminating property of a contextual equivalence, called \textit{barbed equivalence}.
+Barbed bisimilarity is often not useful per se, as for example $c!0.a!0.\nil \sim_b c!0.b!0.\nil$, since they both express the barb $\downarrow_c$, and have no outgoing transition. Barbed bisimulation is commonly used as the discriminating property of a contextual equivalence, called \textit{barbed equivalence}.
 
 A context is a "process with a hole", for example $B[] = [] \parallel R$ or $B[] = [] + R$, where $R$ is any process. Given a context $B[]$, we define as $B[P]$ as the process obtained "filling" the hole with $P$, i.e. substituting $P$ in place of $[]$.
 
