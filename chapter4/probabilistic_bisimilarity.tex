@@ -5,7 +5,7 @@ Saturated bisimilarity \cite{bonchiGeneralTheoryBarbs2014} grants the external o
 We use (probabilistic) saturated bisimilarity as it is a established, general behavioural equivalence, useful to investigate reduction system where there is no affirmed notion of observable property. Besides, as we will see, saturated bisimilarity is able to capture some properties used in \cite{dengOpenBisimulationQuantum2012} to define open bisimilarity.
 
 
-We define as a barb, the atomic observable property, only the capability of performing an output on a channel. We do not consider input action observables, as it is the norm \note{[cite amadio sangiorgi bisimulation for asynch pi]} for asynchronous calculi. Since the external observer is an asynchronous, non blocking context, it can not observe the process $P$ to discorver if it has a $c?x$ transition available: the context can only perform a terminal action $c!v$, but it will not know if the output action is ever received.
+We define as a barb, the atomic observable property, only the capability of performing an output on a channel. We do not consider input action observables, as it is the norm for asynchronous calculi \cite{amadioBisimulationsAsynchronousPcalculus1998}. Since the external observer is an asynchronous, non blocking context, it can not observe the process $P$ to discorver if it has a $c?x$ transition available: the context can only perform a terminal action $c!v$, but it will not know if the output action is ever received.
 
 \begin{definition}[Barb]
 	A \emph{barb} is a predicate $\downarrow_{c}$ over well typed processes, defined as follows: $P \downarrow_{c}$ if and only if $P \equiv c!e \parallel R$ for some expression $e$, and processes $R$.
@@ -59,12 +59,11 @@ We have that $\Delta \slift{\not\sim}_{PS} \Delta'$ bisimilar, as there is no de
   \[ B[\blank] = out_{a_1} ? x . M[x \rhd y] . \ite{y = 1}{c!y}{nil}. \]
 \end{example}
 
-simPS is designed to be equivalent to open bisimulation for qCCS, except for a few intended modification:\begin{itemize}
-\item open bisimulation is defined as closed for superoperator application, simPS is proven to be
-\item open bisimulation is defines as having the same environment, simPS is proven to be
-\item open bisimulation is proven to be contex closed, simPS is defined to be contex closed
-\item open bisimulation equates processes with same free variables, simPS equates processes with the same typing context
-\item open bisimulation equates output actions with the same quantum names, simBS does not
+Probabilistic saturated bisimilarity is designed to be equivalent to open bisimilarity for qCCS, except for a few intended modification:\begin{itemize}
+\item Open bisimilarity equates processes with the same free variables, $\simps$ equates processes with the same typing context.
+\item Open bisimilarity is superoperator closed by definition, $\simps$ is superoperator closed as a property.
+\item Open bisimilarity requires the environment of two configurations to be equal by definition, $\simps$ requires the environment of two configurations to be equal as a property.
+\item Open bisimilarity is contex closed as a property, $\simps$ is context closed by definition.
 \end{itemize}
 
 
@@ -113,12 +112,10 @@ The proof for rule {\scshape SemQMeas} is the same, considering every $m \in \{0
 
 
 \begin{theorem}
-%	For any pair of configurations $\conf, \conf'$ well-typed under $\Gamma; \Sigma$, 
-%	$\conf \approx_{SPB} \conf'$ implies that for any $\sop \in TSO(\hilbert_{\overline{\Sigma}})$, $\sop (\conf)\ \approx_{SPB}\ \sop (\conf')$.
 	For any pair of configurations $\conf, \conf'$ well-typed under $\Gamma; \Sigma$, 
-	$\conf \approx_{SPB} \conf'$ implies
+	$\conf \simps \conf'$ implies
 	\begin{enumerate}
-		{\item for any $\sop \in TSO(\hilbert_{\overline{\Sigma}})$, $\sop (\conf)\ \approx_{SPB}\ \sop (\conf')$; and \label{point:thmchinese1}}
+		{\item for any $\sop \in \mathcal{TS}(\hilbert_{\overline{\Sigma}})$, $\sop (\conf)\ \simps \ \sop (\conf')$; and \label{point:thmchinese1}}
 		{\item $tr_{\Sigma}(\conf) = tr_{\Sigma}(\conf')$. \label{point:thmchinese2}}
 	\end{enumerate}
 \end{theorem}
@@ -210,9 +207,9 @@ The proof of this lemma is extremely similar to the one before, and thus omitted
 \note{va sistemata la notazione dei pedici dei superoperatori.}
 \begin{lemma}\label{lemma_transition_partial_trace}
 Let $\sigma \in  \mathcal{D}(\calH_{\widetilde{p}} \otimes \calH_{\widetilde{q}})$, and $\rho = tr_{\widetilde{q}}(\sigma) \in \calH_{\widetilde{p}}$. Then, for any process 
-\[ \confw{\rho, P} \rightarrow \bigoplus_i p_i \confw{\rho_i, P_i} 
+\[ \confw{\rho, P} \rightarrow \sum_i p_i \confw{\rho_i, P_i} 
 \qquad\Leftrightarrow\qquad
-\confw{\sigma, P\parallel \discQ} \rightarrow \bigoplus p_i \confw{\sigma_i, P_i\parallel \discQ}
+\confw{\sigma, P\parallel \discQ} \rightarrow \sum p_i \confw{\sigma_i, P_i\parallel \discQ}
 \]
 and $\forall i \ \rho_i = \trQ(\sigma_i)$
 \end{lemma}
@@ -239,9 +236,9 @@ where $\rho' = \sop_{\widetilde{p}}(\rho) = \sop_{\widetilde{p}}(\trQ(\sigma))$ 
 
 The base case {\footnotesize\scshape SemQMeasure} is similar, we have 
 \begin{gather*}
-\confw{\rho, M[\widetilde{p} \rhd x].P} \rightarrow \bigoplus p_m\confw{p_m^{-1}\sop_m(\rho), P} \\
+\confw{\rho, M[\widetilde{p} \rhd x].P} \rightarrow \sum p_m\confw{p_m^{-1}\sop_m(\rho), P} \\
 \Leftrightarrow \\
-\confw{\sigma, M[\widetilde{p} \rhd x].P\parallel \discQ} \rightarrow \bigoplus p'_m \confw{p_m^{-1}\sop_m(\sigma), P\parallel \discQ}
+\confw{\sigma, M[\widetilde{p} \rhd x].P\parallel \discQ} \rightarrow \sum p'_m \confw{p_m^{-1}\sop_m(\sigma), P\parallel \discQ}
 \end{gather*}
 where thanks to lemma \ref{trace_and_sop}, we have $p_m = tr(\sop_m(\rho)) = tr(\sop_m(\trQ(\sigma))) = tr(\trQ(\sop_m \otimes \mathcal{I}_{\widetilde{q}}(\sigma)))$ and $\forall i \ \rho_i = \trQ(\sigma_i)$, as in the previous case.
 
@@ -249,7 +246,7 @@ The inductive cases are all trivial, as none of them modifies the quantum values
 \end{proof}
 
 \newcommand{\relTrQ}{\rel_{\trQ}}
-\begin{lemma}
+\begin{lemma}\label{lemma_reltrq_probabilistic}
 Let $\sigma \in \mathcal{D}(\calH_{\widetilde{p}} \otimes \calH_{\widetilde{q}})$. If $\rel$ is a bisimulation, then $\rel_{\trQ}$ is a bisimulation, where $\rel_{\trQ}$ is defined as
 \[\rel_{\trQ} = \set{\Big(\confw{\sigma, P \parallel \discQ}, \confw{\nu, Q \parallel \discQ}\Big) \quad\mid\quad \confw{\trQ(\sigma), P} \rel \confw{\trQ(\nu), Q}}\]
 \end{lemma}
@@ -257,16 +254,16 @@ Let $\sigma \in \mathcal{D}(\calH_{\widetilde{p}} \otimes \calH_{\widetilde{q}})
 To show that $\rel_{\trQ}$ is a bisimulation, we need first of all to show that is symmetric, which is when $\rel$ is symmetric. The we suppose that $\confw{\sigma, P \parallel \discQ} \relTrQ \confw{\nu, Q \parallel \discQ}$ and have to show that \begin{itemize}
 \item For any barb $b$, if $\confw{\sigma, P \parallel \discQ} \downarrow_b$ then $\confw{\nu, Q \parallel \discQ} \downarrow_b$. We have that $\confw{\sigma, P \parallel \discQ} \downarrow_b \Leftrightarrow \confw{\trQ(\sigma), P} \downarrow b$, $\confw{\nu, Q \parallel \discQ} \downarrow_b \Leftrightarrow \confw{\trQ(\nu), Q} \downarrow b$, and 
 $\confw{\trQ(\sigma), P} \rel \confw{\trQ(\nu), Q}$, so they all express the same barbs.
-\item For any $R$, if $\confw{\sigma, P \parallel R \parallel \discQ} \rightarrow \Delta$, then $\confw{\nu, Q \parallel R \parallel \discQ} \rightarrow \Theta$, and $\Delta \slift{\relTrQ} \Theta$. Notice that $\discQ$ can not evolve, and so we start from the hypothesis $\confw{\sigma, P \parallel R \parallel \discQ} \rightarrow \bigoplus p_i \confw{\sigma_i, P_i \parallel \discQ}$. Then, from lemma \ref{lemma_transition_partial_trace}, we know that $\confw{\trQ(\sigma), P\parallel R} \rightarrow \bigoplus p_i \confw{\trQ(\sigma_i), P_i}$. But since $\confw{\trQ(\sigma), P} \rel \confw{\trQ(\nu), Q}$, and $\rel$ is a saturated bisimulation, it must be that $\confw{\trQ(\nu), Q\parallel R} \rightarrow \bigoplus p_i \confw{\xi_i, Q_i}$ with $\confw{\trQ(\sigma_i), P_i} \rel \confw{\xi_i, Q_i}$ for each $i$. But using the same lemma \ref{lemma_transition_partial_trace} in the other direction, we get $\confw{\nu, Q \parallel R \parallel \discQ} \rightarrow \bigoplus p_i \confw{\nu_i, Q_i \parallel \discQ}$ with $\xi_i = \trQ(\nu_i)$. In conclusion, for each transition $\confw{\sigma, P \parallel R \parallel \discQ} \rightarrow \bigoplus p_i \confw{\sigma_i, P_i \parallel \discQ}$ exists a transition $\confw{\nu, Q \parallel R \parallel \discQ} \rightarrow \bigoplus p_i \confw{\nu_i, Q_i \parallel \discQ}$ such that $\forall i \confw{\trQ(\sigma_i), P_i} \rel \confw{\trQ(\nu_i), Q_i}$, and so from the definiton of $\relTrQ$ together with probabilistic lifting we get $\bigoplus p_i \confw{\sigma_i, P_i \parallel \discQ} \slift{\relTrQ} \bigoplus p_i \confw{\nu_i, Q_i \parallel \discQ}$.
+\item For any process $R$, if $\confw{\sigma, P \parallel R \parallel \discQ} \rightarrow \Delta$, then $\confw{\nu, Q \parallel R \parallel \discQ} \rightarrow \Theta$, and $\Delta \slift{\relTrQ} \Theta$. Notice that $\discQ$ can not evolve, and so we start from the hypothesis $\confw{\sigma, P \parallel R \parallel \discQ} \rightarrow \sum p_i \confw{\sigma_i, P_i \parallel \discQ}$. Then, from lemma \ref{lemma_transition_partial_trace}, we know that $\confw{\trQ(\sigma), P\parallel R} \rightarrow \sum p_i \confw{\trQ(\sigma_i), P_i}$. But since $\confw{\trQ(\sigma), P} \rel \confw{\trQ(\nu), Q}$, and $\rel$ is a saturated bisimulation, it must be that $\confw{\trQ(\nu), Q\parallel R} \rightarrow \sum p_i \confw{\xi_i, Q_i}$ with $\confw{\trQ(\sigma_i), P_i} \rel \confw{\xi_i, Q_i}$ for each $i$. But using the same lemma \ref{lemma_transition_partial_trace} in the other direction, we get $\confw{\nu, Q \parallel R \parallel \discQ} \rightarrow \sum p_i \confw{\nu_i, Q_i \parallel \discQ}$ with $\xi_i = \trQ(\nu_i)$. In conclusion, for each transition $\confw{\sigma, P \parallel R \parallel \discQ} \rightarrow \sum p_i \confw{\sigma_i, P_i \parallel \discQ}$ exists a transition $\confw{\nu, Q \parallel R \parallel \discQ} \rightarrow \sum p_i \confw{\nu_i, Q_i \parallel \discQ}$ such that $\forall i \confw{\trQ(\sigma_i), P_i} \rel \confw{\trQ(\nu_i), Q_i}$, and so from the definiton of $\relTrQ$ together with probabilistic lifting we get $\sum p_i \confw{\sigma_i, P_i \parallel \discQ} \slift{\relTrQ} \sum p_i \confw{\nu_i, Q_i \parallel \discQ}$.
 \end{itemize}
 \end{proof}
 
 \note{è così immediato che si potrebbe anche integrare nel lemma sopra.}
-\begin{theorem}[$\sim$ is closed for additional discarded qubits]\label{bisim_closed_by_discard}
+\begin{theorem}[$\simps$ is closed for additional discarded qubits]\label{bisim_closed_by_discard}
 If $\confw{\trQ(\sigma), P} \sim \confw{\trQ(\nu), Q}$ then $\confw{\sigma, P \parallel \discQ} \sim \confw{\nu, Q \parallel \discQ}$.
 \end{theorem}
 \begin{proof}
-It easily follows from the previous lemma, if $\confw{\trQ(\sigma), P} \sim \confw{\trQ(\nu), Q}$ then there exists a bisimulation $\rel$ such that $\confw{\trQ(\sigma), P} \rel \confw{\trQ(\nu), Q}$, therefore $\confw{\sigma, P \parallel \discQ} \relTrQ \confw{\nu, Q \parallel \discQ}$ for a bisimulation $\relTrQ$, and so $\confw{\sigma, P \parallel \discQ}$ and $\confw{\nu, Q \parallel \discQ}$ are bisimilar.
+It easily follows from the previous lemma, considering that $\simps$ is the union of all bisimulations.
 \end{proof}
 
 Theorem \ref{bisim_closed_by_discard} is useful to prove bisimilarity for some simple processes. For example, it can be used to prove that $P = H[q].discard(q)$ and $Q = X[q].discard(q)$ are bisimilar.
@@ -282,6 +279,6 @@ Suppose that $\confw{\sigma, R \parallel P} \rel \confw{\sigma, R \parallel Q}$,
 \item If the reductions happens in $R$, it must be of the form $\confw{\sigma, R \parallel P} \rightarrow \sum_i p_i \confw{\sigma_i, R' \parallel P}$, but then there exists a transition $\confw{\sigma, R \parallel Q} \rightarrow \sum_i p_i \confw{\sigma_i, R_i \parallel Q}$, and for each $i$, $\confw{\sigma_i, R_i \parallel P} \rel \confw{\sigma_i, R_i \parallel Q}$ by definition of $\rel$.
 \item If the reductions happens in $P$, it must be 
  $\confw{\sigma, R \parallel H[q].disc(q)} \rightarrow \confw{\sop_{H, q}(\sigma), R \parallel disc(q)}$, but then  $\confw{\sigma, R \parallel X[q].disc(q)} \rightarrow \confw{\sop_{X, q}(\sigma), R \parallel disc(q)}$, where $\sop_{H, q}$ is the superoperator that applies the H transformation only on qubit $q$, and $\sop_{Z, q}$ is the superoperator that applies the Z transformation only on qubit $q$. 
-Since $tr_q(\sop_{H, q}(\sigma)) = tr_q(\sop_{Z, q}(\sigma)) = tr_q(\sigma)$ for lemma \note{LEMMA}, we have that $\confw{\sop_{H, q}(\sigma), R \parallel disc(q)} \sim_{PS} \confw{\sop_{X, q}(\sigma), R \parallel disc(q)}$ for lemma \ref{trace_and_sop}, and so $\confw{\sop_{H, q}(\sigma), R \parallel disc(q)} \rel \confw{\sop_{X, q}(\sigma), R \parallel disc(q)}$ by definition of $\rel$.
+Since $tr_q(\sop_{H, q}(\sigma)) = tr_q(\sop_{Z, q}(\sigma)) = tr_q(\sigma)$ for lemma \ref{trace_and_sop_2}, we have that $\confw{\sop_{H, q}(\sigma), R \parallel disc(q)} \sim_{PS} \confw{\sop_{X, q}(\sigma), R \parallel disc(q)}$ for lemma \ref{trace_and_sop}, and so $$\confw{\sop_{H, q}(\sigma), R \parallel disc(q)} \rel \confw{\sop_{X, q}(\sigma), R \parallel disc(q)}$$ by definition of $\rel$.
  
 \end{itemize}

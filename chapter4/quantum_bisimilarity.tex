@@ -24,25 +24,6 @@ Intuitively, we give rules for exchanging the probabilistic combination $\psum{p
 \end{definition}
 
 
-\note{FALSO: 
-\begin{theorem}
-	Let $\rel \subseteq Conf \times Conf$ be an equivalence relation over quantum configurations, then $\sqlift{\rel}$ is an equivalence relations over distributions of quantum configurations.
-\end{theorem}
-\begin{proof}
-	Reflexivity and symmetry holds by definition given that $\rel$ is an equivalence relation.
-	For transitivity, assume $\Delta \slift{\rel} \Theta \slift{\rel} \Xi$.
-\end{proof}}
-
-
-%\begin{definition}[Probabilistic Barbed Bisimulation]
-%	A symmetric relation $\rel_{\Gamma, \Sigma} \subseteq \conf \times \conf$ is \emph{probabilistic barbed bisimulation} if $\conf \rel \conf'$, with $\conf, \conf'$ well-typed under the context $\Gamma; \Sigma$, implies that 
-%	\begin{itemize}
-%		\item if $\conf \downarrow_{c}$ then $\conf' \downarrow_{c}$; and 
-%		\item whenever $\conf \xrightarrow{\tau} \Delta$, there exists $\Delta'$ such that $\conf' \xrightarrow{\tau} \Delta'$ and $\Delta \slift{\rel} \Delta'$
-%%		\item whenever $\conf' \xrightarrow{\tau} \Delta'$, there exists $\Delta$ such that $\conf \xrightarrow{\tau} \Delta$ and $\Delta \slift{\rel} \Delta'$
-%	\end{itemize}
-%\end{definition}
-
 \begin{definition}[Quantum Saturated Bisimilarity]
 	A symmetric relation $\rel \subseteq \conf \times \conf$ is \emph{quantum saturated bisimulation} if $\conf\ \rel\ \conf'$ implies that $\conf, \conf'$ are well-typed under a typing context $\Gamma; \Sigma$, and for any context $B[\_]_{\Gamma, \Sigma}$
 	\begin{itemize}
@@ -50,19 +31,126 @@ Intuitively, we give rules for exchanging the probabilistic combination $\psum{p
 		\item whenever $B[\conf] \xrightarrow{\tau} \Delta \in \mathbf{\Delta}$, there exists $\Delta' \in \mathbf{\Delta'}$ such that $C[\conf'] \xrightarrow{\tau} \Delta'$ and $\mathbf{\Delta}\ \sqlift{\rel}\ \mathbf{\Delta'}$
 		%		\item whenever $\conf' \xrightarrow{\tau} \Delta'$, there exists $\Delta$ such that $\conf \xrightarrow{\tau} \Delta$ and $\Delta \slift{\rel} \Delta'$
 	\end{itemize}
-	Let \emph{saturated probabilistic barbed bisimilarity} $\approx_{SPB}$ be the largest saturated probabilistic barbed bisimulation.
+	Let \emph{quantum saturated bisimilarity} $\sim_{QS}$ be the union of all probabilistic saturated bisimulation.
 \end{definition}
 
 
+\begin{theorem}
+	For any pair of configurations $\confw{\rho, P}, \confw{\sigma, Q}$ well-typed under $\Gamma; \Sigma$, 
+	$\confw{\rho, P} \simqs \confw{\rho, P}$ implies
+	\begin{enumerate}
+		{\item for any $\sop \in \mathcal{TS}(\hilbert_{\overline{\Sigma}})$, $\sop (\confw{\rho, P})\ \simqs \ \sop (\confw{\rho, P})$, where $\sop(\confw{\rho, P})$ is defined as $\confw{\sop\otimes\mathcal{I}_\Sigma(\rho), P}$, and similarly for $\sop(\confw{\sigma, Q})$, with $\mathcal{I}_\Sigma$ the identity superoperator on qubits $\Sigma$ \label{point:thmchinese1_quantum}}
+		{\item $tr_{\Sigma}(\rho) = tr_{\Sigma}(\sigma)$. \label{point:thmchinese2_quantum}}
+	\end{enumerate}
+\end{theorem}
+\begin{proof}
+To prove point \ref{point:thmchinese1_quantum}, suppose $\confw{\rho, P} \simqs \confw{\rho', P'}$, with a set of quantum names $\widetilde{q}, \widetilde{p}$ and $\Gamma;\widetilde{p} \vdash P$ and $\Gamma;\widetilde{p} \vdash P'$. For any superoperator $\sop \in \mathcal{TS}(\hilbert_{\widetilde{q}})$ we can construct a context $B[\blank] = [\blank] \parallel \sop({\widetilde{q}}).a!0 \parallel c!\widetilde{q}$, where $a$ is a fresh channel. We know that $\confw{\rho, B[P]}$ and $\confw{\sigma, B[q]}$ are bisimilar, and$\confw{\rho, B[P]}$ can evolve in $\confw{\sop\otimes\mathcal{I}_{\widetilde{p}}(\rho), a!0 \parallel c!\widetilde{q} \parallel P}$. Then $\confw{\sigma, B[Q]}$ must necessarily evolve in $\confw{\sop\otimes \mathcal{I}_{\widetilde{p}}(\sigma), a!0 \parallel c!\widetilde{q} \parallel Q}$, because it must match the $\downarrow_a$ barb, and $a$ is fresh. So we have that  
+\[ \confw{\sop\otimes\mathcal{I}_{\widetilde{p}}(\rho), a!0 \parallel c!\widetilde{q} \parallel P} \simqs 
+  \confw{\sop\otimes \mathcal{I}_{\widetilde{p}}(\sigma), a!0 \parallel c!\widetilde{q} \parallel Q}
+\]
+and from this it follows 
+\[ \confw{\sop\otimes\mathcal{I}_{\widetilde{p}}(\rho), P} \simqs 
+  \confw{\sop\otimes \mathcal{I}_{\widetilde{p}}(\sigma), Q}
+\] simply by contradiction: if there was a context capable of distinguishing $\sop(\rho, P)$ from $\sop(\rho, Q)$ then there would be a context able to distinguish also $\sop(\rho, P \parallel a!0 \parallel c!\widetilde{q})$ from $\sop(\sigma, Q \parallel a!0 \parallel c!\widetilde{q})$
+
+To prove point \ref{point:thmchinese2_quantum},  suppose $\confw{\rho, P} \simqs \confw{\sigma, Q}$, with a set of quantum names $\widetilde{q}, \widetilde{p}$ and $\Gamma;\widetilde{p} \vdash P$ and $\Gamma;\widetilde{p} \vdash Q$. Consider the set of contexts 
+\[\mathcal{B} = \set{[\blank] \parallel M_{\kp}[\widetilde{q} \rhd x].\big(\ite{x = 0}{z!0}{o!0} \parallel disc(\widetilde{q})\big)} \mid \kp \in \mathcal{H}_widetilde{q}\]
+where $M_{\kp}$ is the projective measurement $\set{M_0 = \proj{\psi}, M_1 = I - \proj{\psi}}$. Since $\confw{\rho, P}$ is bisimilar to $\confw{\sigma, Q}$, $\confw{\rho, B[P]}$ must be bisimilar to $\confw{\sigma, B[Q]}$ for each $B \in \mathcal{B}$.
+\end{proof}
 
 
+We now prove that, like probabilistic bisimilarity, also quantum bisimilarity is closed for additional discarded qubits: 
+\[\confw{\trQ(\sigma), P} \simqs \confw{\trQ(\nu), Q} \Rightarrow \confw{\sigma, P\parallel \discQ} \simqs \confw{\nu, Q\parallel \discQ}\] 
+For the probabilistic case, we proved that \[\confw{\trQ(\sigma), P} \simps \confw{\trQ(\nu), Q} \Rightarrow \confw{\sigma, P\parallel \discQ} \simps \confw{\nu, Q\parallel \discQ}\] so now we have a weaker hypothesis, since $\simqs$ is coarser then $\simps$.
 
-From Davidson we expect that $\confw{\beta, M_{0,1}[q_0 \triangleright x] . c ! q_0 \parallel discard(q_1)} \approx_{SPB} \confw{\beta, M_{0,1}[q_0 \triangleright x] . c ! q_0 \parallel discard(q_1)}$. To prove this result, we need can use theorem \ref{bisim_closed_by_discard}
+Note that Lemmas \ref{trace_and_sop}, \ref{trace_and_sop_2} and \ref{lemma_transition_partial_trace} descend only from lqCCS semantics, and so are still true. To deal with the weaker hypothesis, we need only one additional lemma, saying that  additional discarded qubits preserve the equivalence relation.
+
+\begin{lemma}\label{lemma_quantum_equivalence_partial_trace}
+Let $\sum_i p_i \confw{\trQ(\sigma_i), P_i}$ be a distribution of configuration, with $\sigma_i \in \mathcal{D}(\calH_{\widetilde{p}} \otimes \calH_{\widetilde{q}})$ for each $i$.  If \[\sum_i p_i \confw{\trQ(\sigma_i), P_i} \equiv \sum_j p_j \confw{\rho_j, P_j}\]
+then 
+\[\sum_i p_i \confw{\sigma_i, P_i\parallel \discQ} \equiv \sum_j p_j \confw{\sigma_j, P_j\parallel \discQ}\]
+and $\rho_j = \trQ(\sigma_j)$ for each $j$.
+\end{lemma}
+\begin{proof}
+We proceed by induction on the rules of $\equiv$. For the base case, suppose \[
+\confw{\trQ(\sigma), P} \psum{p} \confw{\trQ(\sigma'), P} \equiv \confw{(p)\trQ(\sigma) + (1-p)\trQ(\sigma'), P}\]
+We also have, by definition,  \[\confw{\sigma, P\parallel \discQ} \psum{p} \confw{\sigma', P\parallel \discQ} \equiv \confw{(p)\sigma + (1-p)\sigma', P\parallel \discQ}\]
+Notice that, due to linearity of partial trace, $(p)\trQ(\sigma) + (1-p)\trQ(\sigma') = \trQ((p)\sigma + (1-p)\sigma')$, and so we have proven the final condition of the base case.
+The inductive case is trivial, as it simply combines two distributions, without changing the density matrix of configurations
+\end{proof}
+
+We can now prove the same lemma about $\rel_{\trQ}$ for the quantum bisimulation case.
+
+\begin{lemma}\label{lemma_reltrq_quantum}
+Let $\sigma \in \mathcal{D}(\calH_{\widetilde{p}} \otimes \calH_{\widetilde{q}})$. If $\rel$ is a quantum saturated bisimulation, then $\rel_{\trQ}$ is a quantum saturated bisimulation, where $\rel_{\trQ}$ is defined as
+\[\rel_{\trQ} = \set{\Big(\confw{\sigma, P \parallel \discQ}, \confw{\nu, Q \parallel \discQ}\Big) \quad\mid\quad \confw{\trQ(\sigma), P} \rel \confw{\trQ(\nu), Q}}\]
+\end{lemma}
+\begin{proof}
+The proof is similar to the probabilistic bisimulation case, so we will omit some steps.
+For any process $R$ we suppose $\confw{\sigma, P \parallel R \parallel \discQ} \rightarrow \sum p_i \confw{\sigma_i, P_i \parallel \discQ}$. Then, from lemma \ref{lemma_transition_partial_trace}, we know that $\confw{\trQ(\sigma), P\parallel R} \rightarrow \sum p_i \confw{\trQ(\sigma_i), P_i}$. But since $\confw{\trQ(\sigma), P} \rel \confw{\trQ(\nu), Q}$, and $\rel$ is a quantum saturated bisimulation, it must be that 
+\begin{align*}
+& \confw{\trQ(\sigma), P\parallel R} \rightarrow \sum_i p_i \confw{\trQ(\sigma_i), P_i} & & \equiv  &  & \sum_j p_j \confw{\rho_j, P_j} 
+\\
+ & & & & & \qquad\slift{\rel} 
+\\
+& \confw{\trQ(\nu), Q\parallel R} \rightarrow \quad\sum_i p_i \confw{\xi_i, Q_i} & & \equiv & &  \sum_j p_j \confw{\xi'_j, Q_j} 
+\end{align*} 
+Then, we can apply our lemmas to each part of the above diagram: \begin{itemize}
+\item From $\sum_i p_i \confw{\trQ(\sigma_i), P_i} \equiv \sum_j p_j \confw{\rho_j, P_j}$ follows, for lemma \ref{lemma_quantum_equivalence_partial_trace}, $\sum_i p_i \confw{\sigma_i, P_i\parallel \discQ} \equiv  \sum_j p_j \confw{\sigma_j, P_j\parallel \discQ}$, with $\rho_j = \trQ(\sigma_j)$
+\item From $\confw{\trQ(\nu), Q\parallel R} \rightarrow \quad\sum_i p_i \confw{\xi_i, Q_i}$ follows, for lemma \ref{lemma_transition_partial_trace}, $\confw{\nu, Q\parallel R\parallel \discQ} \rightarrow \sum_i p_i \confw{\nu_i, Q_i\parallel \discQ}$, with $\xi_i = \trQ(\nu_i)$
+\item From $\sum_i p_i \confw{\xi_i, Q_i} \equiv  \sum_j p_j \confw{\xi'_j, Q_j}$ follows, for lemma \ref{lemma_quantum_equivalence_partial_trace}, $\sum_i p_i \confw{\nu_i, Q_i\parallel \discQ} \equiv  \sum_j p_j \confw{\nu_j, Q_j\parallel \discQ}$, with $\xi'_j = \trQ(\nu_j)$. 
+\end{itemize}
+In conclusion, together with the definition of $\rel_{\trQ}$, we get
+\begin{align*}
+& \confw{\sigma, P\parallel R \parallel \discQ} \rightarrow \sum_i p_i \confw{\sigma_i, P_i \parallel \discQ} & & \equiv  &  & \sum_j p_j \confw{\sigma_j, P_j \parallel \discQ} 
+\\
+ & & & & & \qquad\quad\slift{\rel_{\trQ}} 
+\\
+& \confw{\nu, Q\parallel R\parallel \discQ} \rightarrow \quad\sum_i p_i \confw{\nu_i, Q_i\parallel \discQ} & & \equiv & &  \sum_j p_j \confw{\nu_j, Q_j\parallel \discQ}
+\end{align*}
+And so $\confw{\sigma, P\parallel R \parallel \discQ} \rel_{\trQ}\confw{\nu, Q\parallel R\parallel \discQ}$.
+\end{proof}
+
+We can now restate the same theorem also for quantum saturated bisimilarity.
+
+\begin{theorem}[$\simqs$ is closed for additional discarded qubits]\label{bisim_closed_by_discard_quantum}
+If $\confw{\trQ(\sigma), P} \simqs \confw{\trQ(\nu), Q}$ then $\confw{\sigma, P \parallel \discQ} \simqs \confw{\nu, Q \parallel \discQ}$.
+\end{theorem}
+\begin{proof}
+It easily follows from the previous lemma, considering that $\simqs$ is the union of all bisimulations.
+\end{proof}
+
+From \cite{davidsonFormalVerificationTechniques2012} we expect that $$P =  M_{01}[q_0 \rhd x].disc(q_0) \simqs Q = M_\pm[q_0 \rhd x].disc(q_0)$$To prove this result, we need the above theorem \ref{bisim_closed_by_discard_quantum}
 
 
-\note{con questo teorema si può quasi dimostrare che $\confw{\beta, M_{01}[q].discard(q)} \sim \confw{\beta, M_{+-}[q].discard'(q)}$. Esprimono le stesse barbe, e messi in parallelo con $R$, se eseguono la misura finiscono nelle solite distribuzioni $\proj{00} \psum{1/2} \proj{11}$ vs $\proj{++} \psum{1/2} \proj{--}$. Queste distribuzioni le possiamo riscrivere come singole configurazioni con stati misti $\confw{\proj{00}\psum{1/2}\proj{11}, R\parallel discard(q)}$ e $\confw{\proj{++}\psum{1/2}\proj{--}, R\parallel discard'(q)}$, e queste due configurazioni sono bisimili per il teorema appena dimostrato.
+Given that $\emptyset, {q_0} \vdash P$ and $\emptyset, {q_0} \vdash Q$, we show that
+\[\rel = \big\{ \confw{\sigma, B[P]}, \confw{\sigma, B[Q]} \mid \sigma \in \mathcal{D}(\calH_{QN}), B[\blank]_{\emptyset; \set{q}} \text{ typed context}\big\}^S\ \cup \sim_{PS}
+\]
+is a quantum saturated bisimulation, where $\rel^S$ denotes the symmetric closure of a relation $\rel$. From this follows trivially that $\confw{\sigma, P} \sim_{QS} \confw{\sigma, Q}$ for any $\sigma$, and so $P$ and $Q$ are bisimilar processes.
 
-Manca soltanto dire cosa succede se il contesto $R$ fa qualcosa. Se non coinvolge i qubit, allora è una transizione inattiva, si può ignorare. Se coinvolge i qubit, bisognerebbe dimostrare che non distingue niente. Nello specifico, se fa delle unitarie, non cambia nulla, e se fa una misura, distrgge l'entanglement e non può più distinguere, credo.
-}
+$\rel$ is a \textit{saturated} relation, meaning that if $\conf \rel \conf'$, then $B[\conf] \rel B[\conf']$ for any $B$. So, to prove that $\rel$ is a quantum saturated bisimulation, we just need to show that $\rel$ is a quantum bisimulation.
+
+Suppose that $\confw{\sigma, R \parallel P} \rel \confw{\sigma, R \parallel Q}$, and that $\confw{\sigma, R \parallel P} \rightarrow \sum_i p_i \conf_i$.\begin{itemize}
+\item If the reductions happens in $R$, it must be of the form $\confw{\sigma, R \parallel P} \rightarrow \sum_i p_i \confw{\sigma_i, R_i \parallel P}$, but then there exists a transition $\confw{\sigma, R \parallel Q} \rightarrow \sum_i p_i \confw{\sigma_i, R_i \parallel Q}$, and for each $i$, $\confw{\sigma_i, R_i \parallel P} \rel \confw{\sigma_i, R_i \parallel Q}$ by definition of $\rel$.
+\item If the reductions happens in $P$, it must be 
+ \[\confw{\sigma, R \parallel M_{01}[q \rhd x].disc(q)} \rightarrow \confw{\frac{1}{p_0}\sop_{0, q}(\sigma), R \parallel disc(q)} \psum{p_0} \confw{\frac{1}{p_1}\sop_{1, q}(\sigma), R \parallel disc(q)}\]
+ where $\sop_{0, q}(\rho) = (\proj{0}\otimes I) \rho (\proj{0} \otimes I)^\dagger$ is the trace non-increasing superoperator that projects qubit $q$ to $\kz$, $p_0$ is the probability of obtaining outcome $0$ from $\sigma$, and similarly for $\sop_{1, q }$ and $p_1$. But then  
+ \[\confw{\sigma, R \parallel M_\pm[q \rhd x].disc(q)} \rightarrow \confw{\frac{1}{p_+}\sop_{+, q}(\sigma), R \parallel disc(q)} \psum{+} \confw{\frac{1}{p_-}\sop_{-, q}(\sigma), R \parallel disc(q)}
+ \] 
+ Noticeably these two distribution are not probabilistic bisimilar, as is evident in the case $\confw{\Phi^+, P} \rightarrow \confw{\proj{00}, \discQ} \psum{\frac{1}{2}} \confw{\proj{11}, \discQ}$ and $\confw{\Phi^+, Q} \rightarrow \confw{\proj{++}, \discQ} \psum{\frac{1}{2}} \confw{\proj{--}, \discQ}$.  Thanks to the quantum equivalence relation, however, we have 
+ \begin{gather*}
+ \confw{\frac{1}{p_0}\sop_{0, q}(\sigma), R \parallel disc(q)} \psum{p_0} \confw{\frac{1}{p_1}\sop_{1, q}(\sigma), R \parallel disc(q)} \equiv \confw{\sop_{0, q}(\sigma) + \sop_{1, q}(\sigma), R \parallel disc(q)}
+ \\
+ \confw{\frac{1}{p_+}\sop_{+, q}(\sigma), R \parallel disc(q)} \psum{p_+} \confw{\frac{1}{p_-}\sop_{-, q}(\sigma), R \parallel disc(q)} \equiv \confw{\sop_{+, q}(\sigma) + \sop_{-, q}(\sigma), R \parallel disc(q)}
+ \end{gather*}
+ Observe that $\sop_{0, q}(\sigma) + \sop_{1, q}(\sigma)$ can be seen as $\sop_{01, q}(\sigma)$, where $\sop_{01, q}$ is the trace-preserving superoperator that measures the qubit $q$ in the computational basis and then discards the result. $\sop_{01, q}(\sigma)$ is indeed a well defined superoperator, as $\proj{0}\otimes I$ and $\proj{1}\otimes I$ for a valid Kraus decomposition. The same holds also for $\sop_{+, q}(\sigma) + \sop_{-, q}(\sigma)$ can be seen as $\sop_{\pm, q}(\sigma)$. So we can conclude
+ \[ \confw{\sop_{01,q},  R \parallel disc(q)} \simqs \confw{\sop_{\pm,q},  R \parallel disc(q)}
+ \]
+ from theorem \ref{bisim_closed_by_discard_quantum}, since $tr_q(\sop_{01, q}(\sigma)) = tr_q(\sop_{\pm, q}(\sigma)) = tr_q(\sigma)$.
+\end{itemize}
+
+In general, for quantum saturated bisimilarity, we have
+\[	U(q).disc(q) \simqs M_[q \rhd x].disc(q) \simqs \sop(q).disc(q) \simqs \tau.disc(q) \]
+for any unitary $U$, measurement $M$ or superoperator $\sop$.
 
 
