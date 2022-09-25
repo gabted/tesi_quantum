@@ -1,4 +1,99 @@
 
+\subsection{QPALg}
+
+Consider the two configurations
+\[ \conf = \confw{\frac{1}{2}I \otimes \frac{1}{2}I, c!q_1 \parallel c!q_2} \qquad \conf' = \confw{\proj{\Phi^+}, c!q_1 \parallel c!q_2}
+\] where $\ket{\Phi^+} = \oost\ket{00} + \oost{11}$. According to the labelled bisimulation of QPAlg, the two configurations are bisimilar, as they both send two qubits with reduced density operator $\frac{1}{2}I$ on channel $c$. For our definition instead it holds $\conf \not\simps \conf'$, as there exists the context \[B[\blank] = [\blank]\parallel c?x.c?y.M[x, y \rhd z].\ite{z = 2}{d!0 \parallel disc(x, y)}{\parallel disc(x, y)}\] where $M$ is the measurement on the $4$-dimensional computational basis \[M = \set{M_0 = \proj{00}, M_1 = \proj{01}, M_2 = \proj{10}, M_3 = \proj{11}}\]
+After receiving and measuring two unrelated mixed state qubits, $B[\conf]$ will evolve in the distribution  $\Delta$
+\[ \frac{1}{4}\confw{\proj{00}, disc(\widetilde{q})} + \frac{1}{4}\confw{\proj{01}, disc(\widetilde{q})} + \frac{1}{4}\confw{\proj{10}, d!0 \parallel disc(\widetilde{q})} + \frac{1}{4}\confw{\proj{11}, disc(\widetilde{q})} \] where $\widetilde{q}$ is the couple $q_1, q_2$.
+After receiving and measuring two entangled qubits, instead, $B[\conf']$ will evolve in the distribution $\Delta'$
+\[ \frac{1}{2}\confw{\proj{00}, disc(\widetilde{q})} +  \frac{1}{2}\confw{\proj{11}, disc(\widetilde{q})} \] 
+We have that $\Delta \slift{\not\sim}_{PS} \Delta'$, as there is no decomposition of $\Delta = \sum_{i\in I} p_i \conf_i$ and $\Delta' = \sum_{i\in I} p_i \conf_i'$ such that $\conf_i \simps \conf_i'$ for each $i$, because $\Delta$ contains a configuration that expresses the barb $\downarrow_d$, while $\Delta'$ contains none.
+
+\subsection{qCCS}
+Probabilistic saturated bisimilarity is designed to be equivalent to open bisimilarity for qCCS, except for a few intended modification:\begin{itemize}
+\item Open bisimilarity requires bisimialr processes to have the same free variables, $\simps$ requires bisimilar processes to have the same typing context.
+\item Open bisimilarity is superoperator-closed by definition, $\simps$ is superoperator closed as a property.
+\item Open bisimilarity requires bisimilar configurations to have the same environment, $\simps$ implies that bisimilar configurations have the same environment.
+\item Open bisimilarity is contex closed as a property, $\simps$ is context closed by definition.
+\end{itemize}
+
+
+In the following, taken a superoperator $\sop \in \mathcal{TS}(\hilbert_{\overline{\Sigma}})$ that acts only on the qubits \textit{outside} $\Sigma$, we write $\sop(\confw{\rho, P})$ to denote the configuration $\confw{\sop\otimes\mathcal{I}_\Sigma(\rho), P}$, with $\mathcal{I}_\Sigma$ the identity superoperator on qubits $\Sigma$.
+
+\begin{theorem}
+	For any pair of configurations $\confw{\rho, P}, \confw{\sigma, Q}$ well-typed under $\Gamma; \Sigma$, 
+	$\confw{\rho, P} \simqs \confw{\rho, P}$ implies
+	\begin{enumerate}
+		{\item for any $\sop \in \mathcal{TS}(\hilbert_{\overline{\Sigma}})$, $\sop (\confw{\rho, P})\ \simqs \ \sop (\confw{\rho, P})$\label{point:thmchinese1_quantum}}
+		{\item $tr_{\Sigma}(\rho) = tr_{\Sigma}(\sigma)$. \label{point:thmchinese2_quantum}}
+	\end{enumerate}
+\end{theorem}
+\begin{proof}
+ To prove point \ref{point:thmchinese1_quantum}, suppose $\confw{\rho, P} \simqs \confw{\sigma, Q}$, with $\rho, \sigma \in \calH_{\widetilde{q},\widetilde{p}}$ and $\Gamma;\widetilde{p} \vdash P$, $\Gamma;\widetilde{p} \vdash Q$.  For any superoperator $\sop \in \mathcal{TS}(\hilbert_{\widetilde{q}})$ we can construct a context $$B[\blank] = [\blank] \parallel \sop({\widetilde{q}}).a!0 \parallel c!\widetilde{q}$$ where $a$ is a fresh channel. We know that $\confw{\rho, B[P]}$ and $\confw{\sigma, B[Q]}$ are bisimilar, and$\confw{\rho, B[P]}$ can evolve in $\confw{\sop\otimes\mathcal{I}_{\widetilde{p}}(\rho), a!0 \parallel c!\widetilde{q} \parallel P}$. Then $\confw{\sigma, B[Q]}$ must necessarily evolve in $\confw{\sop\otimes \mathcal{I}_{\widetilde{p}}(\sigma), a!0 \parallel c!\widetilde{q} \parallel Q}$, because it must match the $\downarrow_a$ barb, and $a$ is fresh. So we have that  
+\[ \confw{\sop\otimes\mathcal{I}_{\widetilde{p}}(\rho), a!0 \parallel c!\widetilde{q} \parallel P} \simqs 
+  \confw{\sop\otimes \mathcal{I}_{\widetilde{p}}(\sigma), a!0 \parallel c!\widetilde{q} \parallel Q}
+\]
+and from this it follows 
+\[ \confw{\sop\otimes\mathcal{I}_{\widetilde{p}}(\rho), P} \simqs 
+  \confw{\sop\otimes \mathcal{I}_{\widetilde{p}}(\sigma), Q}
+\] simply by contradiction: if there was a context capable of distinguishing $\sop(\rho, P)$ from $\sop(\rho, Q)$ then there would be a context able to distinguish also $\sop(\rho, P \parallel a!0 \parallel c!\widetilde{q})$ from $\sop(\sigma, Q \parallel a!0 \parallel c!\widetilde{q})$
+
+To prove point \ref{point:thmchinese2_quantum} we proceed by contradiction, supposing  $\confw{\rho, P} \simqs \confw{\sigma, Q}$  and $tr_{\widetilde{p}}(\rho) \neq tr_{\widetilde{p}}(\sigma)$, with a $\rho, \sigma \in \calH_{\widetilde{q}, \widetilde{p}}$ and $\Gamma;\widetilde{p} \vdash P$, $\Gamma;\widetilde{p} \vdash Q$.
+ If $tr_{\widetilde{p}}(\rho) \neq tr_{\widetilde{p}}(\sigma)$, then there exists a measurement $M_{\widetilde{q}} = \set{M_1, \ldots ,M_{m}}$ that distinguishes them, i.e. such that $p_m(tr_{\widetilde{p}}(\rho)) = tr(M_m tr_{\widetilde{p}}(\rho) M_m^\dagger) \neq tr(M_m tr_{\widetilde{p}}(\sigma) M_m^\dagger) = p_m(tr_{\widetilde{p}}(\sigma))$ for some $m$. But for lemma \ref{trace_and_sop}, the same probabilities arise also from the measurement $M_{\widetilde{q}\widetilde{p}} = \set{M_1 \otimes I_{\widetilde{p}}, \ldots , M_m \otimes I_{\widetilde{p}}}$, that  can therefore distinguish the whole state $\rho$ from $\sigma$. So, taken the context 
+\[[\blank] \parallel M[\widetilde{q} \rhd x].\big(disc(\widetilde{q}) \parallel \ite{x = 1}{c_1!0}{\ldots \ite{x = m-1}{c_{m-1}!0}{c_m!0}}\big) \]
+where $c_0 \ldots c_m$ are fresh channels, we have that $\confw{\rho, B[P]}$ should be bisimilar to $\confw{\sigma, B[Q]}$. But 
+\[\confw{\rho, B[P]} \rightarrow \sum_m p_m(\rho) \confw{\rho_m, c_m!0}\]
+and $\confw{\sigma, B[Q]}$ can perform only the transition \[\confw{\sigma, B[Q]} \rightarrow \sum_m p_m(\sigma) \confw{\sigma_m, c_m!0}\] to match the barbs, but we know that $p_m(\rho) \neq p_m(\sigma)$ for at least one $m$.
+\end{proof}
+
+We can actually prove a stronger property, that in lqCCS the action of "external" superoperators $1sop \in \mathcal{TS}(\calH_{\overline{\Sigma}})$ does not change the observable behaviour of a quantum system.
+
+By writing $\sop \in TSO(\hilbert_{\Sigma})$, we mean that $\sop(\rho) = \sum_{i \in I} (I_{\overline{\Sigma}} \otimes A_i) \rho (I_{\overline{\Sigma}} \otimes A_i)^{\dagger}$.
+
+\begin{lemma}\label{lemma:sop}
+\note{da rivedere}
+	For any pair of configurations $\conf, \conf'$ well-typed under $\Gamma; \Sigma$, and for any $\sop \in TSO(\hilbert_{\overline{\Sigma}})$,
+	$\conf \rightarrow \Delta$ iff $\sop(\conf) \rightarrow \sop(\Delta)$.
+\end{lemma}
+\begin{proof}
+	The only non trivial rules are {\scshape SemQOp} and {\scshape SemQMeas}.
+	Assume without loss of generality that $env(\conf) \in \hilbert_{\Sigma \otimes \overline{\Sigma}}$.
+	By {\scshape SemQOp}, $\conf = \langle \rho, \mathcal{E}(\widetilde{x}) . P \rangle \longrightarrow \langle \mathcal{E}_{\widetilde{x}}(\rho), P \rangle = \Delta$.
+	The type system ensures that $\tilde{x} \subseteq \Sigma$.
+	We assume without loss of generality that $\tilde{x} = \Sigma$.
+	We can also apply {\scshape SemQOp} as follows, $\sop(\conf) = \langle \sop(\rho), \mathcal{E}(\widetilde{x}) . P \rangle  \longrightarrow \langle \mathcal{E}_{\widetilde{x}}(\sop(\rho)), P \rangle$.
+	We need to prove that $\langle \mathcal{E}_{\widetilde{x}}(\sop(\rho)), P \rangle = \langle \sop(\mathcal{E}_{\widetilde{x}}(\rho)), P \rangle = \sop(\Delta)$, i.e., that $\sop_{\widetilde{x}}(\sop(\rho)) = \sop(\sop_{\widetilde{x}}(\rho))$.
+	By definition, $\sop_{\widetilde{x}}(\rho) = \sum_{i = 1}^{n} (I_{\Sigma} \otimes A_i) \rho (I_{\Sigma} \otimes A_i)^{\dagger}$, and $\sop(\rho) = \sum_{j = 1}^{m} (B_j \otimes I_{\overline{\Sigma}}) \rho (B_j \otimes I_{\overline{\Sigma}})^{\dagger}$.
+
+	By linearity 
+	\begin{align*}
+	&\sop_{\widetilde{x}}(\sop(\rho)) =\\ 
+	&\sum_{i = 1}^{n} (I_{\Sigma} \otimes A_i) (\sum_{j = 1}^{m} (B_j \otimes I_{\overline{\Sigma}}) \rho (B_j \otimes I_{\overline{\Sigma}})^{\dagger}) (I_{\Sigma} \otimes A_i)^{\dagger} =\\
+	&\sum_{i = 1}^{n} \sum_{j = 1}^{m} (I_{\Sigma} \otimes A_i) (B_j \otimes I_{\overline{\Sigma}}) \rho (B_j \otimes I_{\overline{\Sigma}})^{\dagger} (I_{\Sigma} \otimes A_i)^{\dagger},
+	\end{align*}
+	and
+	\begin{align*}
+	&\sop(\sop_{\widetilde{x}}(\rho)) =\\
+	&\sum_{j = 1}^{m} (B_j \otimes I_{\overline{\Sigma}}) (\sum_{i = 1}^{n} (I_{\Sigma} \otimes A_i) \rho (I_{\Sigma} \otimes A_i)^{\dagger}) (B_j \otimes I_{\overline{\Sigma}})^{\dagger} =\\
+	&\sum_{i = 1}^{n} \sum_{j = 1}^{m} (B_j \otimes I_{\overline{\Sigma}}) (I_{\Sigma} \otimes A_i) \rho (I_{\Sigma} \otimes A_i)^{\dagger} (B_j \otimes I_{\overline{\Sigma}})^{\dagger}.
+	\end{align*}
+	Thanks to conjugate properties, it is thus sufficient to show that
+	\[
+	(B_{p\times p} \otimes I_{q\times q}) (I_{p\times p} \otimes A_{q\times q}) = (I_{p\times p} \otimes A_{q\times q}) (B_{p\times p} \otimes I_{q\times q}).
+	\]
+	
+	This is easily proven thanks to the mixed product property of the Kronecker product, telling us that 
+	\[ (A \otimes B)(C \otimes D) = (AC)\otimes(BD)
+	\]
+	so in our case, we have 
+	\[
+	(B_{p\times p} \otimes I_{q\times q}) (I_{p\times p} \otimes A_{q\times q}) = B_{p\times p} \otimes A_{q \times q} = (I_{p\times p} \otimes A_{q\times q}) (B_{p\times p} \otimes I_{q\times q})
+	\]	
+The proof for rule {\scshape SemQMeas} is the same, considering every $m \in \{0, \dots, 2^{\widetilde{x}}\}$ separately.
+\end{proof}
+
+
 \begin{example}
 	Consider the two following configurations.
 	\[
@@ -18,4 +113,3 @@ In particular, the following holds in our system but not in~\cite{Feng:2012, Den
 	Set_{\ketbra{+}{+}}(q).M(q \triangleright x).c!0 \sim Set_{\frac{1}{2} I}(q).\tau.c!0
 \end{align*}
 \end{example}
-

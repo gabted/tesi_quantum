@@ -1,8 +1,8 @@
 \subsection{Probabilistic Saturated Bisimilarity}
 
-Saturated bisimilarity \cite{bonchiGeneralTheoryBarbs2014} grants the external observer, when comparing two configurations $\conf$ and $\conf'$ the power to put $\conf$ and $\conf'$ inside any context at each step of the computations. Recall that in barbed congruence (as defined in section \ref{bkg_reduction_system}), the observer can compare $\conf$ and $\conf'$ using just one arbitrary context at the start of the computation, not any context at each step like in saturated bisimilarity.
+Saturated bisimilarity \cite{bonchiGeneralTheoryBarbs2014} grants the external observer, when comparing two configurations $\conf$ and $\conf'$, the power to put $\conf$ and $\conf'$ inside any context at each step of the computations. Recall that in barbed congruence (as defined in section \ref{bkg_reduction_system}), the observer can compare $\conf$ and $\conf'$ using just one arbitrary context at the start of the computation, not any context at each step like in saturated bisimilarity.
 
-We use (probabilistic) saturated bisimilarity as it is a established, general behavioural equivalence, useful to investigate reduction system where there is no affirmed notion of observable property. Besides, as we will see, saturated bisimilarity is able to capture some properties used in \cite{dengOpenBisimulationQuantum2012} to define open bisimilarity.
+We use (probabilistic) saturated bisimilarity as it is an established, general behavioural equivalence, useful to investigate reduction system where there is no affirmed notion of observable property. Besides, as we will see, saturated bisimilarity is able to capture some properties used in \cite{dengOpenBisimulationQuantum2012} to define open bisimilarity.
 
 
 We define as a barb, the atomic observable property, only the capability of performing an output on a channel. We do not consider input action observables, as it is the norm for asynchronous calculi \cite{amadioBisimulationsAsynchronousPcalculus1998}. Since the external observer is an asynchronous, non blocking context, it can not observe the process $P$ to discorver if it has a $c?x$ transition available: the context can only perform a terminal action $c!v$, but it will not know if the output action is ever received.
@@ -21,24 +21,13 @@ If $\conf = \confw{\rho, P}$ is a configuration, we will often write $C\downarro
 	A symmetric relation $\rel \subseteq \conf \times \conf$ is \emph{probabilistic saturated (barbed) bisimulation} if $\confw{\rho, P} \ \rel\ \confw{\sigma, Q}$ implies that $P$ and $Q$  are well-typed under the same typing context $\Gamma; \Sigma$, and for any context $B[\_]_{\Gamma, \Sigma}$
 	\begin{itemize}
 		\item If $P \downarrow_{c}$ then $Q \downarrow_{c}$
-		\item If $\confw{\rho, B[P]} \rightarrow \Delta$, there exists $\Delta' $ such that $\confw{\sigma, B[Q]} \rightarrow \Delta'$ and $\mathbf{\Delta}\ \sqlift{\rel}\ \mathbf{\Delta'}$
+		\item If $\confw{\rho, B[P]} \rightarrow \Delta$, there exists $\Theta$ such that $\confw{\sigma, B[Q]} \rightarrow \Theta$ and $\Delta\ \slift{\rel}\ \Theta$
 	\end{itemize}
 	Let \emph{probabilistic saturated bisimilarity} $\sim_{PS}$ be the union of all saturated probabilistic barbed bisimulation. \\
 	We say that two {processes} $P$ and $Q$ are \emph{bisimilar}, written $P \sim_{PS} Q$, if for any $\rho \in \mathcal{D}(\calH_{QN})$ it holds $\confw{\rho, P} \simps \confw{\rho, Q}$.
 \end{definition}
 
 Note that it is not necessary to use a barb $\downarrow_{c!v}$, so to consider also which is the value that is communicated. A context, in fact, is capable to discern $c!v.P$ and $c!v'.P$ thanks to the \textbf{if-then-else} construct for classical values, or to the measure operator for quantum values. This is an innovation with respect to QPAlg, wehere the observables of $\confw{\rho, c!q.P}$ were both the channel and the value (i.e. the reduced density operator) of $q$. 
-
-\note{Non so se questo esempio metterlo qui o metterlo in una sezione confronti} 
-
-Consider the two configurations
-\[ \conf = \confw{\frac{1}{2}I \otimes \frac{1}{2}I, c!q_1 \parallel c!q_2} \qquad \conf' = \confw{\proj{\Phi^+}, c!q_1 \parallel c!q_2}
-\] where $\ket{\Phi^+} = \oost\ket{00} + \oost{11}$. According to the labelled bisimulation of QPAlg, the two configurations are bisimilar, as they both send two qubits with reduced density operator $\frac{1}{2}I$ on channel $c$. For our definition instead it holds $\conf \not\simps \conf'$, as there exists the context \[B[\blank] = [\blank]\parallel c?x.c?y.M[x, y \rhd z].\ite{z = 2}{d!0 \parallel disc(x, y)}{\parallel disc(x, y)}\] where $M$ is the measurement on the $4$-dimensional computational basis \[M = \set{M_0 = \proj{00}, M_1 = \proj{01}, M_2 = \proj{10}, M_3 = \proj{11}}\]
-After receiving and measuring two unrelated mixed state qubits, $B[\conf]$ will evolve in the distribution  $\Delta$
-\[ \frac{1}{4}\confw{\proj{00}, disc(\widetilde{q})} + \frac{1}{4}\confw{\proj{01}, d!0 \parallel disc(\widetilde{q})} + \frac{1}{4}\confw{\proj{10}, disc(\widetilde{q})} + \frac{1}{4}\confw{\proj{11}, disc(\widetilde{q})} \] where $\widetilde{q}$ is the couple $q_1, q_2$.
-After receiving and measuring two unrelated qubits, instead, $B[\conf']$ will evolve in the distribution $\Delta'$
-\[ \frac{1}{2}\confw{\proj{00}, disc(\widetilde{q})} +  \frac{1}{2}\confw{\proj{11}, disc(\widetilde{q})} \] 
-We have that $\Delta \slift{\not\sim}_{PS} \Delta'$ bisimilar, as there is no decomposition of $\Delta = \sum_{i\in I} p_i \conf_i$ and $\Delta' = \sum_{i\in I} p_i \conf_i'$ such that $\conf_i \simps \conf_i'$ for each $i$, because $\Delta$ contains a configuration that expresses the barb $\downarrow_d$, while $\Delta'$ contains none.
 
 
 \begin{example}
@@ -59,94 +48,8 @@ We have that $\Delta \slift{\not\sim}_{PS} \Delta'$ bisimilar, as there is no de
   \[ B[\blank] = out_{a_1} ? x . M[x \rhd y] . \ite{y = 1}{c!y}{nil}. \]
 \end{example}
 
-Probabilistic saturated bisimilarity is designed to be equivalent to open bisimilarity for qCCS, except for a few intended modification:\begin{itemize}
-\item Open bisimilarity equates processes with the same free variables, $\simps$ equates processes with the same typing context.
-\item Open bisimilarity is superoperator closed by definition, $\simps$ is superoperator closed as a property.
-\item Open bisimilarity requires the environment of two configurations to be equal by definition, $\simps$ requires the environment of two configurations to be equal as a property.
-\item Open bisimilarity is contex closed as a property, $\simps$ is context closed by definition.
-\end{itemize}
 
 
-By writing $\sop \in TSO(\hilbert_{\Sigma})$, we mean that $\sop(\rho) = \sum_{i \in I} (I_{\overline{\Sigma}} \otimes A_i) \rho (I_{\overline{\Sigma}} \otimes A_i)^{\dagger}$.
-
-\begin{lemma}\label{lemma:sop}
-	For any pair of configurations $\conf, \conf'$ well-typed under $\Gamma; \Sigma$, and for any $\sop \in TSO(\hilbert_{\overline{\Sigma}})$,
-	$\conf \rightarrow \Delta$ iff $\sop(\conf) \rightarrow \sop(\Delta)$.
-\end{lemma}
-\begin{proof}
-	The only non trivial rules are {\scshape SemQOp} and {\scshape SemQMeas}.
-	Assume without loss of generality that $env(\conf) \in \hilbert_{\Sigma \otimes \overline{\Sigma}}$.
-	By {\scshape SemQOp}, $\conf = \langle \rho, \mathcal{E}(\widetilde{x}) . P \rangle \longrightarrow \langle \mathcal{E}_{\widetilde{x}}(\rho), P \rangle = \Delta$.
-	The type system ensures that $\tilde{x} \subseteq \Sigma$.
-	We assume without loss of generality that $\tilde{x} = \Sigma$.
-	We can also apply {\scshape SemQOp} as follows, $\sop(\conf) = \langle \sop(\rho), \mathcal{E}(\widetilde{x}) . P \rangle  \longrightarrow \langle \mathcal{E}_{\widetilde{x}}(\sop(\rho)), P \rangle$.
-	We need to prove that $\langle \mathcal{E}_{\widetilde{x}}(\sop(\rho)), P \rangle = \langle \sop(\mathcal{E}_{\widetilde{x}}(\rho)), P \rangle = \sop(\Delta)$, i.e., that $\sop_{\widetilde{x}}(\sop(\rho)) = \sop(\sop_{\widetilde{x}}(\rho))$.
-	By definition, $\sop_{\widetilde{x}}(\rho) = \sum_{i = 1}^{n} (I_{\Sigma} \otimes A_i) \rho (I_{\Sigma} \otimes A_i)^{\dagger}$, and $\sop(\rho) = \sum_{j = 1}^{m} (B_j \otimes I_{\overline{\Sigma}}) \rho (B_j \otimes I_{\overline{\Sigma}})^{\dagger}$.
-
-	By linearity 
-	\begin{align*}
-	&\sop_{\widetilde{x}}(\sop(\rho)) =\\ 
-	&\sum_{i = 1}^{n} (I_{\Sigma} \otimes A_i) (\sum_{j = 1}^{m} (B_j \otimes I_{\overline{\Sigma}}) \rho (B_j \otimes I_{\overline{\Sigma}})^{\dagger}) (I_{\Sigma} \otimes A_i)^{\dagger} =\\
-	&\sum_{i = 1}^{n} \sum_{j = 1}^{m} (I_{\Sigma} \otimes A_i) (B_j \otimes I_{\overline{\Sigma}}) \rho (B_j \otimes I_{\overline{\Sigma}})^{\dagger} (I_{\Sigma} \otimes A_i)^{\dagger},
-	\end{align*}
-	and
-	\begin{align*}
-	&\sop(\sop_{\widetilde{x}}(\rho)) =\\
-	&\sum_{j = 1}^{m} (B_j \otimes I_{\overline{\Sigma}}) (\sum_{i = 1}^{n} (I_{\Sigma} \otimes A_i) \rho (I_{\Sigma} \otimes A_i)^{\dagger}) (B_j \otimes I_{\overline{\Sigma}})^{\dagger} =\\
-	&\sum_{i = 1}^{n} \sum_{j = 1}^{m} (B_j \otimes I_{\overline{\Sigma}}) (I_{\Sigma} \otimes A_i) \rho (I_{\Sigma} \otimes A_i)^{\dagger} (B_j \otimes I_{\overline{\Sigma}})^{\dagger}.
-	\end{align*}
-	Thanks to conjugate properties, it is thus sufficient to show that
-	\[
-	(B_{p\times p} \otimes I_{q\times q}) (I_{p\times p} \otimes A_{q\times q}) = (I_{p\times p} \otimes A_{q\times q}) (B_{p\times p} \otimes I_{q\times q}).
-	\]
-	
-	This is easily proven thanks to the mixed product property of the Kronecker product, telling us that 
-	\[ (A \otimes B)(C \otimes D) = (AC)\otimes(BD)
-	\]
-	so in our case, we have 
-	\[
-	(B_{p\times p} \otimes I_{q\times q}) (I_{p\times p} \otimes A_{q\times q}) = B_{p\times p} \otimes A_{q \times q} = (I_{p\times p} \otimes A_{q\times q}) (B_{p\times p} \otimes I_{q\times q})
-	\]	
-The proof for rule {\scshape SemQMeas} is the same, considering every $m \in \{0, \dots, 2^{\widetilde{x}}\}$ separately.
-\end{proof}
-
-
-\begin{theorem}
-	For any pair of configurations $\conf, \conf'$ well-typed under $\Gamma; \Sigma$, 
-	$\conf \simps \conf'$ implies
-	\begin{enumerate}
-		{\item for any $\sop \in \mathcal{TS}(\hilbert_{\overline{\Sigma}})$, $\sop (\conf)\ \simps \ \sop (\conf')$; and \label{point:thmchinese1}}
-		{\item $tr_{\Sigma}(\conf) = tr_{\Sigma}(\conf')$. \label{point:thmchinese2}}
-	\end{enumerate}
-\end{theorem}
-\begin{proof}
-	The proof of point \ref{point:thmchinese1} follows by transitivity and Lemma~\ref{lemma:sop}. \note{questa dimostrazione va bene per la probabilistic bisimulation, ma non per la quantum bisimulation, quindi la cambierei direttamente con quella nuova}
-	\[
-	 \sop (\conf)\ \approx_{SPB}\ \conf\ \approx_{SPB}\ \conf'\ \approx_{SPB}\ \sop (\conf') 
-	\]
-	For point \ref{point:thmchinese2} we proceed by refutation.
-	Assume $\conf \approx_{SPB} \conf'$ and $tr_{\Sigma}(\conf) \neq tr_{\Sigma}(\conf')$.
-	Take $env(\conf), env(\conf') \in \hilbert_{\{ q \} \otimes \Sigma}$ with $env(\conf) = \ket{0} \otimes \ket{\phi}$ and $env(\conf') = \ket{1} \otimes \ket{\phi'}$.
-	Consider the context $B[\_] = M[q \triangleright x] . \textbf{ if } x = 0 \textbf{ then } c!q \textbf{ else } free(q) \parallel [\_]$.
-	It is clear that $B[\conf] \not\approx_{SPB} B[\conf']$. Contradiction.
-\end{proof}
-
-%An established notion of behavioural equivalence between quantum processes is the Deng-Feng bisimilarity, here we focus on the strong version of it.
-%\begin{definition}[Deng-Feng Bisimilarity]
-%	A symmetric relation $\rel \subseteq \conf \times \conf$ is \emph{Deng-Feng bisimulation} if $\conf\ \rel\ \conf'$ implies that $\conf, \conf'$ are well-typed under a typing context $\Gamma; \Sigma$, and for any context $C[\blank] \in Context_{\Gamma, \Sigma}$
-%	\begin{itemize}
-%		\item $tr_{\Sigma}(\conf) = tr_{\Sigma}(\conf')$;
-%		\item if $C[\sop(\conf)] \downarrow_{c}$ then $C[\sop(\conf')] \downarrow_{c}$; and
-%		\item whenever $C[\sop(\conf)] \xrightarrow{\tau} \Delta$, there exists $\Delta'$ such that $C[\sop(\conf')] \xrightarrow{\tau} \Delta'$ and $\Delta \slift{\rel} \Delta'$
-%	\end{itemize}
-%	Let \emph{Deng-Feng bisimilarity} $\approx_{DF}$ be the largest saturated probabilistic barbed bisimulation.
-%\end{definition}
-%
-%\begin{theorem}
-%	For any pair of configurations $\conf, \conf'$, $\conf \approx_{DF} \conf'$ iff $\conf \approx_{SPB} \conf'$.
-%\end{theorem}
-
-\note{altre dimostrazioni che la chiusura per superoperatori non serve a niente}
 
 A useful proof techinque: $\sim$ is closed for additional discarded qubits. 
 
