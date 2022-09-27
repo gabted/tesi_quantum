@@ -1,47 +1,96 @@
+\newcommand{\quantumdst}{\mathfrak{D}}
+\newcommand{\quantumdsta}{\mathfrak{T}}
+
+Given the difficulties of finding a good notion of behavioural equivalence in quantum process algebras, we consider to address the problem on a minimal setting, only considering basic constructs.
+
 \subsection{Mathematical Preliminaries}
 
-A quantum distribution $\Delta \in S^\hilbert$ over a set $S$ is a function from the finite-dimensional Hilbert space $\hilbert$ of dimension $n$ to probability distributions $D(S)$ over $S$.
-In the following, we write $K_{x} : \hilbert \to S$ defined as the function that always returns $x$ for every state $\ket{\phi} \in \hilbert$.
+A quantum distribution $\quantumdst \in D(S)^\hilbert$ over a set $S$ is a function from the finite-dimensional Hilbert space $\hilbert$ of dimension $n$ to probability distributions $\Delta$ over $S$.
+In the following, we write $K_{\Delta}$ defined as the function that always returns $\Delta$ for every state $\ket{\phi} \in \hilbert$.
 
-Let $\Set{P_i | \sum_{i = 1}^{n} P_i = I }$ be a set of quantum projectors, and let $\Delta_i$, $1 \leq i \leq n$, be a collection of quantum distributions.
-We use $\sum_{i = 1}^{n} P_i \Delta_i$ to denote the distribution determined by 
+Let $\Set{P_i | \sum_{i = 1}^{n} P_i = I }$ be a set of quantum projectors, and let $\quantumdst_i$, $1 \leq i \leq n$, be a collection of quantum distributions.
+We use $\sum_{i = 1}^{n} P_i \quantumdst_i$ to denote the distribution determined by 
 \[
-\left(\sum_{i = 1}^{n} P_i \Delta_i\right) (\ket{\phi}) = \sum_{i = 1}^{n} p_i(\ket{\phi}) \Delta_i \left(\frac{P_i \ket{\phi}}{p_i(\ket{\phi})}\right)
+\left(\sum_{i = 1}^{n} P_i \quantumdst_i\right) (\ket{\phi}) = \sum_{i = 1}^{n} p_i(\ket{\phi}) \quantumdst_i \left(\frac{P_i \ket{\phi}}{p_i(\ket{\phi})}\right)
 \]
 where $p_i(\ket{\phi}) = \bra{\phi} P_i \ket{\phi}$.
 
-Note that for any $\ket{\phi}$, ($\sum_{i = 1}^{n} P_i \Delta_i) (\ket{\phi})$ is a legal distribution since $\Delta_i(\ket{\psi})$ is always a distribution and
+Note that for any $\ket{\phi}$, ($\sum_{i = 1}^{n} P_i \quantumdst_i) (\ket{\phi})$ is a legal probability distribution since $\quantumdst_i(\ket{\psi})$ is a probability distribution and
 \[
 \sum_{i = 1}^{n} p_i (\ket{\phi}) = \sum_{i = 1}^{n} \bra{\phi} P_i \ket{\phi} = \bra{\phi} I \ket{\phi} = \braket{\phi | \phi} = 1.
 \]
 
-When $n = 2$, $P_2$ is derivable as $I - P_1$, thus we write $\Delta_1 \qsum{P_1} \Delta_2$ for $\sum_{i = 1}^{n} P_i \Delta_i$.
+When $n = 2$, $P_2$ is derivable as $I - P_1$, thus we write $\quantumdst_1 \qsum{P_1} \quantumdst_2$ for $\sum_{i = 1}^{n} P_i \quantumdst_i$.
 The operator $\blank \qsum{P} \blank$ can be defined from $\blank \tensor[_p]{\oplus}{} \blank$ as follows:
 \[
-  (\Delta \qsum{P_1} \Theta) (\ket{\phi}) = \Delta \left(\frac{P_1 \ket{\phi}}{p_1(\ket{\phi})}\right) \tensor[_{p_1(\ket{\phi})}]{\oplus}{} \Theta \left(\frac{P_2 \ket{\phi}}{p_2(\ket{\phi})}\right)
+  (\quantumdst \qsum{P_1} \quantumdsta) (\ket{\phi}) = \quantumdst \left(\frac{P_1 \ket{\phi}}{p_1(\ket{\phi})}\right) \tensor[_{p_1(\ket{\phi})}]{\oplus}{} \quantumdsta \left(\frac{P_2 \ket{\phi}}{p_2(\ket{\phi})}\right)
 \]
 
-Given a relation $\rel \subseteq D(S) \times D(S)$, we call $\text{ext}(\rel)$ its \emph{point-wise extension} such that $\Delta\,\text{ext}(\rel)\,\Theta$ if and only if $\forall \ket{\phi}\ldotp \Delta(\ket{\phi})\,\rel\,\Theta(\ket{\phi})$.
-We say that a relation $\rel \subseteq D(S)^\hilbert \times D(S)^\hilbert$ is \emph{point-wise} whenever a relation $\rel_0 \subseteq D(S) \times D(S)$ exists such that $\rel = ext(\rel_0)$.  
-
-We say that a relation $\rel \subseteq D(S)^\hilbert \times D(S)^\hilbert$ is \emph{linear} over $\blank \boxplus \blank$ if $\Delta_i\,\rel\,\Theta_i$, $i = 1,2$, implies $(\Delta_1 \qsum{P} \Delta_2)\,\rel\,(\Theta_1 \qsum{P} \Theta_2)$ for any $P$.
-
-\begin{proposition}
-  Given any relation $\rel \subseteq D(S) \times D(S)$, $\text{ext}(\rel)$ is \emph{linear} over $\blank \boxplus \blank$ if and only if $\rel$ is linear over $\blank \oplus \blank$.
-\end{proposition}
-
+We define the common notions of linearity and decomposability as usual.
 \begin{definition}
-	Let $R$ be a relation in $S \times S$, we define its quantum lifting $\qlift{R}$ as a relation in $D(S)^\hilbert \times D(S)^\hilbert$ as the minimal relation such that
+We say that a relation $\rel \subseteq D(S)^\hilbert \times D(S)^\hilbert$ is \emph{linear} over $\blank \boxplus \blank$ if $\quantumdst_i\,\rel\,\quantumdsta_i$, $i = 1,2$, implies $(\quantumdst_1 \qsum{P} \quantumdst_2)\,\rel\,(\quantumdsta_1 \qsum{P} \quantumdsta_2)$ for any $P$.
+We say that a relation $\rel \subseteq D(S)^\hilbert \times D(S)^\hilbert$ is \emph{left-decomposable} over $\blank \boxplus \blank$ if $(\quantumdst_1 \qsum{P} \quantumdst_2)\ \rel\ \quantumdsta$ implies $\quantumdsta = (\quantumdsta_1 \qsum{P} \quantumdsta_2)$ where $\quantumdst_i\ \rel\ \quantumdsta_i$, for $i = 1, 2$.
+\emph{Right-decomposable} relations are defined as expected, and a relation is \emph{decomposable} if it is both left- and right-decomposable. 
+\end{definition}
+
+The quantum lifting of a relation is defined as follows.
+\begin{definition}
+	Let $\rel$ be a relation in $S \times S$, we define its quantum lifting $\qlift{\rel}$ as a relation in $D(S)^\hilbert \times D(S)^\hilbert$ as the minimal relation such that
 	\begin{enumerate}
-		\item $s R s'$ implies $K_{\overline{s}} \qlift{R} K_{\overline{s'}}$; and
-		\item $\Delta_i \qlift{R} \Theta_i$, i = $1, 2$, implies $\Delta_1 \qsum{P} \Delta_2 \qlift{\rel} \Theta_1 \qsum{P} \Theta_2$ for any projector $P$.
+		\item $s\ \rel\ s'$ implies $K_{\overline{s}} \qlift{\rel} K_{\overline{s'}}$; and
+		\item $\quantumdst_i \qlift{\rel} \quantumdsta_i$, i = $1, 2$, implies $\quantumdst_1 \qsum{P} \quantumdst_2 \qlift{\rel} \quantumdsta_1 \qsum{P} \quantumdsta_2$ for any projector $P$.
 	\end{enumerate}
 \end{definition}
 
-\paragraph{Physical Consistency}
+%The quantum lifting of a function is linear by definition.
+%We prove it is also decomposable.
+%\begin{proposition}
+%	Let $\rel$ be a relation in $S \times S$, its quantum lifting $\qlift{\rel}$ is decomposable.
+%\end{proposition}
+%\begin{proof}
+%	We proceed by induction on the derivation of $\quantumdst \qlift{\rel} \quantumdsta$.
+%	Case \textit{1.} is trivial, $K_{\overline{s}}$ can be decomposed only as $K_{\overline{s}} \qsum{P} K_{\overline{s}}$, or as $K_{\overline{s}} \qsum{I} \quantumdsta'$ for any $\quantumdsta'$, and the same for $K_{\overline{s'}}$.
+%	In case \textit{2.}, let 
+%	Assume $(\quantumdst_1 \qsum{P} \quantumdst_2) \qlift{\rel} \quantumdsta$, 
+%\end{proof}
+%
+%\begin{proposition}
+%	if $\rel$ is an equivalence relation, then $\qlift{\rel}$ is an equivalence relation.
+%\end{proposition}
+%\begin{proof}
+%	Symmetry and reflexivity are trivial.
+%	We prove transitivity by induction on the derivations of $\quantumdst \qlift{\rel} \quantumdsta$.
+%	The only axiom is $K_{\overline{s}} \qlift{\rel} K_{\overline{s'}}$ if $s \rel s'$.
+%	Assume 	
+%\end{proof}
 
-Not all quantum distributions are physically implementable, as a trivial example, take any $\Delta$ such that $\Delta(\ket{\phi}) \neq \Delta(-\ket{\phi})$.
-Clearly, since all the normalized vectors $\ket{\phi}, -\ket{\phi}, i \ket{\phi}, -i \ket{\phi}$ represent the same quantum state, $\Delta$ is not consistent with physical law.
+\begin{proposition}
+	Let $\rel$ be a relation in $S \times S$, and let $\quantumdst, \quantumdsta$ be quantum distributions such that $\quantumdst \qlift{\rel} \quantumdsta$.
+	Then, for any $\ket{\phi}$, $\quantumdst(\ket{\phi}) \slift{\rel} \quantumdsta(\ket{\phi})$.
+\end{proposition}
+\begin{proof}
+	We proceed by induction on the derivation of $\quantumdst \qlift{\rel} \quantumdsta$.
+	Case \textit{1.} is trivial, for any $\ket{\phi}, K_{\overline{s}}(\ket{\phi}) = \overline{s}$, and $K_{\overline{s'}}(\ket{\phi}) = \overline{s'}$, and $s\ \rel\ s'$ implies $\overline{s} \slift{\rel} \overline{s'}$.
+	For case \textit{2.}, we have that
+	\begin{align*}
+	(\quantumdst_1 \qsum{P_1} \quantumdst_2) (\ket{\phi}) = \quantumdst_1 \left(\frac{P_1 \ket{\phi}}{p_1(\ket{\phi})}\right) \tensor[_{p_1(\ket{\phi})}]{\oplus}{} \quantumdst_2 \left(\frac{P_2 \ket{\phi}}{p_2(\ket{\phi})}\right)\\
+	(\quantumdsta_1 \qsum{P_1} \quantumdsta_2) (\ket{\phi}) = \quantumdsta_1 \left(\frac{P_1 \ket{\phi}}{p_1(\ket{\phi})}\right) \tensor[_{p_1(\ket{\phi})}]{\oplus}{} \quantumdsta_2 \left(\frac{P_2 \ket{\phi}}{p_2(\ket{\phi})}\right)
+	\end{align*}
+	By induction hypothesis we know that $\quantumdst_i \left(\frac{P_i \ket{\phi}}{p_i(\ket{\phi})}\right) \slift{\rel} \quantumdsta_i \left(\frac{P_i \ket{\phi}}{p_i(\ket{\phi})}\right)$, for $i = 1,2$, and the thesis holds by linearity.
+\end{proof}
+
+
+%Given a relation $\rel \subseteq D(S) \times D(S)$, we call $\text{ext}(\rel)$ its \emph{point-wise extension} such that $\quantumdst\,\text{ext}(\rel)\,\quantumdsta$ if and only if $\forall \ket{\phi}\ldotp \quantumdst(\ket{\phi})\,\rel\,\quantumdsta(\ket{\phi})$.
+%We say that a relation $\rel \subseteq D(S)^\hilbert \times D(S)^\hilbert$ is \emph{point-wise} whenever a relation $\rel_0 \subseteq D(S) \times D(S)$ exists such that $\rel = ext(\rel_0)$.  
+%
+%\begin{proposition}
+%	Given any relation $\rel \subseteq D(S) \times D(S)$, $\text{ext}(\rel)$ is \emph{linear} over $\blank \boxplus \blank$ if and only if $\rel$ is linear over $\blank \oplus \blank$.
+%\end{proposition}
+
+%\paragraph{Physical Consistency}
+%
+%Not all quantum distributions are physically implementable, as a trivial example, take any $\Delta$ such that $\Delta(\ket{\phi}) \neq \Delta(-\ket{\phi})$.
+%Clearly, since all the normalized vectors $\ket{\phi}, -\ket{\phi}, i \ket{\phi}, -i \ket{\phi}$ represent the same quantum state, $\Delta$ is not consistent with physical law.
 
 %A quantum boh $\delta \in d_q(S)$ over a set $S$ is a function from the Hilbert space $\hilbert$ to $S$ such that:
 %\begin{itemize}
@@ -84,7 +133,7 @@ s ::= \nil \mid \mu.Q \mid s + s
 %	&\sema{s}(\ket{\phi}) = (\ket{\phi}, s)
 %\end{align*}
 
-The interpretation of an arbitrary term $Q$ as quantum distribution $\sem{Q}$ over S is given by the function $\sem{\blank} : Q \to D(S)$:
+The interpretation of an arbitrary term $Q$ as quantum distribution $\sem{Q}$ over S is given by the function $\sem{\blank}$:
 \begin{align*}
 	&\sem{\nil}(\ket{\phi}) = \overline{\nil}\\
 	&\sem{\mu.Q}(\ket{\phi}) = \overline{\mu.Q}\\
@@ -97,6 +146,7 @@ The interpretation of an arbitrary term $Q$ as quantum distribution $\sem{Q}$ ov
 	&\sem{Q_1 \qsum{P} Q_2} = \sem{Q_1} \qsum{P} \sem{Q_2}
 \end{align*}
 
+The following proposition is trivially derivable by definition.
 \begin{proposition}
 	For any $s \in S$, $\sem{s} = K_{\overline{s}}$.
 \end{proposition}
@@ -108,10 +158,55 @@ The transition relation $\to$ is defined as follows, with $s \xrightarrow{\mu} \
   \infer[\mbox{\footnotesize\scshape Ext.R}]{Q_1 + Q_2 \xrightarrow{\mu} \Delta}{Q_2 \xrightarrow{\mu} \Delta}
 \end{gather*}
 
+We define bisimularity on QLTS as usual.
 \begin{definition}
 	A relation $\rel : S \times S$ is called a QLTS \emph{bisimulation} if it's symmetric and for each pair of states $s, s' \in S$ such that $s \rel s'$,
 	if $s \xrightarrow{\mu} \Delta$ then $s' \xrightarrow{\mu} \Delta'$ and $\Delta\,\qlift{\rel}\,\Delta'$, for some quantum distributions $\Delta, \Delta' \in D(S)$.
+	\emph{Q-bisimilarity} $\sim_Q$ is the largest QLTS bisimulation.
 \end{definition}
+
+
+\subsubsection{Testing Bisimilartiy over problematic Cases}
+
+We take the example 6, 7, 8, and show that they behave as expected in mQPA.
+
+For examples 6 and 7 consider the following.
+\begin{example}
+	A qbit which is in a mixed state of $\ket{0}$ and $\ket{1}$ with equal probability behaves exactly as a qbit which is in a mixed state of $\ket{+}$ and $\ket{-}$.
+	Consider the two following processes.
+	\begin{align*}
+		Q &= (s \qsum{\ketbra{0}{0}} s) \qsum{\ketbra{+}{+}} (s \qsum{\ketbra{0}{0}} s)\\
+		Q' &= (s \qsum{\ketbra{+}{+}} s) \qsum{\ketbra{0}{0}} (s \qsum{\ketbra{+}{+}} s)
+	\end{align*}
+	Note that in $Q$ (in $Q'$ resp.), after the nested measure, the qbit is in state $\ket{0}$ or $\ket{1}$ ($\ket{+}$ or $\ket{-}$ resp.) with equal probability.
+	Indeed, $Q$ and $Q'$ stand for the same quantum distribution: $\sem{Q} = \sem{Q'} = K_{\bar{s}}$.
+\end{example}
+
+Example 8 is addressed as follows.
+\begin{example}
+	Consider the bell pair $\ket{\Phi^+} = 1/\sqrt{2}(\ket{00} + \ket{11})$.
+	Let $Q$, $Q'$, $P$ and $P'$ be as follows
+	\begin{align*}
+		Q &= z \qsum{P_{\_0}} u\\
+		Q' &= p \qsum{P_{\_+}} m\\
+		P_0 &= ((Q + Q') \qsum{P_{\_0}} (Q + Q')) \qsum{P_{\ketbra{\Phi^+}{\Phi^+}}} \nil\\
+		P_+ &= ((Q + Q') \qsum{P_{\_+}} (Q + Q'))  \qsum{P_{\ketbra{\Phi^+}{\Phi^+}}} \nil
+	\end{align*}
+	Where $P_{\_0}$ and $P_{\_+}$ are defined as $\ketbra{00}{00} + \ketbra{10}{10}$ and $\ketbra{0+}{0+} + \ketbra{1+}{1+}$ respectively.
+	Note that $\sem{P_0} \qlift{\sim} \sem{P_+}$ iff they behave the same on $\ket{\Phi^+}$, and they should, because the mixed states obtained by measuring a single qbit on the computational base, and on the Hadamard base are the same.
+
+	Indeed $\sem{P_0} = \sem{P_+}$.
+	Take any $\ket{\phi}$,
+		\begin{align*}
+		\sem{P_0}(\ket{\phi}) &= 
+		\sem{((Q + Q') \qsum{P_{\_0}} (Q + Q'))}(\ket{\Phi^+}) \psum{p} \bar{\nil}\\
+		&= (\sem{Q + Q'}(\ket{00}) \psum{1/2} \sem{Q + Q'}(\ket{11})) \psum{p} \bar{\nil}\\
+		&= (((\bar{z} + \bar{p}) \psum{1/2} (\bar{z} + \bar{m})) \psum{1/2} ((\bar{u} + \bar{p}) \psum{1/2} (\bar{u} + \bar{m}))) \psum{p} \bar{\nil}\\
+		&= (((\bar{z} + \bar{p}) \psum{1/2} (\bar{u} + \bar{p})) \psum{1/2} ((\bar{z} + \bar{m}) \psum{1/2} (\bar{u} + \bar{m}))) \psum{p} \bar{\nil}\\		
+		&= (\sem{Q + Q'}(\ket{++}) \psum{1/2} \sem{Q + Q'}(\ket{--})) \psum{p} \bar{\nil}\\
+		&= \sem{((Q + Q') \qsum{P_{\_+}} (Q + Q'))}(\ket{\Phi^+}) \psum{p} \bar{\nil} = \sem{P_+}(\ket{\phi}).
+		\end{align*}
+\end{example}
 
 
 \subsubsection{Alternative}
@@ -127,34 +222,35 @@ A quantum labeled transition system qLTS on an Hilbert space $\hilbert$ is a tri
 %	\end{enumerate}
 \end{itemize}
 
-To simplify our presentation, we reduce to $Q$ and $S$ of a specific form, namely where the branches of non-deterministic choices are always guarded by a transition, like in $(\tau \circ U. \nil) + (\alpha \circ U'. \nil)$.
+To simplify our presentation, we reduce to $Q$ and $S$ of a specific form, namely where the branches of non-deterministic choices are always guarded by a transition, like in $(\tau. U \circ \nil) + (\alpha . U' \circ \nil)$.
 Note that this is consistent with the behaviour of preexisting quantum process algebras like~\cite{Feng:2012, Deng:2012}.
 We stress that a term is in this specific form by writing $\hat{Q}$ or $\hat{S}$.
 
 We define the interpretation of a pair $(\ket{\phi}, Q)$ as a distribution as given by the function $\sema{\blank} : (\hilbert \times S) \to D(\hilbert \times S)$:
 \begin{align*}
 	&\sema{\ket{\phi}, s} = \overline{(\ket{\phi}, s)} \\
-	&\sema{\ket{\phi}, U \circ Q} = \sema{U\ket{\phi}, Q} \\
-	&\sema{\ket{\phi}, Q_1 \qsum{P} Q_2 } = \sema{P \ket{\phi}, Q_1} \psum{p(P, \ket{\phi})} \sema{P^{\bot}\ket{\phi}, Q_2} 
+	&\sema{\ket{\phi}, U \circ \hat{Q}} = \sema{U\ket{\phi}, \hat{Q}} \\
+	&\sema{\ket{\phi}, Q_1 \qsum{P} \hat{Q_2} } = \sema{P \ket{\phi}, \hat{Q_1}} \psum{p(P, \ket{\phi})} \sema{P^{\bot}\ket{\phi}, \hat{Q_2}} 
 \end{align*}
 
 The transition relation $\hookrightarrow$ is defined as follows, with $s \xhookrightarrow{\mu} \Delta$ as notation for $(s, \mu, \Delta) \in\;\hookrightarrow$.
 \begin{gather*}
-  \infer[\mbox{\footnotesize\scshape Action}]{(\ket{\phi}, \mu.Q) \xhookrightarrow{\mu} \sema{\ket{\phi}, Q}}{} \qquad 
-  \infer[\mbox{\footnotesize\scshape Ext.L}]{(\ket{\phi}, Q_1 + Q_2) \xhookrightarrow{\mu} C}{(\ket{\phi}, Q_1) \xhookrightarrow{\mu} C} \qquad
-  \infer[\mbox{\footnotesize\scshape Ext.R}]{(\ket{\phi}, Q_1 + Q_2) \xhookrightarrow{\mu} C}{(\ket{\phi}, Q_2) \xhookrightarrow{\mu} C}
+  \infer[\mbox{\footnotesize\scshape Action}]{(\ket{\phi}, \mu.Q) \xhookrightarrow{\mu} \sema{\ket{\phi}, Q}}{} \\[0.3cm]
+  \infer[\mbox{\footnotesize\scshape Ext.L}]{(\ket{\phi}, Q_1 + Q_2) \xhookrightarrow{\mu} \Delta}{(\ket{\phi}, Q_1) \xhookrightarrow{\mu} \Delta} \qquad
+  \infer[\mbox{\footnotesize\scshape Ext.R}]{(\ket{\phi}, Q_1 + Q_2) \xhookrightarrow{\mu} \Delta}{(\ket{\phi}, Q_2) \xhookrightarrow{\mu} \Delta}
 \end{gather*}
 
 %\subsubsection{Bisimulation}
 
 \begin{definition}
-	A relation $\rel : (\hilbert \times S) \times (\hilbert \times S)$ is called a qLTS \emph{bisimulation} if it's symmetric and for each pair $(\ket{\phi}, s), (\ket{\phi'}, s)$ such that $(\ket{\phi}, s) \rel (\ket{\phi'}, s)$,
-	if $(\ket{\phi}, s) \xrightarrow{\mu} C$ then $(\ket{\phi}', s') \xrightarrow{\mu} C'$ and $C \slift{\rel} C'$, for some distributions $C, C' \in D(\hilbert \times S)$.
+	A relation $\rel : (\hilbert \times S) \times (\hilbert \times S)$ is a qLTS \emph{bisimulation} if it's symmetric and for each pair $(\ket{\phi}, s), (\ket{\phi'}, s)$ such that $(\ket{\phi}, s) \rel (\ket{\phi'}, s)$,
+	if $(\ket{\phi}, s) \xrightarrow{\mu} \Delta$ then $(\ket{\phi}', s') \xrightarrow{\mu} C'$ and $C \slift{\rel} \Delta'$.
+	\emph{q-bisimilarity} $\sim_q$ is the largest qLTS bisimulation.
 \end{definition}
 
 We now establish a common behaviour result between QLTS and qLTS.
 \begin{theorem}
-  $\forall s, s' \in S \ldotp s \sim s'$ iff $\forall \ket{\phi} \ldotp \sema{\ket{\phi}, s} \sim \sema{\ket{\phi}, s'}$.
+  $\forall s, s' \in \hat{S}$, if $s \sim_Q s'$ then $s \sim_q s'$.
 \end{theorem}
 \begin{proof}
   ($\Longleftarrow$) Let $\rel \subseteq S \times S$ be a relation such that $s\,\rel\,s'$ iff $\forall \ket{\phi} \ldotp (\ket{\phi}, s)\,\rel_{\ket{\phi}}\,(\ket{\phi}, s')$,

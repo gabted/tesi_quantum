@@ -27,7 +27,7 @@ We say that the channel name $c$ is \textit{bound} in $P\setminus c$, and it is 
 
 We use $discard(e)$, as syntactic sugar for $c!e \setminus c$, and $discard(\widetilde{e})$, or also $disc(\widetilde{e})$, as syntactic sugar for $discard(e_1)\parallel \ldots\parallel discard(e_n)$.
 
-The expressions contain only simple operators $\neg$, $\vee$, $\leq$, but it can be obviously extended with $\wedge, \Rightarrow, \geq, =$ and so on.
+The expressions contain only simple operators $\neg$, $\vee$, $\leq$, but they can be obviously extended with $\wedge, \Rightarrow, \geq, =$ and so on.
 
 lqCCS features a boolean match operator, \textbf{if $e$ then $P_1$ else $P_2$}, that can be understood as the qCCS-equivalent $[e]P_1 + [\neg e]P_2$. The difference between this conditional operator and the usual "sum of guards" approach is that the former always evolves in exactly one branch. With the guard construct is instead possible to write guards that are neither mutually exclusive nor cover all the possibilies, like $c?x.[x > 0].P + [x < 0].Q$. As we will see, the  \textbf{if then else} construct is helpful when constructing linear processes.
 
