@@ -109,7 +109,12 @@ sorting=nyt
 \input{chapter2/quantum_background}
 
 \section{Process Calculus}
-
+We review here some results on
+process calculi and bisimilarity, that will
+be used in the following.
+Given the probabilisti nature of quantum
+mechanics, we include probabilistic systems
+in our discussion.
 	
 \input{chapter2/proc_calculi_background}
 
@@ -178,10 +183,17 @@ sorting=nyt
 
 
 
-\chapter{Linear qCCS}
+\chapter{Linear qCCS}\label{chapter4}
 
 We present a new quantum process calculus, designed to resolve the ambiguities and differences present in the other proposal. This allows to investigate more deeply the different notions of behavioural equivalence of quantum systems. 
-This novel calculus goes under the name of Linear qCCS, as it is an asynchronous version of qCCS, but employs a linear type system, similar to the affine type system for CQP.
+This novel calculus goes under the name of Linear qCCS (lqCCS), as it is an asynchronous version of qCCS, but employs a linear type system, similar to the affine type system for CQP.
+
+After introducing lqCCS and its type system, we overview some desired properties of behavioural equivalence, in the light of which we investigates two alternative notions of bisimilarity. More in detail, we see how the type system disambiguates between two alternative notions of observability of quantum states. We show that some distinctive features of different approaches coincides when such ambiguity is removed. We define then a standard probabilistic bisimulation a-la Larsen Skou, in the spirit of \cite{dengOpenBisimulationQuantum2012}, and we give some useful properties for proving it. 
+
+Then we show some limitation of the fully-probabilistic approach, proving it is to fine-graned for the quantum case. Thus, we derive an updated versione of bisimilarity that solves this issue while maintains the previous properties. Finally, we compare our proposal with related works.
+
+
+
 
 We will present the syntax, type system and semantics for Linear qCCS (from now on, lqCCS). We will explore different peculiarities of behavioural equivalence of quantum systems, reformulating the examples seen in the previous chapter in the common language of lqCCS. This will lead us to a general, context-based notion of behavioural equivalence, namely probabilistic saturated bisimulation and quantum saturated bisimulation.
 
@@ -208,7 +220,6 @@ We will present the syntax, type system and semantics for Linear qCCS (from now 
 
 
 \chapter{Minimal Process Calculus}
-\section{Quantum Transition System}
 \input{chapter5/qts.tex}
 
 \chapter{Conclusions and Future work}

@@ -176,7 +176,7 @@ Where a distribution of processes "picks" just one process, evolving with a \tex
 
 With such a rule, a pLTS $\langle S, Act, \rightarrow\rangle$ can be "completed" to a bipartite LTS, where the states are either processer or distribution of processes, the $\rightarrow$ transition goes from states to distribution, with a label in $Act_\tau$, and the $\rightsquigarrow$ transition goes from distributions to states, with $0 \leq p \leq 1$ as a label. 
 
-The second, most recent approach, is known as the \textit{distribution transformer} semantic, also called belief-state transformer semantic or labelled Markov process semantic. It specifies that a distribution of processes must evolve in a distribution of processes, with a derivation rule like 
+The second, most recent approach, is known as the \textit{distribution transformer} semantic, also called belief-state transformer semantic or labelled Markov process semantic \note{cite}. It specifies that a distribution of processes must evolve in a distribution of processes, with a derivation rule like 
 \[ \infer{ \sum_i p_i \overline{s_i} \xrightarrow{\alpha} \sum_i p_i \Delta_i}
   { p_i \xrightarrow{\alpha} \Delta_i & \text{ for each  }i }
 \]

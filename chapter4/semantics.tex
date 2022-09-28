@@ -1,30 +1,31 @@
 We present a reduction semantics for lqCCS, consistent with the labelled semantic for qCCS presented in \cite{fengBisimulationQuantumProcesses2012, dengOpenBisimulationQuantum2012}. A reduction semantic does not make any assumption on the observable properties of the system (like the labels of a transition), and so in better suited to explore and compare different notion of behavioural equivalence.
 
-Besides, as explained in chapter \ref{chapter3}, in a labelled transition system made of configurations, a quantum input transition like $\xrightarrow{c?q}$ requires that the value of qubit $q$ is already present inside the transition. This is an atypical assumption, as a labeled transition usually model the communication with an unknown external environment, but in this case requires at least some partial knowledge of the environment. In a reduction system there are no such labelled transitions, so a process communicates only with other process, on which we have total information.
+Besides, as explained in chapter \ref{chapter3}, in a labelled transition system a quantum input transition like $\xrightarrow{c?q}$ requires the value of qubit $q$ to be already present in the state. This is an atypical assumption, as a labeled transition usually model the communication with an unknown external environment, but in this case requires at least some partial knowledge of the environment. In a reduction system there are no such labelled transitions, so a process communicates only with other processes, on which we have total information.
 
 Our semantics defines a probabilistic reduction system $\langle S, \rightarrow \rangle$, where \begin{itemize}
 \item $S$ is a set of \textit{configurations}, of the form $\confw{\rho, P}$ (like in qCCS).
 \item $\rightarrow \subseteq S \times \distr(S)$ is the probabilistic transition relation, corresponding to the $\xrightarrow{\tau}$ transition in qCCS \cite{fengBisimulationQuantumProcesses2012, dengOpenBisimulationQuantum2012}.
 \end{itemize}
 
-We assume a fixed set  $QN = {q_1, q_2, \ldots q_n}$ of quantum names, where each name $q_i$ refers to a unique qubit with state space $\calH_i$. We denote as $\calH_{QN}$ the $2^n$-dimensional Hilbert space $\bigoplus_{i=1}^n \calH_i$.
+We assume a fixed set  $QN = {q_1, q_2, \ldots q_n}$ of quantum names, where each name $q_i$ refers to a unique qubit with state space $\calH_i$. We denote as $\calH_{QN}$ the $2^n$-dimensional Hilbert space $\bigotimes_{i=1}^n \calH_i$, and so any state 
+$\rho \in \mathcal{D}(\calH_{QN})$ associates each name with a value.
 
-We assume also a fixed typing contest $\Gamma_c = \set{c_i: \widehat{T_i}}_i$, containing typing assumptions for a finite set of classical and quantum channels.
+\note{We also assume a fixed typing contest $\Gamma_c = \set{c_i: \widehat{T_i}}_i$, containing typing assumptions for a finite set of classical and quantum channels.}
 
 \begin{definition}
-Let $P$ be a process and $\rho \in \mathcal{D}(\calH_{QN})$ an arbitrary density operator. We say that a configuration $\confw{\rho, P}$ is well typed, given a set of quantum names $QN$ and a set of typed channels $\Gamma_c$, if $\Gamma_c; \Sigma \vdash P$ and $\Sigma \subseteq QN$.
+Let $P$ be a process and $\rho \in \mathcal{D}(\calH_{QN})$ an arbitrary density operator. We say that a configuration $\confw{\rho, P}$ is well typed,\note{given} a set of quantum names $QN$ and a set of typed channels $\Gamma_c$, if $\Gamma_c; \Sigma \vdash P$ for some $\Sigma \subseteq QN$.
 
 %  Let $I$ be an arbitrary index set. $\Gamma; \Sigma \vdash \boxplus_{i \in I} \langle \rho_i, P_i \rangle$ iff for each $i \in I$ such that $\rho_i \neq \mathbf{0}$, then $\Gamma; \Sigma \vdash \langle \rho_i, P_i \rangle$.
 \end{definition}
 
-Notice that the context $\Gamma_c$ contains assignments only for channels, not for classical variables. This means that in well typed configuration, since $\Gamma_c; \Sigma \vdash P$, $P$ does not contain any free classical variable, and all the free quantum variables are references to qubits in the configuration.
+Notice that the context $\Gamma_c$ contains assignments only for channels, not for classical variables. This means that in well typed configuration, $P$ does not contain any free classical variable, and all the free quantum variables are references to qubits in the configuration.
 
 From now on, we will consider only well typed configurations.
 
 \subsection{Reduction System}
 In order to define the reduction transition, we first need to introduce a semantic for expressions and a structural congruence relation on processes, like in \cite{gayCommunicatingQuantumProcesses2005}.
 
-We consider as a \textit{value} any expressions $n \in \mathbb{N},\  b \in \mathbb{B},\  v \in  \text{Var}$, and use $v$ as a metavariable for them.
+We consider as a \textit{value} any expressions $n \in \mathbb{N},\  b \in \mathbb{B},\  x \in  \text{Var}$, and use $v$ as a metavariable for them.
 
 In figure \ref{big_step_exp}, we define a big step semantic for classical and quantum expression in the usual way. We write $e \Downarrow v$ to indicate that the expression $e$ evaluates to value $v$. Recall that the only quantum expression admitted by the type system are quantum variables.
 
@@ -75,7 +76,7 @@ This transition relation can not be composed with itself, since it is a relation
     \infer[\mbox{\footnotesize\scshape SemRename}]{\langle \rho, P \{f\} \rangle \longrightarrow \langle \rho', P' \{f\}\rangle}{\langle \rho, f(P) \rangle \longrightarrow \langle \rho', f(P') \rangle} \qquad
     \infer[\mbox{\footnotesize\scshape SemRestrict}]{\langle \rho, P \setminus L \rangle \longrightarrow \langle \rho, P' \setminus L \rangle}{\langle \rho, P \rangle \longrightarrow \langle \rho', P' \rangle} \\[0.3cm]
     \infer[\mbox{\footnotesize\scshape SemQOp}]{\langle \rho, \mathcal{E}(\widetilde{x}) . P \rangle \longrightarrow \langle \mathcal{E}_{\widetilde{x}}(\rho), P \rangle}{} \\[0.3cm]
-    \infer[\mbox{\footnotesize\scshape SemQMeas}]{\langle \rho, M(\widetilde{x} \rhd y) . P \rangle \longrightarrow \boxplus_{m = 0}^{2^{|\widetilde{x}|}} \left\langle {M_m \rho M_m^\dag}, P[\sfrac{m}{y}] \right\rangle}{} \\[0.3cm]
+    \infer[\mbox{\footnotesize\scshape SemQMeas}]{\langle \rho, M(\widetilde{x} \rhd y) . P \rangle \longrightarrow \sum_{m = 0}^{2^{|\widetilde{x}|}} p_m(\rho) \left\langle \frac{1}{p_m}\rho_m , P[\sfrac{m}{y}] \right\rangle}{\rho_m = M_m \rho M_m^\dag & p_m = tr(\rho_m)} \\[0.3cm]
     \infer[\mbox{\footnotesize\scshape SemPar}]{\langle \rho, P \parallel R \rangle \longrightarrow \langle \rho', P' \parallel R \rangle}{\langle \rho, P \rangle \longrightarrow \langle \rho', P' \rangle} \qquad
     \infer[\mbox{\footnotesize\scshape SemSum}]{\langle \rho, P + R \rangle \longrightarrow \langle \rho', P' \rangle}{\langle \rho, P \rangle \longrightarrow \langle \rho', P' \rangle} \\[0.3cm]
     \infer[\mbox{\footnotesize\scshape SemReduce}]{\langle \rho, c!v \parallel c?x . P \rangle \longrightarrow \langle \rho, P[\sfrac{v}{x}] \rangle}{} \\[0.3cm]

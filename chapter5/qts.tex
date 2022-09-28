@@ -3,7 +3,7 @@
 
 Given the difficulties of finding a good notion of behavioural equivalence in quantum process algebras, we consider to address the problem on a minimal setting, only considering basic constructs.
 
-\subsection{Mathematical Preliminaries}
+\section{Mathematical Preliminaries}
 
 A quantum distribution $\quantumdst \in D(S)^\hilbert$ over a set $S$ is a function from the finite-dimensional Hilbert space $\hilbert$ of dimension $n$ to probability distributions $\Delta$ over $S$.
 In the following, we write $K_{\Delta}$ defined as the function that always returns $\Delta$ for every state $\ket{\phi} \in \hilbert$.
@@ -103,7 +103,7 @@ The quantum lifting of a relation is defined as follows.
 
 
 
-\subsection{Quantum Labeled Transition Systems}
+\section{Quantum Labeled Transition Systems}
 
 A quantum labeled transition system QLTS on an Hilbert space $\hilbert$ is a triple $(S, Act_\tau, \rightarrow)$ where
 \begin{itemize}
@@ -166,7 +166,7 @@ We define bisimularity on QLTS as usual.
 \end{definition}
 
 
-\subsubsection{Testing Bisimilartiy over problematic Cases}
+\subsection{Testing Bisimilartiy over problematic Cases}
 
 We take the example 6, 7, 8, and show that they behave as expected in mQPA.
 
@@ -209,7 +209,7 @@ Example 8 is addressed as follows.
 \end{example}
 
 
-\subsubsection{Alternative}
+\subsection{Alternative}
 We define an alternative characterization of a quantum transition system that is more in-line with preexisting quantum transition systems like~\cite{Feng:2012, Deng:2012}.
 A quantum labeled transition system qLTS on an Hilbert space $\hilbert$ is a triple $(S, Act_\tau, \hookrightarrow)$ where
 \begin{itemize}
@@ -247,14 +247,3 @@ The transition relation $\hookrightarrow$ is defined as follows, with $s \xhookr
 	if $(\ket{\phi}, s) \xrightarrow{\mu} \Delta$ then $(\ket{\phi}', s') \xrightarrow{\mu} C'$ and $C \slift{\rel} \Delta'$.
 	\emph{q-bisimilarity} $\sim_q$ is the largest qLTS bisimulation.
 \end{definition}
-
-We now establish a common behaviour result between QLTS and qLTS.
-\begin{theorem}
-  $\forall s, s' \in \hat{S}$, if $s \sim_Q s'$ then $s \sim_q s'$.
-\end{theorem}
-\begin{proof}
-  ($\Longleftarrow$) Let $\rel \subseteq S \times S$ be a relation such that $s\,\rel\,s'$ iff $\forall \ket{\phi} \ldotp (\ket{\phi}, s)\,\rel_{\ket{\phi}}\,(\ket{\phi}, s')$,
-  for some set of relations $\rel_{\ket{\phi}} \subseteq (H \times S) \times (H \times S)$.
-  Assume $s \xrightarrow{\mu} \Delta$ then $s \equiv \mu.Q + Q'$, without loss of generality we can assume $s = \mu.Q$,
-  thus $\forall \ket{\phi} \ldotp (\ket{\phi}, s) \xrightarrow{\mu} \sema{\ket{\phi}, Q}$ and $\Delta = \sem{Q} \ldots$.
-\end{proof}

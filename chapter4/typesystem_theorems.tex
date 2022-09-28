@@ -1,7 +1,9 @@
 \subsection{Type system properties}
 
-We now present a number of theorems and lemmas that lead to a typing preservation theorem for Linear qCCS.
+We now prove that reductions preserves typing. This is critical for the further development of this thesis and is a standard property. Note that the absence of a weakening rule for quantum variables requires a different approach w.r.t. the case of CQP \cite{gayCommunicatingQuantumProcesses2005}.
 
+We need some auxiliary results, starting from typing preservations for expression evaluation and structural congruence.
+ 
 \begin{theorem}[Evaluation Preserves Typing]\label{thm:eval_typing}
   If $\Gamma \vdash e$ and $e \Downarrow v$, then $\Gamma \vdash v$.
 \end{theorem}
@@ -17,12 +19,7 @@ We now present a number of theorems and lemmas that lead to a typing preservatio
   of $\Gamma; \Sigma \vdash Q$ as the subcomponents of the if-then-else, non-deterministic sum and parallel operator may be typed by a context $\Gamma' \subseteq \Gamma$.
 \end{proof}
 
-% \begin{theorem}[Quantum weakening]
-%   Let $\Gamma; \Sigma \vdash P$ and let $x : \mathcal{Q}$. If $x \not\in \Sigma$, then $\Gamma, x : \mathcal{Q}; \Sigma, x \vdash P$.
-% \end{theorem}
-% \begin{proof}
-%   By induction on the derivation of $\Gamma; \Sigma \vdash P$.
-% \end{proof}
+Others technical results we need are substitution lemmas for expressions, classical and quantum substitutions.
 
 \begin{lemma}[Expression Substitution]
   Let $\Gamma, x : T' \vdash e : T$ and let $\Gamma \vdash v : T'$, then $\Gamma \vdash e[\sfrac{v}{x}]$.
@@ -52,8 +49,10 @@ We now present a number of theorems and lemmas that lead to a typing preservatio
   However, since $v \not\in \Sigma$, we can conclude that all smaller environments are still pairwise distinct, thus we can apply the \textsc{Par} rule again.
 \end{proof}
 
+We now prove or main result, namely that reductions preserve typing.
+
 \begin{theorem}[Typing Preservation]
-  If $\Gamma; \Sigma \vdash P$ and $\langle \rho, P \rangle \longrightarrow \boxplus_{i \in I} \langle \rho_i, P_i \rangle$ then
+  If $\Gamma; \Sigma \vdash P$ and $\langle \rho, P \rangle \longrightarrow \sum_{i \in I} p_i \langle \rho_i, P_i \rangle$ then
   $\forall i \in I \ldotp \Gamma; \Sigma \vdash P_i$.
 \end{theorem}
 \begin{proof}

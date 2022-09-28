@@ -1,9 +1,17 @@
+We summarize here the similarity and differences of lqCCS with
+the related works discussed in \ref{chapter3}.
+In particular, we focus on QPALg and qCCS, that share with us a similar model.
+We will see that a relevant problem of QPALg is solved by our approach, that
+our bisimulations share some desired properties of qCCS, and finally we will show
+that starting from a qCCS-like calculus, we have establishd results similar to the
+ones that are peculiar of CQP.
 
 \subsection{QPALg}
+We show here, by means of an example, that lqCCS solve a relevant problem of qbit transmission in QPALg, resulting in a too much coarse-graned bisimilarity. 
 
 Consider the two configurations
 \[ \conf = \confw{\frac{1}{2}I \otimes \frac{1}{2}I, c!q_1 \parallel c!q_2} \qquad \conf' = \confw{\proj{\Phi^+}, c!q_1 \parallel c!q_2}
-\] where $\ket{\Phi^+} = \oost\ket{00} + \oost{11}$. According to the labelled bisimulation of QPAlg, the two configurations are bisimilar, as they both send two qubits with reduced density operator $\frac{1}{2}I$ on channel $c$. For our definition instead it holds $\conf \not\simps \conf'$, as there exists the context \[B[\blank] = [\blank]\parallel c?x.c?y.M[x, y \rhd z].\ite{z = 2}{d!0 \parallel disc(x, y)}{\parallel disc(x, y)}\] where $M$ is the measurement on the $4$-dimensional computational basis \[M = \set{M_0 = \proj{00}, M_1 = \proj{01}, M_2 = \proj{10}, M_3 = \proj{11}}\]
+\] where $\ket{\Phi^+} = \oost\ket{00} + \oost{11}$. According to the labelled bisimulation of QPAlg, the two configurations are bisimilar, as they both send two qubits with reduced density operator $\frac{1}{2}I$ on channel $c$. For our definition instead it holds $\conf \not\simps \conf'$, as they are distinguished by the context \[B[\blank] = [\blank]\parallel c?x.c?y.M[x, y \rhd z].\ite{z = 2}{d!0 \parallel disc(x, y)}{\parallel disc(x, y)}\] where $M$ is the measurement on the $4$-dimensional computational basis \[M = \set{M_0 = \proj{00}, M_1 = \proj{01}, M_2 = \proj{10}, M_3 = \proj{11}}\]
 After receiving and measuring two unrelated mixed state qubits, $B[\conf]$ will evolve in the distribution  $\Delta$
 \[ \frac{1}{4}\confw{\proj{00}, disc(\widetilde{q})} + \frac{1}{4}\confw{\proj{01}, disc(\widetilde{q})} + \frac{1}{4}\confw{\proj{10}, d!0 \parallel disc(\widetilde{q})} + \frac{1}{4}\confw{\proj{11}, disc(\widetilde{q})} \] where $\widetilde{q}$ is the couple $q_1, q_2$.
 After receiving and measuring two entangled qubits, instead, $B[\conf']$ will evolve in the distribution $\Delta'$
@@ -11,9 +19,11 @@ After receiving and measuring two entangled qubits, instead, $B[\conf']$ will ev
 We have that $\Delta \slift{\not\sim}_{PS} \Delta'$, as there is no decomposition of $\Delta = \sum_{i\in I} p_i \conf_i$ and $\Delta' = \sum_{i\in I} p_i \conf_i'$ such that $\conf_i \simps \conf_i'$ for each $i$, because $\Delta$ contains a configuration that expresses the barb $\downarrow_d$, while $\Delta'$ contains none.
 
 \subsection{qCCS}
-Probabilistic saturated bisimilarity is designed to be equivalent to open bisimilarity for qCCS, except for a few intended modification:\begin{itemize}
-\item Open bisimilarity requires bisimialr processes to have the same free variables, $\simps$ requires bisimilar processes to have the same typing context.
-\item Open bisimilarity is superoperator-closed by definition, $\simps$ is superoperator closed as a property.
+We compare here lqCCS with qCCS, showing that some defining properties of CCS is recovered in lqCCS. We omit here the main difference discusse above, which is the new bisimulation ~QS, shown above to be more adequate to odel behavioural equivalence in quantum processes.
+
+Our probabilistic saturated bisimilarity is designed to be equivalent to open bisimilarity for qCCS, except for a few intended modification:\begin{itemize}
+\item Open bisimilarity requires bisimilar processes to have the same free variables, $\simps$ requires bisimilar processes to have the same typing context.
+\item Open bisimilarity is superoperator-closed by definition, $\simps$ is proven to be superoperator closed.
 \item Open bisimilarity requires bisimilar configurations to have the same environment, $\simps$ implies that bisimilar configurations have the same environment.
 \item Open bisimilarity is contex closed as a property, $\simps$ is context closed by definition.
 \end{itemize}
@@ -23,9 +33,9 @@ In the following, taken a superoperator $\sop \in \mathcal{TS}(\hilbert_{\overli
 
 \begin{theorem}
 	For any pair of configurations $\confw{\rho, P}, \confw{\sigma, Q}$ well-typed under $\Gamma; \Sigma$, 
-	$\confw{\rho, P} \simqs \confw{\rho, P}$ implies
+	$\confw{\rho, P} \simps \confw{\rho, P}$ implies
 	\begin{enumerate}
-		{\item for any $\sop \in \mathcal{TS}(\hilbert_{\overline{\Sigma}})$, $\sop (\confw{\rho, P})\ \simqs \ \sop (\confw{\rho, P})$\label{point:thmchinese1_quantum}}
+		{\item for any $\sop \in \mathcal{TS}(\hilbert_{\overline{\Sigma}})$, $\sop (\confw{\rho, P})\ \simps \ \sop (\confw{\rho, P})$\label{point:thmchinese1_quantum}}
 		{\item $tr_{\Sigma}(\rho) = tr_{\Sigma}(\sigma)$. \label{point:thmchinese2_quantum}}
 	\end{enumerate}
 \end{theorem}
@@ -47,15 +57,14 @@ where $c_0 \ldots c_m$ are fresh channels, we have that $\confw{\rho, B[P]}$ sho
 and $\confw{\sigma, B[Q]}$ can perform only the transition \[\confw{\sigma, B[Q]} \rightarrow \sum_m p_m(\sigma) \confw{\sigma_m, c_m!0}\] to match the barbs, but we know that $p_m(\rho) \neq p_m(\sigma)$ for at least one $m$.
 \end{proof}
 
-We can actually prove a stronger property, that in lqCCS the action of "external" superoperators $1sop \in \mathcal{TS}(\calH_{\overline{\Sigma}})$ does not change the observable behaviour of a quantum system.
+We can actually prove a stronger property, that in lqCCS the action of "external" superoperators $\sop \in \mathcal{TS}(\calH_{\overline{\Sigma}})$ does not change the observable behaviour of a quantum system.
 
-By writing $\sop \in TSO(\hilbert_{\Sigma})$, we mean that $\sop(\rho) = \sum_{i \in I} (I_{\overline{\Sigma}} \otimes A_i) \rho (I_{\overline{\Sigma}} \otimes A_i)^{\dagger}$.
+\note{By writing $\sop \in TSO(\hilbert_{\Sigma})$, we mean that $\sop(\rho) = \sum_{i \in I} (I_{\overline{\Sigma}} \otimes A_i) \rho (I_{\overline{\Sigma}} \otimes A_i)^{\dagger}$.}
 
-\begin{lemma}\label{lemma:sop}
-\note{da rivedere}
+\begin{proposition}\label{lemma:sop}
 	For any pair of configurations $\conf, \conf'$ well-typed under $\Gamma; \Sigma$, and for any $\sop \in TSO(\hilbert_{\overline{\Sigma}})$,
 	$\conf \rightarrow \Delta$ iff $\sop(\conf) \rightarrow \sop(\Delta)$.
-\end{lemma}
+\end{proposition}
 \begin{proof}
 	The only non trivial rules are {\scshape SemQOp} and {\scshape SemQMeas}.
 	Assume without loss of generality that $env(\conf) \in \hilbert_{\Sigma \otimes \overline{\Sigma}}$.
@@ -94,13 +103,16 @@ The proof for rule {\scshape SemQMeas} is the same, considering every $m \in \{0
 \end{proof}
 
 
-\begin{example}
-	Consider the two following configurations.
-	\[
-		\confw{\Phi^+, M_{01}[q_0 \triangleright x].discard(q_0)}\qquad \confw{\Phi^+, M_{+-}[q_0 \triangleright x].discard(q_0)}	
-	\]
-	In [cinesi1] these are not bisimilar since the standard lifting of the relation is used, which is decomposable.
-\end{example}
+
+\subsection{CQP}
+
+The type system is inspired from the affine type system of CQP. To transform an affine system in a linear system, is necessary to remove the \textit{weakening} rule for $\Sigma$:
+\[ \infer[\mbox{\footnotesize\scshape QWeak}]{\Gamma; \Sigma,q \vdash P}{\Gamma; \Sigma \vdash P}
+\]
+that allows to introduce a quantum name $q$ in $\Sigma$ even if it is not sent by $P$. In CQP, weakening is not an explicit rule of the typesystem, but is used implicitly in various rules, making it an affine type system.
+
+
+noi abbiamo il ite, quindi vere distribuzioni, non solo mixed
 
 
 \begin{example}
@@ -113,7 +125,3 @@ In particular, the following holds in our system but not in~\cite{Feng:2012, Den
 	Set_{\ketbra{+}{+}}(q).M(q \triangleright x).c!0 \sim Set_{\frac{1}{2} I}(q).\tau.c!0
 \end{align*}
 \end{example}
-
-\subsection{Mixed configuration CQP}
-noi abbiamo il ite, quindi vere distribuzioni, non solo mixed
-
