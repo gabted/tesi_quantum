@@ -87,20 +87,18 @@ This transition relation can not be composed with itself, since it is a relation
 \label{reduction}
 \end{figure}
   
-\subsection{Examples}
-  \paragraph{Quantum Teleportation}
-
+\begin{example}
+We can formalize in lqCCS the famous \textit{quantum teleportation} algorithm:
 \begin{align*}
-  \proc{A} &\Coloneqq \text{in}_a?x.\text{CNOT}(q_0, x).\text{H}(q_0).M(x,q_0 \rhd n).(\text{m}_a!n \parallel discard(q_0) \parallel discard(x) )\\
-  % \proc{B} &\Coloneqq \text{in}_b?x.\text{m}_a?n.\left(\sum_{i = 0}^3 [n = i]\sigma_i(x).\text{out}_b!x\right) \\
-  \proc{B} &\Coloneqq \text{in}_b?x.\text{m}_a?n.
-     \\ & \ite{n = 0}{\sigma_0(x).\text{out}_b!x\\&\quad}
-    {\ite{n = 1}{\sigma_1(x).\text{out}_b!x\\&\qquad}
-    		{\ite{n = 2}{\sigma_2(x).\text{out}_b!x}{\sigma_3(x).\text{out}_b!x}}
-    }
-\\
-  \proc{S} &\Coloneqq \text{H}(q_1).\text{CNOT}(q_1, q_2).(\text{in}_a!q_1 \parallel \text{in}_b!q_2) \\
-  \proc{Tel} &\Coloneqq (A \parallel B \parallel S) \setminus \Set{\text{in}_a, \text{in}_b, \text{m}_a } \\
-  \proc{TelSpec} &\Coloneqq \text{SWAP}(q_0,q_2).(\text{out}_b!q_2 \parallel discard(q_0) \parallel discard(q_1))
+  \proc{A} &\Coloneqq \text{in}_a?x.\text{CNOT}(q_0, x).\text{H}(q_0).M(q_0, x \rhd n).(\text{m}_ab!n \parallel discard(q_0, x)\\
+  \proc{B} &\Coloneqq \text{in}_b?x.\text{m}_{ab}?n.
+     \\ & \ite{n = 0}{I(x).\text{out}_b!x\\&}
+    {\ite{n = 1}{X(x).\text{out}_b!x\\&}
+    		{\ite{n = 2}{Z(x).\text{out}_b!x\\&}{Y(x).\text{out}_b!x}}
+    }\\
+  \proc{S} &\Coloneqq Set_{\Phi^+}(q_1, q_2).(\text{in}_a!q_1 \parallel \text{in}_b!q_2) \\
+  \proc{Tel} &\Coloneqq (A \parallel B \parallel S) \setminus \Set{\text{in}_a, \text{in}_b, \text{m}_{ab} }
 \end{align*}
-$\Gamma = \set{\text{in}_a : \hat{\mathcal{Q}}, \text{in}_b : \hat{\mathcal{Q}}, \text{m}_a : \hat{\mathbb{N}}, \text{out}_b : \hat{\mathcal{Q}}}$, $\Sigma = \set{q_0, q_1, q_2}$.
+Which is well typed under the context 
+$\Gamma = \set{\text{out}_b : \hat{\mathcal{Q}}}$, $\Sigma = \set{q_0, q_1, q_2}$.
+\end{example}

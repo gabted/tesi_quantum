@@ -33,21 +33,51 @@ Note also that $B[\blank]$ has barb $\downarrow_c$ if and only if $B[\blank]$ ha
 
 
 \begin{example}
-	Consider the following, wrong definition of quantum teleportation:
-	\begin{align*}
-		\proc{A} &\Coloneqq \text{in}_a?x.\text{CNOT}(q_0, x).\text{H}(q_0).M(x,q_0 \rhd n).(\text{m}_a!n \parallel out_{a_1}! q_0 \parallel out_{a_2}! x )\\
-    \proc{B} &\Coloneqq \text{in}_b?x.\text{m}_a?n.
-       \\ & \ite{n = 0}{\sigma_0(x).\text{out}_b!x\\&\quad}
-      {\ite{n = 1}{\sigma_1(x).\text{out}_b!x\\&\qquad}
-          {\ite{n = 2}{\sigma_2(x).\text{out}_b!x}{\sigma_3(x).\text{out}_b!x}}
-      } \\
-		\proc{S} &\Coloneqq \text{H}(q_1).\text{CNOT}(q_1, q_2).(\text{in}_a!q_1 \parallel \text{in}_b!q_2) \\
-		\proc{Tel} &\Coloneqq (A \parallel B \parallel S) \setminus \Set{\text{in}_a, \text{in}_b, \text{m}_a } \\
-		\proc{TelSpec} &\Coloneqq \text{SWAP}(q_0,q_2).(\text{out}_b!q_2 \parallel out_{a_1}! q_0 \parallel out_{a_2}! q_1)
-	\end{align*}
+We can now prove that the teleportation algorithm presented in the last section adheres to the intended specification .
+
+ The specification expressing the expected behaviour of teleportation is as follows:
+\[\proc{TelSpec} \Coloneqq \tau^8.\text{SWAP}(q_0,q_2).(\text{out}_b!q_2 \parallel discard(q_0, q_1))\]
+
+where $\tau^8$ denotes $8$ repetitions of $\tau$.
+
+Note that the exchanged qbit is sent on an output channel, because the  correctness of the algorithm depends on its value. Note also that the value of the others qbit is not visible, as they are discarded. This because any implementation that succeeds in sending the target qubit is satifactory, regardless of what happens to the others qubits.
+
+The implementation presented in the last section was: 
+
+\begin{align*}
+  \proc{A} &\Coloneqq \text{in}_a?x.\text{CNOT}(q_0, x).\text{H}(q_0).M(q_0, x \rhd n).(\text{m}_ab!n \parallel discard(q_0, x)\\
+  \proc{B} &\Coloneqq \text{in}_b?x.\text{m}_{ab}?n.
+     \\ & \ite{n = 0}{I(x).\text{out}_b!x\\&}
+    {\ite{n = 1}{X(x).\text{out}_b!x\\&}
+    		{\ite{n = 2}{Z(x).\text{out}_b!x\\&}{Y(x).\text{out}_b!x}}
+    }\\
+  \proc{S} &\Coloneqq Set_{\Phi^+}(q_1, q_2).(\text{in}_a!q_1 \parallel \text{in}_b!q_2) \\
+  \proc{Tel} &\Coloneqq (A \parallel B \parallel S) \setminus \Set{\text{in}_a, \text{in}_b, \text{m}_{ab} }
+\end{align*}
+
+We can prove that $\proc{TelSpec} \simps \proc{Tel}$. Notice in fact that the channels $\text{in}_a, \text{in}_b, \text{m}_{ab}$ in $\proc{Tel}$ are limited, so the only visible communications happen on the $\text{out}_b$ channel. After all the transformations and measurements, $\proc{Tel}$ will leave the $q_2$ qubit exactly as $\proc{TelSpec}$, and the other qubits are not visible.
+\end{example}
+
+Consider now the first definition of teleportation reported in \cite{fengBisimulationQuantumProcesses2012}. This correspond to an  alternative specification of quantum teleportation, where all the final qubits are sent on channels. As a consequance, to match the specification, the implementation must behave the same also in the qbits that are not "teleported". We will see that the following
+implementation, similar to the previous one
+but where no qubit is discarded, does not
+match the given specification.
+\begin{example}
+\begin{align*}
+  \proc{A'} &\Coloneqq \text{in}_a?x.\text{CNOT}(q_0, x).\text{H}(q_0).M(q_0, x \rhd n).(\text{m}_ab!n \parallel \text{out}_a(q_0, x)\\
+  \proc{B} &\Coloneqq \text{in}_b?x.\text{m}_{ab}?n.
+     \\ & \ite{n = 0}{I(x).\text{out}_b!x\\&}
+    {\ite{n = 1}{X(x).\text{out}_b!x\\&}
+    		{\ite{n = 2}{Z(x).\text{out}_b!x\\&}{Y(x).\text{out}_b!x}}
+    }\\
+  \proc{S} &\Coloneqq Set_{\Phi^+}(q_1, q_2).(\text{in}_a!q_1 \parallel \text{in}_b!q_2) \\
+  \proc{Tel'} &\Coloneqq (A \parallel B \parallel S) \setminus \Set{\text{in}_a, \text{in}_b, \text{m}_{ab} } \\
+  \proc{TelSpec'} &\Coloneqq \tau^8.\text{SWAP}(q_0,q_2).(\text{out}_b!q_2 \parallel \text{out}_a(q_0, q_1))
+\end{align*}
 	We have that $\proc{Tel} \not\sim_{PS} \proc{TelSpec}$.
 	Consider indeed a context:
-  \[ B[\blank] = out_{a_1} ? x . M[x \rhd y] . \ite{y = 1}{c!y}{nil}. \]
+  \[ B[\blank] = out_{a} ? x . M[x \rhd y] . \ite{y = 1}{c!y}{nil}. \]
+  the configurations $\confw{\proj{\psi 00}, B[\proc{Tel'}]}$ and $\confw{\proj{\psi 00}, B[\proc{TelSpec'}]}$
 \end{example}
 
 
