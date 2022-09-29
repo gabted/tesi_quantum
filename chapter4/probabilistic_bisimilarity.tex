@@ -5,7 +5,7 @@ Saturated bisimilarity \cite{bonchiGeneralTheoryBarbs2014} grants the external o
 We use (probabilistic) saturated bisimilarity as it is an established, general behavioural equivalence, useful to investigate reduction system where there is no affirmed notion of observable property. Besides, as we will see, saturated bisimilarity is able to capture some properties used in \cite{dengOpenBisimulationQuantum2012} to define open bisimilarity.
 
 
-We define as a barb, the atomic observable property, only the capability of performing an output on a channel. We do not consider input action observables, as it is the norm for asynchronous calculi \cite{amadioBisimulationsAsynchronousPcalculus1998}. Since the external observer is an asynchronous, non blocking context, it can not observe the process $P$ to discorver if it has a $c?x$ transition available: the context can only perform a terminal action $c!v$, but it will not know if the output action is ever received.
+We define "the capability of performing an output on a channel" as the only barbs, i.e. the atomic observable properties. We do not assume input actions to be observable, following the standard for asynchronous calculi \cite{amadioBisimulationsAsynchronousPcalculus1998}. Since the external observer is asynchronous, it can not observe the process $P$ to discorver if a $c?x$ transition is available: the context can only perform $c!v$ as a terminal action, hence it cannot discover if  the message is ever received.
 
 \begin{definition}[Barb]
 	A \emph{barb} is a predicate $\downarrow_{c}$ over well typed processes, defined as follows: $P \downarrow_{c}$ if and only if $P \equiv c!e \parallel R$ for some expression $e$, and processes $R$.
@@ -29,6 +29,8 @@ If $\conf = \confw{\rho, P}$ is a configuration, we will often write $C\downarro
 
 Note that it is not necessary to use a barb $\downarrow_{c!v}$, so to consider also which is the value that is communicated. A context, in fact, is capable to discern $c!v.P$ and $c!v'.P$ thanks to the \textbf{if-then-else} construct for classical values, or to the measure operator for quantum values. This is an innovation with respect to QPAlg, wehere the observables of $\confw{\rho, c!q.P}$ were both the channel and the value (i.e. the reduced density operator) of $q$. 
 
+Note also that $B[\blank]$ has barb $\downarrow_c$ if and only if $B[\blank]$ has it $P$ has it. Hence it is not required to use contexts when comparing  he barbs of two configurations for checking saturated bisimilarity. 
+
 
 \begin{example}
 	Consider the following, wrong definition of quantum teleportation:
@@ -49,14 +51,12 @@ Note that it is not necessary to use a barb $\downarrow_{c!v}$, so to consider a
 \end{example}
 
 
+We show now some useful properties that helps in deciding bisimilarity. The first result is that \textit{$\simps$ is closed for addition of discarded qbits}.  Rougly, this means that if  $\confw{\rho, P}$ and $\confw{\sigma, Q}$ are bisimilar,  we can add a qbit $q$ and its discard $disc(q)$ to them, as in  $\confw{\rho \otimes \proj{\psi}, P \parallel disc(q)}$ and $\confw{\sigma \otimes \proj{\psi}, Q \parallel disc(q)}$, obtaining bisimilar configurations. More in details, this holds also for non separable states, as shown later.
 
-
-A useful proof techinque: $\sim$ is closed for additional discarded qubits. 
-
+We first need some technical lemmas that follow. 
 \newcommand{\discQ}{disc(\widetilde{q})}
 \newcommand{\trQ}{tr_{\widetilde{q}}}
 
-\note{vanno sistemate le parentesi, e comunque si potrebbe anche scrivere nel capitolo del background quantum}
 \begin{lemma}\label{trace_and_sop}
 Let $\sigma \in  \mathcal{D}(\calH_{\widetilde{p}} \otimes \calH_{\widetilde{q}})$, with $\widetilde{p} = p_0 \ldots p_{n-1}$ and $\widetilde{q} = q_0 \ldots q_{m-1}$. Then, for any \textit{trace non-increasing} superoperator $\sop_{\widetilde{p}} \in \mathcal{S}(\calH_{\widetilde{p}})$
 \[ \trQ((\sop_{\widetilde{p}} \otimes \mathcal{I}_{\widetilde{q}})(\sigma)) = \sop_{\widetilde{p}}(\trQ(\sigma))
@@ -104,10 +104,10 @@ Let $\sigma \in  \mathcal{D}(\calH_{\widetilde{p}} \otimes \calH_{\widetilde{q}}
 \]
 \end{lemma}
 
-The proof of this lemma is extremely similar to the one before, and thus omitted. \note{si potrebbe dimostrare anche un unico lemma che li derivi entrambi, cioè che $\trQ(E_p \otimes E_q)(\sigma) = E_p\trQ(\sigma)$. Però mi pare che avere 2 lemmi separati renda le dimostrazioni di sotto più comprensibili.}
+The proof of this lemma is extremely similar to the one before, and thus omitted. 
 
+Now we prove that the behaviour of a configuration $\confw{\rho, P}$ is identical to the behaviour of a "bigger" configuration with additional qubits, if these additional qubits are discarded, and so cannot be modified nor measured.
 
-\note{va sistemata la notazione dei pedici dei superoperatori.}
 \begin{lemma}\label{lemma_transition_partial_trace}
 Let $\sigma \in  \mathcal{D}(\calH_{\widetilde{p}} \otimes \calH_{\widetilde{q}})$, and $\rho = tr_{\widetilde{q}}(\sigma) \in \calH_{\widetilde{p}}$. Then, for any process 
 \[ \confw{\rho, P} \rightarrow \sum_i p_i \confw{\rho_i, P_i} 
@@ -148,12 +148,15 @@ where thanks to lemma \ref{trace_and_sop}, we have $p_m = tr(\sop_m(\rho)) = tr(
 The inductive cases are all trivial, as none of them modifies the quantum values $\rho$ and $\sigma$.
 \end{proof}
 
+\begin{theorem}[$\simps$ is closed for additional discarded qubits]\label{bisim_closed_by_discard}
+If $\confw{\trQ(\sigma), P} \sim \confw{\trQ(\nu), Q}$ then $\confw{\sigma, P \parallel \discQ} \sim \confw{\nu, Q \parallel \discQ}$.
+\end{theorem}
 \newcommand{\relTrQ}{\rel_{\trQ}}
-\begin{lemma}\label{lemma_reltrq_probabilistic}
-Let $\sigma \in \mathcal{D}(\calH_{\widetilde{p}} \otimes \calH_{\widetilde{q}})$. If $\rel$ is a bisimulation, then $\rel_{\trQ}$ is a bisimulation, where $\rel_{\trQ}$ is defined as
+\begin{proof} 
+Let $\sigma, \nu \in \mathcal{D}(\calH_{\widetilde{p}} \otimes \calH_{\widetilde{q}})$. We show that if $\rel$ is a bisimulation, then $\rel_{\trQ}$ is a bisimulation, where $\rel_{\trQ}$ is defined as
 \[\rel_{\trQ} = \set{\Big(\confw{\sigma, P \parallel \discQ}, \confw{\nu, Q \parallel \discQ}\Big) \quad\mid\quad \confw{\trQ(\sigma), P} \rel \confw{\trQ(\nu), Q}}\]
-\end{lemma}
-\begin{proof}
+From this, it easily follows that $\simps$ is closed for additional discarded qubits, becuse if $\confw{\trQ(\sigma), P} \sim \confw{\trQ(\nu), Q}$, then there exist a bisimulation $\rel$ such that $\confw{\trQ(\sigma), P} \rel \confw{\trQ(\nu), Q}$, and so there exists a bisimulation $\relTrQ \subseteq \simps$ such that $\confw{\sigma, P \parallel \discQ} \relTrQ \confw{\nu, Q \parallel \discQ}$.
+
 To show that $\rel_{\trQ}$ is a bisimulation, we need first of all to show that is symmetric, which is when $\rel$ is symmetric. The we suppose that $\confw{\sigma, P \parallel \discQ} \relTrQ \confw{\nu, Q \parallel \discQ}$ and have to show that \begin{itemize}
 \item For any barb $b$, if $\confw{\sigma, P \parallel \discQ} \downarrow_b$ then $\confw{\nu, Q \parallel \discQ} \downarrow_b$. We have that $\confw{\sigma, P \parallel \discQ} \downarrow_b \Leftrightarrow \confw{\trQ(\sigma), P} \downarrow b$, $\confw{\nu, Q \parallel \discQ} \downarrow_b \Leftrightarrow \confw{\trQ(\nu), Q} \downarrow b$, and 
 $\confw{\trQ(\sigma), P} \rel \confw{\trQ(\nu), Q}$, so they all express the same barbs.
@@ -161,27 +164,22 @@ $\confw{\trQ(\sigma), P} \rel \confw{\trQ(\nu), Q}$, so they all express the sam
 \end{itemize}
 \end{proof}
 
-\note{è così immediato che si potrebbe anche integrare nel lemma sopra.}
-\begin{theorem}[$\simps$ is closed for additional discarded qubits]\label{bisim_closed_by_discard}
-If $\confw{\trQ(\sigma), P} \sim \confw{\trQ(\nu), Q}$ then $\confw{\sigma, P \parallel \discQ} \sim \confw{\nu, Q \parallel \discQ}$.
-\end{theorem}
-\begin{proof}
-It easily follows from the previous lemma, considering that $\simps$ is the union of all bisimulations.
-\end{proof}
 
-Theorem \ref{bisim_closed_by_discard} is useful to prove bisimilarity for some simple processes. For example, it can be used to prove that $P = H[q].discard(q)$ and $Q = X[q].discard(q)$ are bisimilar.
+
+Theorem \ref{bisim_closed_by_discard} is useful when proving bisimilarity of processes that use discard. For example, it can be used to prove that $P = H[q].discard(q)$ and $Q = X[q].discard(q)$ are bisimilar.
 
 Given that $\emptyset, {q} \vdash P$ and $\emptyset, {q} \vdash Q$, we show that
 \[\rel = \big\{\confw{\sigma, B[P]}, \confw{\sigma, B[Q]} \mid \sigma \in \mathcal{D}(\calH_{QN}), B[\blank]_{\emptyset; \set{q}} \text{ typed context}\big\}^S\ \cup \sim_{PS}
 \]
 is a probabilistic saturated bisimulation, where $\rel^S$ denotes the symmetric closure of a relation $\rel$. From this follows trivially that $\confw{\sigma, P} \sim_{PS} \confw{\sigma, Q}$ for any $\sigma$, and so $P$ and $Q$ are bisimilar processes.
 
-$\rel$ is a \textit{saturated} relations, meaning that if $\conf \rel \conf'$, then $B[\conf] \rel B[\conf']$ for any $B$. So, to prove that $\rel$ is a probabilistic saturated bisimulation, we just need to show that $\rel$ is a probabilistic bisimulation.
+$\rel$ is a \textit{saturated} relation, meaning that if $\conf \rel \conf'$, then $B[\conf] \rel B[\conf']$ for any $B$. So, to prove that $\rel$ is a probabilistic saturated bisimulation, we just need to show that $\rel$ is a probabilistic bisimulation.
 
 Suppose that $\confw{\sigma, R \parallel P} \rel \confw{\sigma, R \parallel Q}$, and that $\confw{\sigma, R \parallel P} \rightarrow \sum_i p_i \conf_i$.\begin{itemize}
+\item $\confw{\sigma, P \parallel \discQ} \sim \confw{\nu, Q \parallel \discQ}$.
 \item If the reductions happens in $R$, it must be of the form $\confw{\sigma, R \parallel P} \rightarrow \sum_i p_i \confw{\sigma_i, R' \parallel P}$, but then there exists a transition $\confw{\sigma, R \parallel Q} \rightarrow \sum_i p_i \confw{\sigma_i, R_i \parallel Q}$, and for each $i$, $\confw{\sigma_i, R_i \parallel P} \rel \confw{\sigma_i, R_i \parallel Q}$ by definition of $\rel$.
 \item If the reductions happens in $P$, it must be 
  $\confw{\sigma, R \parallel H[q].disc(q)} \rightarrow \confw{\sop_{H, q}(\sigma), R \parallel disc(q)}$, but then  $\confw{\sigma, R \parallel X[q].disc(q)} \rightarrow \confw{\sop_{X, q}(\sigma), R \parallel disc(q)}$, where $\sop_{H, q}$ is the superoperator that applies the H transformation only on qubit $q$, and $\sop_{Z, q}$ is the superoperator that applies the Z transformation only on qubit $q$. 
-Since $tr_q(\sop_{H, q}(\sigma)) = tr_q(\sop_{Z, q}(\sigma)) = tr_q(\sigma)$ for lemma \ref{trace_and_sop_2}, we have that $\confw{\sop_{H, q}(\sigma), R \parallel disc(q)} \sim_{PS} \confw{\sop_{X, q}(\sigma), R \parallel disc(q)}$ for lemma \ref{trace_and_sop}, and so $$\confw{\sop_{H, q}(\sigma), R \parallel disc(q)} \rel \confw{\sop_{X, q}(\sigma), R \parallel disc(q)}$$ by definition of $\rel$.
+Since $tr_q(\sop_{H, q}(\sigma)) = tr_q(\sop_{Z, q}(\sigma)) = tr_q(\sigma)$ for lemma \ref{trace_and_sop_2}, we have that $\confw{\sop_{H, q}(\sigma), R \parallel disc(q)} \sim_{PS} \confw{\sop_{X, q}(\sigma), R \parallel disc(q)}$ for theorem \ref{bisim_closed_by_discard}, and so $$\confw{\sop_{H, q}(\sigma), R \parallel disc(q)} \rel \confw{\sop_{X, q}(\sigma), R \parallel disc(q)}$$ by definition of $\rel$.
  
 \end{itemize}

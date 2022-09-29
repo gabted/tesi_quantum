@@ -5,13 +5,13 @@ Process Calculus, also known as Process Algebra, is an algebraic approach to mod
 
 All the foundational and most successful process calculi \cite{milnerCalculusCommunicatingSystems1980, bergstraAlgebraCommunicatingProcesses1985, 
 hoareCommunicatingSequentialProcesses1978, milnerCommunicatingMobileSystems1999},  have a number of key features in common \begin{itemize}
-\item \textbf{Nil Process}: Each calculus has a \textit{constant process}, usually denoted as $nil$ or $\nil$, that is in a terminal state, can not perform any action.
-\item \textbf{Visible Actions}: Each calculus has \textit{action prefixes}, usually denotes as $\alpha, \beta, \ldots, \overline{\alpha}, \overline{\beta}, \ldots$. If $P$ is a process, $\alpha.P$ is a process that can perform an action $\alpha$, and then behaves as $P$. The two actions $\alpha$ and $\overline{\alpha}$ are called \textit{coactions}, and denotes two dual vies of the same comunication event. If $\alpha$ is the action of sending a qubit through a channel, $\overline{\alpha}$ is the dual action of receiving that qubit. 
+\item \textbf{Nil Process}: Each calculus has a \textit{constant process}, usually denoted as $nil$ or $\nil$, that is in a terminal state, i.e. it can not perform any action.
+\item \textbf{Visible Actions}: Each calculus has \textit{action prefixes}, usually denotes as $\alpha, \beta, \ldots, \overline{\alpha}, \overline{\beta}, \ldots$. If $P$ is a process, $\alpha.P$ is a process that can perform an action $\alpha$, and then behaves as $P$. The two actions $\alpha$ and $\overline{\alpha}$ are called \textit{coactions}, and denotes two dual vies of the same comunication event. If $\alpha$ is the action of sending a message through a channel, $\overline{\alpha}$ is the dual action of receiving that message. 
 \item \textbf{Internal Actions} Each calculus defines also a $\tau$ action, called \textit{internal action} or silent action. Process calculi are designed to model the interaction between system, and abstract away from the low level details. A process $\tau.P$ can then performs a silent action, indicating internal operations, not known to an external observer, outside the scope of the system being modelled. 
 %For example, when describing a TCP handshake protocol, only the IP packets sent on the net are represented as visible actions, while while writing data on the buffer of the socket is an internal action.
 \item \textbf{Non-determinism}: Each calculus has a \textit{non-deterministic sum} of processes, denoted as $P + Q$. Such a process can non-deterministically "choose" to behave like $P$ or like $Q$. 
 \item \textbf{Parallel Execution}: Each calculus has \textit{parallel composition} of processes, denoted as $P \parallel Q$. Such a process represent the concurrent execution of both $P$ and $Q$, and can perform all the actions of $P$ as well as all the action of $Q$, in a interleaving manner. Differently from the nondeterministic sum, after $P\parallel Q$ performs an action of $P$, it can still perform the actions of $Q$.
-\item \textbf{Synchronization}: Each calculus has inter-process communication. Two processes executing in parallel can \textit{synchronize}, performing at the same time an action and a coaction. A parallel process $\alpha.P \parallel \overline{\alpha}.Q$ can evolve in $P \parallel Q$, as the two processes had performed a synchronous communication. Such synchronization transition is considered as a invisible action, as it can be understood as a internal action of the (composite) process $\alpha.P \parallel \overline{\alpha}.Q$ 
+\item \textbf{Synchronization}: Each calculus has inter-process communication. Two processes executing in parallel can \textit{synchronize}, performing at the same time an action and a coaction. A parallel process $\alpha.P \parallel \overline{\alpha}.Q$ can evolve in $P \parallel Q$, as the two processes had performed a synchronous communication. Such synchronization transition results in an invisible action, as it can be understood as a internal action of the (composite) process $\alpha.P \parallel \overline{\alpha}.Q$ 
 
 \end{itemize}
 
@@ -21,7 +21,7 @@ To give a running example of a calculus with these features, we will define synt
   P \Coloneqq \nil \mid c!v. P \mid c?x.P \mid \tau.P \mid P + P \mid P \parallel P
 \end{align*}	
 
-In value passing CCS, $c!v$ is the action of sending a value $v$ through a channel $c$, and its coaction is $c?v$, of receiving a value from channel $c$. In the process $c?x.P$, we say that $x$ is a bound variable, otherwise is free.
+In value passing CCS, $c!v$ is the action of sending a value $v$ through a channel $c$, and its coaction is $c?v$, of receiving a value from channel $c$. In the process $c?x.P$, we say that $x$ is a bound variable, otherwise it is free.
 
 Usually, the semamtic of a process calculus is given in a SOS-fashion, as a \textit{Labelled Transition System}. Given a process $P$, its LTS can be understood as a rooted directed graph, where the nodes are processes, i.e. states of the computation, and the outgoing edges are the actions that a process can perform.
 
@@ -36,7 +36,7 @@ An element $(s, \alpha, t) \in \rightarrow$ is called a \textit{transition}, and
 The LTS of a process in value passing CCS is given by the following set of derivation rules: 
 
 \begin{gather*}
-c!v.P \xrightarrow{c!v} P \qquad c?x.P \xrightarrow{c?v} P[v/x] \qquad \	tau.P \xrightarrow{\tau} P
+c!v.P \xrightarrow{c!v} P \qquad c?x.P \xrightarrow{c?v} P[v/x] \qquad \	\tau.P \xrightarrow{\tau} P
 \\
 \infer{P + Q \xrightarrow{\alpha} P'}{P \xrightarrow{\alpha} P'} \qquad \infer{P + Q \xrightarrow{\alpha} Q'}{Q \xrightarrow{\alpha} Q'} 
 \\
