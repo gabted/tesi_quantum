@@ -49,30 +49,33 @@ c!v.P \xrightarrow{c!v} P \qquad c?x.P \xrightarrow{c?v} P[v/x] \qquad \	\tau.P 
 
 \subsection{Bisimulation}
 
-One of the most important notion in the theory of process calculi is the bisimilarity relation. Two processes are bisimilar when they are behaviourally equivalent, i.e. express the same behaviour. Different ways to compare the behaviour of two processes yields different definitions of bisimilarity.
+One of the most important notion in the theory of process calculi is behaviourally equivalence, i.e. recognizing when two processes express exactly the same behaviour. Different ways to compare the behaviour of two processes yields different definitions of equivalence. Since frim the birth of process calculi, one of the most common definition of behavioural equivalence has been the \textit{bisimilarity} relation. Two processes are bisimilar if each one can "simulate", i.e. replicate, the behaviour of the other. 
 
-The simplest and more natural notion of bisimilarity is \textit{strong bisimilarity}, where two bisimilar processes must express exactly the same behaviour, i.e. must perform the same action, both visible and silent.
+The simplest notion of bisimilarity is \textit{strong bisimilarity}, where two bisimilar processes must perform exactly the same action, both visible and silent. If we ignore the silent actions, we get instead \textit{weak bisimilarity}, as it will be explained formally   explained in the next paragraphs.
+
+
 Let $\langle S , Act, \rightarrow \rangle$ be a LTS. Then a symmetric relation $\rel \subseteq S \times S$ is a \textit{strong bisimulation} if and only if, whenever $s \rel t$, then 
 \begin{center}
 if $s \xrightarrow{\alpha} s'$ then $t \xrightarrow{\alpha} t'$ for some $t'$ such that $s' \rel t'$
 \end{center}
-Two states $s, t \in S$ are said to be \textit{strongly bisimilar}, written $s \sim t$, if exists a strong bisimulation $\rel$ such that $s \rel t$. This means that bisimilarity is the largest bisimulation, the union of all the bisimulation relations.
-Strong bisimulation is an equivalence relation, meaning that is reflexive, symmetrical and transitive, and it is also a \textit{congruence}, meaning that, if $P$ and $Q$ are bisimilar, so must be $P\parallel R$ and $Q\parallel R$, or $P + R$ and $Q + R$, or any other couple of processes that can be constructed starting from $P$ and $Q$.
+Two states $s, t \in S$ are said to be \textit{strongly bisimilar}, written $s \sim t$, if exists a strong bisimulation $\rel$ such that $s \rel t$. This means that bisimilarity is the the union of all the bisimulation relations, and so the largest bisimulation. 
+Strong bisimulation is an equivalence relation, i.e. is reflexive, symmetrical and transitive, and it is also a \textit{congruence}, meaning that, if $P$ and $Q$ are bisimilar, so must be $P\parallel R$ and $Q\parallel R$, or $P + R$ and $Q + R$, and so on.
 
 
 
 A weaker notion of behavioural equivalence is \textit{weak bisimilarity}, which requires that two bisimilar processes exhibit the same visible actions, but allows internal action to be matched by zero or more internal action.
 Let $\langle S , Act, \rightarrow \rangle$ be a LTS. Then a symmetric relation $\rel \subseteq S \times S$ is a \textit{weak bisimulation} if and only if, whenever $s \rel t$, then 
 \begin{center}
-if $s \xrightarrow{\alpha} s'$ then $t \xRightarrow{\alpha} t'$ for some $t'$ such that $s' \rel t'$
+if $s \xrightarrow{\alpha} s'$ then $t \xRightarrow{\alpha} t'$ for some $t'$ such that $s' \rel t'$ \\
+if $s \xrightarrow{\tau} s'$ then $t \Rightarrow t'$ for some $t'$ such that $s' \rel t'$ 
 \end{center}
 Two states $s, t \in S$ are said to be \textit{weakly bisimilar}, written $s \approx t$, if a weak bisimulation $\rel$ exists such that $s \rel t$.  Weak bisimilarity is not a congruence, as $P = \alpha.\nil$ and $Q = \tau.\alpha.\nil$ are bisimilar, but $P + \beta.\nil$ and $Q + \beta.\nil$ are not.
 
 
-Halfway between strong and weak bisimilarity there is the notion of \textit{branching bisimilarity}, that is coarser than strong bisimilarity, as it ignores internal actions, but is finer than weak bisimilarity, as it matches the braching structure more accurately.
+Halfway between strong and weak bisimilarity there is the notion of \textit{branching bisimilarity}, that is coarser than strong bisimilarity, as it internal actions are not directly observed, but is finer than weak bisimilarity, as it matches the braching structure more accurately.
 Let $\langle S , Act, \rightarrow \rangle$ be a LTS. Then a symmetric relation $\rel \subseteq S \times S$ is a \textit{branching bisimulation} if and only if, whenever $s \rel t$, then 
 \begin{center}
-if $s \xrightarrow{\alpha} s'$ then $t \xRightarrow t' \xrightarrow{\alpha} t''$ for some $t', t''$ such that $s \rel t'$ and $s' \rel t''$
+if $s \xrightarrow{\alpha} s'$ then $t \Rightarrow t' \xrightarrow{\alpha} t''$ for some $t', t''$ such that $s \rel t'$ and $s' \rel t''$
 \end{center}
 Two states $s, t \in S$ are said to be \textit{branching bisimilar}, written $s \simeq t$, if a branching bisimulation $\rel$ exists such that $s \rel t$.
 
@@ -116,7 +119,7 @@ With abuse of notation, we denote with the same symbol also the lifting of relat
 
 
 These lifted relations enjoys two useful properties. Interestingly, both this property are equivalent to the given definition, and are indeed used as the definition in various works on probabilistic bisimulations. \begin{itemize}
-\item Given $\rel \subseteq S \times S$, then $\Delta \lrel \Theta$ if ans only if $\Delta$ and $\Theta$ can be decomposed as follows: \begin{enumerate}
+\item Given $\rel \subseteq S \times S$, $\Delta \lrel \Theta$ if and only if $\Delta$ and $\Theta$ can be decomposed as follows: \begin{enumerate}
 \item $\Delta = \sum_{i \in I} p_i \overline{s_i}$, where $I$ is a finite index set and $\sum_{i \in I}p_i = 1$
 \item For each $i \in I$ there is a state $t_i$ such that $s_i \rel t_i$
 \item $\Theta = \sum_{i\in I}p_i\overline{t_i}$ 
@@ -127,7 +130,7 @@ These lifted relations enjoys two useful properties. Interestingly, both this pr
 
 \subsubsection{Probabilistic Labelled Transition Systems}
 
-We are now ready to introduce the main features of probabilistic process calculi. In addition to the usual operators of action prefixes, parallel composition and nondeterministic sum, such calculi often include a \textit{probabilistic choice} operator, like $P \qsum{p} Q$, where $p$ is any probability $0 \leq p \leq 1$. A process $P \qsum{p} Q$ makes a probabilistic choice between $P$ and $Q$, that is, it evolves in a \textit{distribution of processes}.
+We are now ready to introduce the main features of probabilistic process calculi. In addition to the usual operators of action prefixes, parallel composition and nondeterministic sum, such calculi often include a \textit{probabilistic choice} operator, like $P \psum{p} Q$, where $p$ is any probability $0 \leq p \leq 1$. A process $P \psum{p} Q$ makes a probabilistic choice between $P$ and $Q$, that is, it evolves in a \textit{distribution of processes}.
 
 Formally, we can define the operational semantic of a probabilistic process calculus as a \textit{pLTS}.
 	
@@ -136,19 +139,18 @@ A \textit{Probabilistic Labelled Transition System} (pLTS) is a triple $\langle 
 \item $Act$ is a set of transition labels
 \item $\rightarrow 	\subseteq S\times Act_\tau \times \mathcal{D}(S)$ is the transition relation, with $Act_\tau = Act \cup \{\tau\}$
 \end{itemize} 
+ For example, we could write 
+\[\alpha.(P \psum{\frac{2}{3}} Q) \xlongrightarrow{\alpha} \overline{P} \psum{\frac{2}{3}} \overline{Q}\]
+where $P \psum{\frac{2}{3}} Q$ is a single state, a syntactic element, and $\overline{P} \psum{\frac{2}{3}} \overline{Q}$ is a distribution of states, that assign to state $P$ probability $\frac{2}{3}$, and to state $Q$ probability $\frac{1}{3}$
 
-\note{ho introdotto il $\qsum{}$ per differenziare l'operatore sintattico dell'algebra  dalla notazione per le distribuzioni, ma comunque non sono sicuro che l'esempio serva a chiarire e non a confondere le idee} For example, we could write 
-\[P \qsum{\frac{2}{3}} Q \xlongrightarrow{\tau} \overline{P} \psum{\frac{2}{3}} \overline{Q}\]
-where $P \qsum{\frac{2}{3}} Q$ is a single state, a syntactic element, and $\overline{P} \psum{\frac{2}{3}} \overline{Q}$ is a distribution of states, that assign to state $P$ probability $\frac{2}{3}$, and to state $Q$ probability $\frac{1}{3}$
 
-
-On this definition of pLTS, there are actually two separate notion of (strong) probabilistic bisimilarity, that differ for how they treat non-determinism.
+On this definition of pLTS, there are actually two separate notion of (strong) probabilistic bisimilarity, that differ for how they relate probabilities and non-determinism.
 
 The first goes under the name of \textit{Larsen-Skou bisimulation}. Let $\langle S , Act, \rightarrow \rangle$ be a pLTS. Then a symmetric relation $\rel \subseteq S \times S$ is a \textit{Larsen-Skou bisimultion} if and only if, whenever $s \rel t$, then 
 \begin{center}
 if $s \xrightarrow{\alpha} \Delta$ then $t \xrightarrow{\alpha} \Theta$ for some $\Theta$ such that $\Delta \lrel \Theta$
 \end{center}
-The usual definition of Larsen-Skou bisimulation does not use the lifting operation, and requires that $\Theta$ assigns the same probability as $\Delta$ to each equivalence class of $S/R$, which is a completely equivalent formulation, as seen in the previous section. Two states $s, t \in S$ are said to be \textit{Larsen-Skou bisimilar}, written $s \sim_{LS} t$, if a Larsen-Skou bisimulation $\rel$ exists such that $s \rel t$.
+The usual definition of Larsen-Skou bisimulation does not use the lifting operation, and requires that $\Theta$ assigns the same probability as $\Delta$ to each equivalence class of $S/R$, which is an equivalent formulation, according to the property of lifting seen in the previous section. Two states $s, t \in S$ are said to be \textit{Larsen-Skou bisimilar}, written $s \sim_{LS} t$, if a Larsen-Skou bisimulation $\rel$ exists such that $s \rel t$.
 
 The second, strictly coarser notion of probabilistic bisimilarity is \textit{Segala bisimilarity}, which consider also the probabilistic behaviour that could happen in presence of an \textit{adversary}. When there is a non-deterministic choice, like in $\alpha.P + \alpha.Q$, it is common to assume the existance of an external agent, an adversary, that resolves such nondeterministic choices in an arbitrary way. In the example made before, one could suppose an adversary that always chooses the left transition, or one that always chooses the right transition. Segala bisimilarity consider the cases when the adversary can randomize, and for example choose the left transition with probability $p$ and the right transition with probability $1-p$.
 
@@ -182,14 +184,14 @@ The second, most recent approach, is known as the \textit{distribution transform
 \]
 So, for a distribution to evolve, it is necessary that all the precesses in its support can perform the same action $\alpha$. A distribution like $\alpha.P \psum{\frac{1}{2}} \beta.Q$, for example, has no outgoing transition.
 
-Notice that the addition of this rule is equivalent to lifting the transition relation $\rightarrow \subseteq S \times Act \times \distr(S)$ to a relation $\mathring{\rightarrow} \subseteq \distr(S) \times Act \times \distr(S)$. Since each state $s \in S$ can be also seen as a distribution $\overline{s} \in \distr(S)$, this lifting relation de facto defines a "complete" LTS of distributions $\langle \distr(S), Act, \mathring{\rightarrow}\rangle$. Observe that $\rightarrow_{cc} \subset \mathring{\rightarrow}$, and in fat this distribution transformation semantic is more often than not associated to a Segala bisimilarity.
+Notice that the addition of this rule is equivalent to lifting the transition relation $\rightarrow \subseteq S \times Act \times \distr(S)$ to a relation $\mathring{\rightarrow} \subseteq \distr(S) \times Act \times \distr(S)$. Since each state $s \in S$ can be also seen as a distribution $\overline{s} \in \distr(S)$, this lifting relation de facto defines a "complete" LTS of distributions $\langle \distr(S), Act, \mathring{\rightarrow}\rangle$. Observe that $\rightarrow_{cc} \subset \mathring{\rightarrow}$, and in fact this distribution transformation semantic is more often than not associated to a Segala bisimilarity.
 
 
 
 \subsection{Reduction systems}\label{bkg_reduction_system}
 
 In the early works on process calculus, bisimilarity in its various form was adopted as the mainstream notion of behavioural equivalence. Starting from \cite{milnerBarbedBisimulation1992}, a different notion of equivalence was considered, conceptually simpler and more general, under the name
-of \textbf{barbed congruence}, or barbed congruence. According to this notion, two processes are equivalent if they can not be distinguished by an external observer. That is, two processes $P$ and $Q$ are equivalent if, under any context $B[]$, $B[P]$ and $B[Q]$ express the same observable behaviour, based on a general concept of "observable", called \textit{barb}.
+of \textbf{barbed congruence}. According to this notion, two processes are equivalent if they can not be distinguished by an external observer. That is, two processes $P$ and $Q$ are equivalent if, under any context $B[\blank]$, $B[P]$ and $B[Q]$ express the same observable behaviour, based on a general concept of "observable", called \textit{barb}.
 
 We will first introduce the \textit{reduction semantic} for process calculi, and then show how it can be used to define barbed equivalence. 
 
@@ -215,7 +217,7 @@ P\parallel\nil \equiv P \qquad P\parallel Q \equiv Q \parallel P \qquad P\parall
 P + \nil \equiv P \qquad P + Q \equiv Q + P \qquad P + (Q + R) \equiv (P + Q) + R
 \end{gather*}
 
-Notice that the reduction system presented above, together with the structural congruence relation, determines exactly the $\xrightarrow{\tau}$ transition of the LTS semantics presented in the previous section. Reduction systems are in fact often used to describe the dynamics of calculi with tho interaction with an "outside environment", so no input and output transitions, only inter-process communication.
+Notice that the reduction system presented above, together with the structural congruence relation, determines exactly the $\xrightarrow{\tau}$ transition of the LTS semantics presented in the previous section. Reduction systems are in fact often used to describe the dynamics of calculi with no interaction with an "outside environment", so no input and output transitions, only inter-process communication.
 
 
 Obiously, a bisimularity relation defined on a reduction system is a very coarse relation, that simply consider the number of computational steps a process can make. To recover the notion of strong LTS-bisimilarity in the reduction semantics setting, it is necessary to recover some of the "observational power" of labelled bisimulations, through the concept of \textit{barbs}.
@@ -226,7 +228,7 @@ We call \textit{barb} a predicate on states, often used to capture a certain not
 %\[P \downarrow_c \text{ if and only if } P \xrightarrow{c!v} P'\]
 It is important to remark that in this case we defined, for simplicity, a barb as a property based on a preexisting labelled semantic. In all the most recent calculus the semantic of a process can be formulated directly as a reduction system, and the barbs are usually syntactic in nature.
 
-Given a set of barbs, i.e. a set of observable properties, is possible to define a \textit{barbed bisimulation}.
+Given a set of barbs, i.e. a set of observable properties, is possible to define a \textit{strong barbed bisimulation}.
 Let $\langle S , \rightarrow \rangle$ be a RS, and $B$ a set of barbs. Then a symmetric relation $\rel \subseteq S \times S$ is a \textit{barbed bisimulation} if and only if, whenever $s \rel t$, then 
 \begin{itemize}
 \item If $s \downarrow_b$ for some barb $b \in B$, then $t \downarrow_b$
@@ -240,7 +242,7 @@ A context is a "process with a hole", for example $B[] = [] \parallel R$ or $B[]
 
 Given a set of contexts, two processes $P$ and $Q$ are said to be \textit{barbed equivalent}, or barbed congruent, written $P \simeq_b Q$, if for any context $C[]$, it holds that $C[P] \sim_b C[Q]$. With the previously defined barb $\downarrow_c$, and choosing just parallel context of the form $[] \parallel R$, it is possible to prove that
 \[P \simeq_b Q \text{ if and only if } P \sim Q\]
-that is, barbed equivalence is exactly the same as labelled bisimilarity.
+that is, barbed equivalence is exactly the same as labelled bisimilarity. Similar results can be obtained also for weak bisimilarity, with an appropriate notion of weak barb.
 
 To sum up, a reduction semantic allows to define a barbed equivalence relation, that: \begin{itemize}
 \item Has the same power of labelled bisimilarity, but is defined in terms of a simpler transition system, inspired by term rewriting system.

@@ -12,13 +12,13 @@ In \cite{lalireRelationsQuantumProcesses2006}, the authors propose a notion of b
 %\end{definition}
 %}
 
-The notion of bisimilarity between configuration is given as usual, and two processes $P$ and $Q$ are considered bisimilar, written $P \sim Q$, when $\confw{\widetilde{q} = \rho, P}$ is bisimilar to $\confw{\widetilde{q} = \rho, Q}$ for any $\rho$.
+In QPAlg, as in all the other quantum calculi, the bisimilarity is given as a relation between configuration, and then lifted to a relation between processes. Two processes $P$ and $Q$ are considered bisimilar, written $P \sim Q$, when $\confw{\widetilde{q} = \rho, P}$ is bisimilar to $\confw{\widetilde{q} = \rho, Q}$ for any $\rho$.
 
 This bisimilarity consider the state of a qubit $Q$ an observable only when it is sent to the external environment. This means that the processes 
 \[ P = X[q].\nil \qquad Q = Z[q].\nil\]
 are indeed bisimilar, as the qubit $q$ ends up with a different quantum state, but the difference is never observed, because the qubit is never sent.
 
-This bisimilarity is not a congruence with respect to summation and parallel composition. The former is expected with weak or branching bisimulation, and is due to the usual problem 
+This bisimilarity is not a congruence with respect to summation and parallel composition. The former is expected with weak or branching bisimulation, and is due to the usual not quantum-related problem 
 \begin{align*}
 c!v.\nil &\sim \tau.c!v.\nil \\
 c!v.\nil + d!v &\not\sim \tau.c!v.\nil + d!v
@@ -39,13 +39,13 @@ $P$ and $Q$ are clearly bisimilar, as they do not perform any visible action. Bu
 
 The bisimilarity relations proposed for qCCS differ from the one for QPAlg in a number of "classical" details, not related to the quantum properties. First of all, for qCCS are defined strong and weak bisimilarity, not branching bisimilarity. QPAlg addresses probabilistic behaviour with a Larsen-Skou bisimulation, qCCS with a combined-moves bisimulation.
 
-Besides these "classical" differences in the treatment of silent transitions and probabilities, one key difference telling the two relations apart is the notion of "observable" quantum state. Where in QPAlg the state of a qubit could be observed only when it was sent, in qCCS the state of a qubit can be observed as soon as the computation has "ended", i.e. when there are no more transformation to be applied to that qubit.
+Besides these "non-quantum" differences in the treatment of silent transitions and probabilities, one key difference telling the two relations apart is the notion of "observable" quantum state. Where in QPAlg the state of a qubit could be observed only when it is sent, in qCCS the state of a qubit can be observed as soon as the computation has "ended", i.e. when there are no more transformation to be applied to that qubit.
 
-In  \cite{fengProbabilisticBisimulationsQuantum2007}, two configuration $\confw{\widetilde{q} = \rho, P}$ and $\confw{\widetilde{q} = \sigma, Q}$ being bisimilar required that if $\confw{\widetilde{q} = \rho, P} \not\rightarrow$, then $\confw{\widetilde{q} = \sigma, Q} \not\rightarrow$ and $\rho$ is equal to $\sigma$, up to a permutation of the quantum names in $\widetilde{q}$. 
+In  \cite{fengProbabilisticBisimulationsQuantum2007}, two configuration $\confw{\widetilde{q} = \rho, P}$ and $\confw{\widetilde{q} = \sigma, Q}$ being bisimilar requires that if $\confw{\widetilde{q} = \rho, P} \not\rightarrow$, then $\confw{\widetilde{q} = \sigma, Q} \not\rightarrow$ and $\rho$ is equal to $\sigma$, up to a permutation of the quantum names in $\widetilde{q}$. 
 
 An equivalent condition was present in \cite{yingAlgebraQuantumProcesses2010}, where the quantum actions $U[q]$, $M[q]$ and $\sop[q]$ were considered observable actions, and used as labels of the LTS. Since two bisimilar processes will perform the same observable action, when startig from the same quantum state $\rho$ they will necessarily end up in the same quantum state $\rho'$.
 
-The condition presented in \cite{fengProbabilisticBisimulationsQuantum2007} was too strict, and didn't work well with recursive processes, that are often non-terminating. So in \cite{fengBisimulationQuantumProcesses2012} a more general condition was proposed, requiring the equality not of the whole quantum state, but only of the qubits that will not be further modified. For example, in a configuration $\confw{q_1, q_2 = \rho, H[q_2].\nil}$, the bit $q_1$ should be regarded as observable, as it does not appear as a free quantum variable in $H[q_2].\nil$. The bit $q_2$, instead, should not be considered when checking for bisimilarity, as it is not in its final state.
+The condition presented in \cite{fengProbabilisticBisimulationsQuantum2007} was too strict, and didn't work well with non-terminating recursive processes. So in \cite{fengBisimulationQuantumProcesses2012} a more general condition was proposed, requiring the equality not of the whole quantum state, but only of the qubits that will not be further modified. For example, in a configuration $\confw{q_1, q_2 = \rho, H[q_2].\nil}$, the bit $q_1$ should be regarded as observable, as it does not appear as a free quantum variable in $H[q_2].\nil$. The bit $q_2$, instead, should not be considered when checking for bisimilarity, as it is not in its final state.
 
 More formally, \cite{fengBisimulationQuantumProcesses2012} defines the notion of \textit{environment} of a configuration, namely the reduced density operator of the values of the qubits not used by the process.
 \[env(\confw{\widetilde{q} = \rho, P}) = tr_{qv(P)}(\rho)\]
@@ -59,7 +59,7 @@ Consider the example seen before
 \[P = M_{01}[q_1].\nil \qquad Q = M_\pm[q_1].\nil \]
 %\[ P = X[q].\nil \qquad Q = Z[q].\nil\]
 
-$P$ and $Q$ are not bisimilar, as they end in different quantum states. $\confw{q = \proj{0}, P}$ will evolve in a (point) distiribution $\overline{\confw{q = \proj{0}, \nil}}$, while $\confw{q = \proj{0}, Q}$ will evolve in a distribution $\confw{q = \proj{+}, \nil} \psum{\frac{1}{2}} \confw{q = \proj{+}, \nil}$. Since the quantum state is observable, the two distributions are not bisimilar in the sense of probabilistic bisimulation, as they are composed by not-bisimilar states.
+$P$ and $Q$ are not bisimilar for \cite{fengProbabilisticBisimulationsQuantum2007, fengBisimulationQuantumProcesses2012, dengOpenBisimulationQuantum2012} , as they end in different quantum states. $\confw{q = \proj{0}, P}$ will evolve in a (point) distiribution $\overline{\confw{q = \proj{0}, \nil}}$, while $\confw{q = \proj{0}, Q}$ will evolve in a distribution $\confw{q = \proj{+}, \nil} \psum{\frac{1}{2}} \confw{q = \proj{+}, \nil}$. Since the state of $q$ is observable, the two distributions are not bisimilar in the sense of probabilistic bisimulation, as they are composed by not-bisimilar states.
 
 In \cite{dengOpenBisimulationQuantum2012}, a new, definitive notion of bisimilarity for qCCS is defined, under the name of open bisimilarity. This bisimilarity is similar to the previous one \cite{fengBisimulationQuantumProcesses2012}, but it is \textit{closed under superoperator application}. That is, two configuration $\conf$ and $conf'$ being bisimilar requires that also $\sop(\conf)$ and $\sop(\conf')$ are bisimilar, for any trace-preserving superoperator $\sop$ that acts on the qubits not used by $\conf$ and $\conf'$. The intuition behind this condition is that, if two configuration are bisimilar, they must still be bisimilar also when the external environment performs any kind of transformation on the unused qubits of the system. As this bisimilarity incorporates and extends all the ideas of \cite{fengBisimulationQuantumProcesses2012, yingAlgebraQuantumProcesses2010, fengBisimulationQuantumProcesses2012} we will use this open bisimilarity as a touchstone for the novel behavioural equavelences defined in the next chapter.
 

@@ -94,8 +94,6 @@ In order to define a bisimilarity relation that is also a congruence, in \cite{d
 
 Mixed configurations represent partial knowledge of the classical variables in a configuration, just like mixed state represent partial knowledge of quantum state. So, after a measurement, a configuration must evolve in a mixed configuration, because to an external observer, the outcome of the measurement in unknown. Only when the mixed configuration performs an output transition, where it communicates the output of the measurement, a mixed configuration can branch probabilistically in one of its possible configuration. As we will see, this difference is crucial, because changes the observable properties of the defined system: in the previous semantic, after a measurement there would be always probabilistic branching, i.e. the outcome probabilities are immediately observable; in the mixed configuration semantic, after a measurement there are no probabilities to observe (as that outcome is still local to the process), and the probabilities appear only when and if the outcome is comunicated.
 
-\note{esempio esplicativo, in tikzit? fatto a mano?}
-
 \subsection{qCCS}
 
 In \cite{fengProbabilisticBisimulationsQuantum2007}, the authors present qCCS, applying the ideas present in QPAlg and CQP to a simpler CCS-inspired calculus, without new name declaration and without expressions. A qCCS process id defined assuming a fixed set con classical channel, of quantum channels, and of quantum names. qCCS enforces the same conditions of "unique ownership of qubits" present in CQP, but without the use of a type system. The terms in qCCS are in fact inductively constructed in a way that preserves this property, for example specificating that $c!q.P$ is a process only if $q$ is not a free quantum variable in $P$.
@@ -104,7 +102,7 @@ In \cite{fengProbabilisticBisimulationsQuantum2007}, the authors present qCCS, a
 In the first work on qCCS where presented two different rules for quantum input, one adding a qubit to the configuration, the other assuming that the qubit is already present in the configuration. As already said, only the second rule was used in subsequent works.
 
 
-All the characteristic of QPAlg and CQP, in terms of configurations, parallel composition and communication are also present in CQP. The main difference between qCCS and the previous calculi is its "distribution transformation" approach to treat probabilities and nondeterminism. An other distinctive feature is that qCCS features recursive processes, that are absent in QPAlg and CQP. For the sake of comparison, we will ignore recursive processes in the rest of this chapter.
+All the characteristic of QPAlg and CQP, in terms of configurations, parallel composition and communication are also present in CQP. The main difference between qCCS and the previous calculi is its "distribution transformation" approach to treat probabilities and nondeterminism. An other distinctive characteristics is that qCCS features recursive processes, that are absent in QPAlg and CQP. For the sake of comparison, we will ignore recursive processes in the rest of this chapter.
 
 
 Like in QPAlg, a process can be constructed with \textit{quantum action}, that in qCC  are unitaries, superoperators and measurements. A measurement introduces a new classical variable to represent the outcome, and evolves in a distribution of configurations
