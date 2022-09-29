@@ -152,8 +152,6 @@ The following postulate makes obvious why we are interested in unitary transform
 
 According to what we said before, if a physical system starts in a unit state, it will always remain in a unit state.
 
-\note{No cloning theorem:}
-
 In quantum computing, the the programmer can manipulate the state of a qubit, applying unitary transformations to it. Some of the most frequent transformation, implemented in every quantum computer, are:
 \begin{gather*}
 	X = \sigma_X = \begin{bmatrix}
@@ -330,6 +328,14 @@ This matrix applies a "controlled not" operator on the second qubit. That is, it
 
 $\ket{\Phi^+}, \ket{\Phi^-}, \ket{\Psi^+}$ and 
 $\ket{\Psi^-}$ are four different ortonormal entangled vectors, and form the so called \textit{Bell basis} of $\calH^{\otimes 2}$.
+
+Before introducing the density operator formalism, we state one of the defining features of quantum computing: the No-Cloning Theorem, of which a simple proof can be found in \cite{nielsenQuantumComputationQuantum2010}.
+
+\begin{theorem}\label{noCloning}
+There is no unitary operation $U$ on $\calH_A \otimes \calH_B$ such that for all states $\kp \in \calH_A$ and $\kf \in \calH_B$
+\[U(\kp \otimes \kf) = \kp \otimes \kp
+\]
+\end{theorem}
 
 \subsection{Density operator formalism}
 

@@ -15,12 +15,11 @@ either selling machines or providing cloud access to them, proving it is actuall
 an emergent technology, with increasing interest among the scientific community.
 
 The theory of quantum computing started with the development of the quantum
-turing machine model~\cite{benioff_quantum_1982}. However the most common model
-in use today is the quantum circuit model based on qubits, quantum gates and
-measurement operations. A qubit is the basic unit of quantum information, a
-two-state quantum mechanical system. The analogy with the bit is obvious, as a qubit can be in states $\kz$ and $k1$. However the state of a qubit can also be a linear combination of $\kz$ and $\ko$, also called a superposition of $\kz$ and $\ko$. For example, a qubit can be in state $\kpl$ or $\km$, that are both combination of $\kz$ and $\ko$. Interestingly, also $\kz$ and $\ko$ can be expressed as a linear combination of $\kpl$ and $\km$, and in fact  $\kz$ and $\ko$ are usually called the computational basis, and $\kpl$ and $\km$ are known as the diagonal basis of the state space. When measured in a basis, a qubit 
-in superposition collapses to one of the two basis states,
-with probability dependent on the linear combination. A quantum system may also evolve through unitary transformations, that are physically implemented as quantum gates on one or more qubits (potentially controlled by classical bits).
+turing machine model~\cite{benioff_quantum_1982}, but the most common model
+in use today is the\textit{ quantum circuit model}, based on qubits, quantum gates and
+measurement operations. A \textit{qubit} is the basic unit of quantum information, a
+two-state quantum mechanical system. The analogy with the bit is obvious, as a qubit can be in states $\kz$ and $ko$. According to quantum mechanincs, the state of a qubit can also be a linear combination of $\kz$ and $\ko$, also called a \textit{superposition} of $\kz$ and $\ko$. For example, a qubit can be in state $\kpl$ or $\km$, that are both "equal" combination of $\kz$ and $\ko$, in the sense that they can both decay to $\kz$ or $\ko$ with an equal probability, as we will see. Interestingly, also $\kz$ and $\ko$ can be expressed as a linear combination of $\kpl$ and $\km$, and in fact  $\kz$ and $\ko$ are usually called the \textit{computational basis}, and $\kpl$ and $\km$ are known as the \textit{diagonal basis} of the state space. One of the (many) distinctive features of qubits with respect to classical bits, is that qubits cannot be "observed", or measured, without losing some information. When measured in a basis, in fanct, a qubit in superposition collapses to one of the two basis states,
+with probability dependent on the linear combination.
 
 Quantum computing theory is mainly developed along two axis: algorithms and
 protocols. Even though quantum computers obey the Church-Turing
@@ -34,21 +33,20 @@ of quantum theory to computer science. Due to lower physical
 requirements with respect to algorithms, various protocols have been implemented
 in real world contexts, also with large-scale commercially available physical implementations.
 The prototipical case is the BB84 Quantum Key Distribution
-protocol \note{\cite{shor_simple_2000}}, that has been proven unconditionally secure. As for algorithms, most protocols only require
-classical control and communication. However some protocols such as Quantum Key
+protocol \cite{shor_simple_2000}, that has been proven unconditionally secure. As for algorithms, most protocols can be implemented with just classical control and classical communication. Howeveer some protocols, such as Quantum Key
 Distribution~\cite{poppe_practical_2004} and Quantum Leader
-Election~\cite{tani_exact_2012} also require quantum communication (i.e. sending and receiving qubits).
+Election~\cite{tani_exact_2012}, also require \textit{quantum communication} (i.e. sending and receiving qubits).
 
 
-Correctness proof are available for some algorithm, but there is no systematic approach for verifying protocols ad their application in larger systems.
+Correctness proof are available for some quantum algorithm, but there is no systematic approach for verifying protocols ad their application in larger systems.
 As it is well known, correctness of classical communication protocols is already hard to prove at design stage, with notorious examples of vulnerabilities discovered for protocols previously considered to be secure.
 be incorrect later in time. This is more-so true for quantum protocols, which must resist both quantum and classical attackers.
 
 
-Process calculi have been successful in modeling classical concurrent systems with non-determinism, probability and communication. Process calculi provide systematic solutions for analyzing and verifying the correctness of new systems and protocols. We expect the same will hold also in the quantum case, which however turns out to be a challenging setting.
+Process calculi have been successful in modeling classical concurrent systems with non-determinism, probability and communication. Process calculi provide systematic solutions for analyzing and verifying the correctness of new systems and protocols. We expect the same will hold also in the quantum case, which still turns out to be a challenging setting.
 
 
-To model quantum protocols, a process calculus needs to handle both classical and quantum communication at once, and take into account the peculiar rules of quantum computations. Due to the so called \textit{No-cloning Theorem}, quantum information can not be duplicated, so can not be treated in the usual functional, "pass-by-value" fashion of process calculi. Besides, qubit in superposition can not be directly observed, as they "decay" in a probabilistic way when measured. Finally, a quantum process calculus must also deal with \textit{entangled qubits}, i.e. qubits that can not be described separately, one at a time, but must be considered as a whole compound system, even when they are stored in physically distant locations.
+To model quantum protocols, a process calculus needs to handle both classical and quantum communication at once, and take into account the peculiar rules of quantum computations. Due to the so called \textit{No-cloning Theorem}, quantum information can not be duplicated, so they can not be treated in the usual functional, "pass-by-value" fashion of process calculi. Besides, qubit in superposition can not be directly observed, as they "decay" in a probabilistic way when measured. Finally, a quantum process calculus must also deal with \textit{entangled qubits}, i.e. qubits that can not be described separately, one at a time, but must be considered as a whole compound system, even when they are stored in physically distant locations.
 
 Of all the proposed model, none has emerged as universally accepted standard. Our objective is to address the extension of classical process algebra to the quantum world. For this we will compare the different proposals, with a foundational approach aiming at identifying the best notion of behavioural equivalence. We propose a novel calculus named Linear qCCS, for which we consider different definitions of bisimilarity.
 Defining an appropriate bisimilarity is in fact the first step towards temporal logics, model checking and all the other tools available in the classical models.

@@ -29,7 +29,7 @@ Our probabilistic saturated bisimilarity is designed to be equivalent to open bi
 \end{itemize}
 
 
-In the following, taken a superoperator $\sop \in \mathcal{TS}(\hilbert_{\overline{\Sigma}})$ that acts only on the qubits \textit{outside} $\Sigma$, we write $\sop(\confw{\rho, P})$ to denote the configuration $\confw{\sop\otimes\mathcal{I}_\Sigma(\rho), P}$, with $\mathcal{I}_\Sigma$ the identity superoperator on qubits $\Sigma$.
+In the following, By writing $\sop \in \mathcal{TS}(\hilbert_{\widetilde{q}})$, we intend a superoperator that acts only on the qubits $\widetilde{q}$, i.e. $\sop(\rho) = \sum_{i \in I} (I_{\widetilde{p}} \otimes A_i) \rho (I_{\widetilde{p}} \otimes A_i)^{\dagger}$, where $\widetilde{p} = \text{QN} \setminus \widetilde{q}$ are all the qubits \textit{outside} $\widetilde{q}$. We also write $\sop(\confw{\rho, P})$ to denote the configuration $\confw{\sop(\rho), P}$.
 
 \begin{theorem}
 	For any pair of configurations $\confw{\rho, P}, \confw{\sigma, Q}$ well-typed under $\Gamma; \Sigma$, 
@@ -40,13 +40,13 @@ In the following, taken a superoperator $\sop \in \mathcal{TS}(\hilbert_{\overli
 	\end{enumerate}
 \end{theorem}
 \begin{proof}
- To prove point \ref{point:thmchinese1_quantum}, suppose $\confw{\rho, P} \simqs \confw{\sigma, Q}$, with $\rho, \sigma \in \calH_{\widetilde{q},\widetilde{p}}$ and $\Gamma;\widetilde{p} \vdash P$, $\Gamma;\widetilde{p} \vdash Q$.  For any superoperator $\sop \in \mathcal{TS}(\hilbert_{\widetilde{q}})$ we can construct a context $$B[\blank] = [\blank] \parallel \sop({\widetilde{q}}).a!0 \parallel c!\widetilde{q}$$ where $a$ is a fresh channel. We know that $\confw{\rho, B[P]}$ and $\confw{\sigma, B[Q]}$ are bisimilar, and$\confw{\rho, B[P]}$ can evolve in $\confw{\sop\otimes\mathcal{I}_{\widetilde{p}}(\rho), a!0 \parallel c!\widetilde{q} \parallel P}$. Then $\confw{\sigma, B[Q]}$ must necessarily evolve in $\confw{\sop\otimes \mathcal{I}_{\widetilde{p}}(\sigma), a!0 \parallel c!\widetilde{q} \parallel Q}$, because it must match the $\downarrow_a$ barb, and $a$ is fresh. So we have that  
-\[ \confw{\sop\otimes\mathcal{I}_{\widetilde{p}}(\rho), a!0 \parallel c!\widetilde{q} \parallel P} \simqs 
-  \confw{\sop\otimes \mathcal{I}_{\widetilde{p}}(\sigma), a!0 \parallel c!\widetilde{q} \parallel Q}
+ To prove point \ref{point:thmchinese1_quantum}, suppose $\confw{\rho, P} \simqs \confw{\sigma, Q}$, with $\rho, \sigma \in \calH_{\widetilde{q},\widetilde{p}}$ and $\Gamma;\widetilde{p} \vdash P$, $\Gamma;\widetilde{p} \vdash Q$.  For any superoperator $\sop \in \mathcal{TS}(\hilbert_{\widetilde{q}})$ we can construct a context $$B[\blank] = [\blank] \parallel \sop({\widetilde{q}}).a!0 \parallel c!\widetilde{q}$$ where $a$ is a fresh channel. We know that $\confw{\rho, B[P]}$ and $\confw{\sigma, B[Q]}$ are bisimilar, and$\confw{\rho, B[P]}$ can evolve in $\confw{\sop(\rho), a!0 \parallel c!\widetilde{q} \parallel P}$. Then $\confw{\sigma, B[Q]}$ must necessarily evolve in $\confw{\sop(\sigma), a!0 \parallel c!\widetilde{q} \parallel Q}$, because it must match the $\downarrow_a$ barb, and $a$ is fresh. So we have that  
+\[ \confw{\sop(\rho), a!0 \parallel c!\widetilde{q} \parallel P} \simqs 
+  \confw{\sop(\sigma), a!0 \parallel c!\widetilde{q} \parallel Q}
 \]
 and from this it follows 
-\[ \confw{\sop\otimes\mathcal{I}_{\widetilde{p}}(\rho), P} \simqs 
-  \confw{\sop\otimes \mathcal{I}_{\widetilde{p}}(\sigma), Q}
+\[ \confw{\sop(\rho), P} \simqs 
+  \confw{\sop(\sigma), Q}
 \] simply by contradiction: if there was a context capable of distinguishing $\sop(\rho, P)$ from $\sop(\rho, Q)$ then there would be a context able to distinguish also $\sop(\rho, P \parallel a!0 \parallel c!\widetilde{q})$ from $\sop(\sigma, Q \parallel a!0 \parallel c!\widetilde{q})$
 
 To prove point \ref{point:thmchinese2_quantum} we proceed by contradiction, supposing  $\confw{\rho, P} \simqs \confw{\sigma, Q}$  and $tr_{\widetilde{p}}(\rho) \neq tr_{\widetilde{p}}(\sigma)$, with a $\rho, \sigma \in \calH_{\widetilde{q}, \widetilde{p}}$ and $\Gamma;\widetilde{p} \vdash P$, $\Gamma;\widetilde{p} \vdash Q$.
@@ -59,7 +59,7 @@ and $\confw{\sigma, B[Q]}$ can perform only the transition \[\confw{\sigma, B[Q]
 
 We can actually prove a stronger property, that in lqCCS the action of "external" superoperators $\sop \in \mathcal{TS}(\calH_{\overline{\Sigma}})$ does not change the observable behaviour of a quantum system.
 
-\note{By writing $\sop \in TSO(\hilbert_{\Sigma})$, we mean that $\sop(\rho) = \sum_{i \in I} (I_{\overline{\Sigma}} \otimes A_i) \rho (I_{\overline{\Sigma}} \otimes A_i)^{\dagger}$.}
+
 
 \begin{proposition}\label{lemma:sop}
 	For any pair of configurations $\conf, \conf'$ well-typed under $\Gamma; \Sigma$, and for any $\sop \in TSO(\hilbert_{\overline{\Sigma}})$,
@@ -105,23 +105,14 @@ The proof for rule {\scshape SemQMeas} is the same, considering every $m \in \{0
 
 
 \subsection{CQP}
-
-The type system is inspired from the affine type system of CQP. To transform an affine system in a linear system, is necessary to remove the \textit{weakening} rule for $\Sigma$:
+The main difference between our type system and CQP's type system is linearity. 
+To transform an affine system in a linear system, is necessary to remove the \textit{weakening} rule for $\Sigma$:
 \[ \infer[\mbox{\footnotesize\scshape QWeak}]{\Gamma; \Sigma,q \vdash P}{\Gamma; \Sigma \vdash P}
 \]
 that allows to introduce a quantum name $q$ in $\Sigma$ even if it is not sent by $P$. In CQP, weakening is not an explicit rule of the typesystem, but is used implicitly in various rules, making it an affine type system.
 
-
-noi abbiamo il ite, quindi vere distribuzioni, non solo mixed
-
-
-\begin{example}
-Let $\rho = \frac{1}{2} \ketbra{0}{0}$ and $\rho' = \frac{1}{2} \ketbra{1}{1}$, then
+As already said, our quantum saturated bisimilairty descends from the same quantum properties that are behind mized configuration CQP bisimilarity. One feature of our language that is missing in CQP are superoperators, so only in our system is possible to prove that 
 \begin{align*}
-	\langle \rho, P \rangle \boxplus \langle \rho', P \rangle \equiv \langle \rho + \rho', P \rangle \sim \langle \frac{1}{2} I, P \rangle
+	Set_{\ketbra{+}{+}}(q).M_{01}(q \triangleright x).c!0 \sim Set_{\ketbra{+}{+}}.Set_{\frac{1}{2} I}(q).c!0
 \end{align*}
-In particular, the following holds in our system but not in~\cite{Feng:2012, Deng:2012}
-\begin{align*}
-	Set_{\ketbra{+}{+}}(q).M(q \triangleright x).c!0 \sim Set_{\frac{1}{2} I}(q).\tau.c!0
-\end{align*}
-\end{example}
+i.e. that a measurement of which we ignore the result is equivalent to the superoperator that sets all qubits to the maximmaly mixed state.

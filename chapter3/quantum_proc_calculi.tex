@@ -14,7 +14,7 @@ Separating the syntactic, control part of the configuration (the process $P$) fr
 The usual rule for reception, in fact, would be
 \[ c?x.P \xrightarrow{c?v} P[v/x]  \qquad \text{ for any value } v
 \]
-In this way, if $Q$ contains two occurrences of $x$, each of them gets instantiated with a different, independent copy of the value $v$. But if the value $v$ was a quantum state $\rho$, this would require duplicating the quantum information, which is impossible due to the no-cloning theorem. The solution proposed in various quantum calculi is substituting just the name of the variable, duplicating only the "pointers" to the same value.
+In this way, if $Q$ contains two occurrences of $x$, each of them gets instantiated with a different, independent copy of the value $v$. But if the value $v$ was a quantum state $\rho$, this would require duplicating the quantum information, which is impossible due to the No-cloning theorem ( theorem \ref{noCloning}). The solution proposed in various quantum calculi is substituting just the name of the variable, duplicating only the "pointers" to the same value.
 \[ \langle \widetilde{q} = \rho, c?x.P \rangle \xrightarrow{c?q} \confw{\widetilde{q} = \rho, P[q/x]} \qquad \text{ for any } q \in \widetilde{q}
 \]
 
