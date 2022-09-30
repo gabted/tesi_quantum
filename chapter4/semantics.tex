@@ -1,6 +1,6 @@
-We present a reduction semantics for lqCCS, consistent with the labelled semantic for qCCS presented in \cite{fengBisimulationQuantumProcesses2012, dengOpenBisimulationQuantum2012}. A reduction semantic does not make any assumption on the observable properties of the system (like the labels of a transition), and so in better suited to explore and compare different notion of behavioural equivalence.
+We present a reduction semantics for lqCCS, consistent with the labelled semantic for qCCS presented in \cite{fengBisimulationQuantumProcesses2012, dengOpenBisimulationQuantum2012}. A reduction semantic does not make any assumption on the observable properties of the system (like the labels of a transition), and so is better suited to explore and compare different notion of behavioural equivalence.
 
-Besides, as explained in chapter \ref{chapter3}, in a labelled transition system a quantum input transition like $\xrightarrow{c?q}$ requires the value of qubit $q$ to be already present in the state. This is an atypical assumption, as a labeled transition usually model the communication with an unknown external environment, but in this case requires at least some partial knowledge of the environment. In a reduction system there are no such labelled transitions, so a process communicates only with other processes, on which we have total information.
+Besides, as explained in Chapter \ref{chapter3}, in a labelled transition system a quantum input transition like $\xrightarrow{c?q}$ requires the value of qubit $q$ to be already present in the state. This is an atypical assumption, as a labeled transition usually model the communication with an unknown external environment, but in this case requires at least some partial knowledge of the environment. In a reduction system there are no such labelled transitions, so a process communicates only with other processes, on which we have total information.
 
 Our semantics defines a probabilistic reduction system $\langle S, \rightarrow \rangle$, where \begin{itemize}
 \item $S$ is a set of \textit{configurations}, of the form $\confw{\rho, P}$ (like in qCCS).
@@ -27,7 +27,7 @@ In order to define the reduction transition, we first need to introduce a semant
 
 We consider as a \textit{value} any expressions $n \in \mathbb{N},\  b \in \mathbb{B},\  x \in  \text{Var}$, and use $v$ as a metavariable for them.
 
-In figure \ref{big_step_exp}, we define a big step semantic for classical and quantum expression in the usual way. We write $e \Downarrow v$ to indicate that the expression $e$ evaluates to value $v$. Recall that the only quantum expression admitted by the type system are quantum variables.
+In Figure \ref{big_step_exp}, we define a big step semantic for classical and quantum expression in the usual way. We write $e \Downarrow v$ to indicate that the expression $e$ evaluates to value $v$. Recall that the only quantum expression admitted by the type system are quantum variables.
 
 \begin{figure}[h!]
 \begin{gather*}
@@ -43,7 +43,7 @@ In figure \ref{big_step_exp}, we define a big step semantic for classical and qu
 \label{big_step_exp}
 \end{figure}
 
-We define as the \textit{structural congruence relation} $\equiv$ the smallest equivalence relation that satisfies the axioms in figure \ref{str_cong}. We emplyed the usual axioms of \cite{milnerFunctionsProcesses1990} for parallel composition, summation and reduction. We also add axioms to evaluate classical expressions and resolve \textbf{If Then Else} constructs.
+We define as the \textit{structural congruence relation} $\equiv$ the smallest equivalence relation that satisfies the axioms in Figure \ref{str_cong}. We employed the usual axioms of \cite{milnerFunctionsProcesses1990} for parallel composition, summation and reduction. We also add axioms to evaluate classical expressions and resolve \textbf{If Then Else} constructs.
 
 \begin{figure}[h!]
 \begin{gather*}
@@ -66,9 +66,9 @@ We define as the \textit{structural congruence relation} $\equiv$ the smallest e
 \label{str_cong}
 \end{figure}
 
-We can now define the transition relation $\rightarrow$, presented in figure \ref{reduction}. As usual, we write $\confw{\rho, P} \rightarrow \Delta$ to intend $(\confw{\rho, P}, \Delta) \in \rightarrow$. To lighten the notation, we will also write $\confw{\rho, P} \rightarrow \confw{\rho', P'}$ instead of $\confw{\rho, P} \rightarrow \overline{\confw{\rho', P'}}$.
+We can now define the transition relation $\rightarrow$, presented in Figure \ref{reduction}. As usual, we write $\confw{\rho, P} \rightarrow \Delta$ to intend $(\confw{\rho, P}, \Delta) \in \rightarrow$. To lighten the notation, we will also write $\confw{\rho, P} \rightarrow \confw{\rho', P'}$ instead of $\confw{\rho, P} \rightarrow \overline{\confw{\rho', P'}}$.
 
-This transition relation can not be composed with itself, since it is a relation from configurations to distributions. As in \cite{fengBisimulationQuantumProcesses2012}, we can \textit{lift} the relation $\rightarrow$ into $\slift{\rightarrow}$, that is a relation from distributions to distributions, as described in section \ref{pLTS}. This is useful to talk about reachability and temporal logics, but will not be used in the definitions of strong bisimulations in the next sections.
+This transition relation cannot be composed with itself, since it is a relation from configurations to distributions. As in \cite{fengBisimulationQuantumProcesses2012}, we can \textit{lift} the relation $\rightarrow$ into $\slift{\rightarrow}$, that is a relation from distributions to distributions, as described in section \ref{pLTS}. This is useful to talk about reachability and temporal logics, but will not be used in the definitions of strong bisimulations in the next sections.
 
 \begin{figure}[h!]
   \begin{gather*}

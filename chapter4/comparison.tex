@@ -11,7 +11,7 @@ We show here, by means of an example, that lqCCS solve a relevant problem of qbi
 
 Consider the two configurations
 \[ \conf = \confw{\frac{1}{2}I \otimes \frac{1}{2}I, c!q_1 \parallel c!q_2} \qquad \conf' = \confw{\proj{\Phi^+}, c!q_1 \parallel c!q_2}
-\] where $\ket{\Phi^+} = \oost\ket{00} + \oost{11}$. According to the labelled bisimulation of QPAlg, the two configurations are bisimilar, as they both send two qubits with reduced density operator $\frac{1}{2}I$ on channel $c$. For our definition instead it holds $\conf \not\simps \conf'$, as they are distinguished by the context \[B[\blank] = [\blank]\parallel c?x.c?y.M[x, y \rhd z].\ite{z = 2}{d!0 \parallel disc(x, y)}{\parallel disc(x, y)}\] where $M$ is the measurement on the $4$-dimensional computational basis \[M = \set{M_0 = \proj{00}, M_1 = \proj{01}, M_2 = \proj{10}, M_3 = \proj{11}}\]
+\] where $\ket{\Phi^+} = \oost\ket{00} + \oost{11}$. According to the labelled bisimulation of QPAlg, the two configurations are bisimilar, as they both send two qubits with reduced density operator $\frac{1}{2}I$ on channel $c$. For our definition instead it holds $\conf \not\simps \conf'$, in accordance to what is prescribed by quantum theory, as the two configurations are distinguished by the context \[B[\blank] = [\blank]\parallel c?x.c?y.M[x, y \rhd z].\ite{z = 2}{d!0 \parallel disc(x, y)}{\parallel disc(x, y)}\] where $M$ is the measurement on the $4$-dimensional computational basis \[M = \set{M_0 = \proj{00}, M_1 = \proj{01}, M_2 = \proj{10}, M_3 = \proj{11}}\]
 After receiving and measuring two unrelated mixed state qubits, $B[\conf]$ will evolve in the distribution  $\Delta$
 \[ \frac{1}{4}\confw{\proj{00}, disc(\widetilde{q})} + \frac{1}{4}\confw{\proj{01}, disc(\widetilde{q})} + \frac{1}{4}\confw{\proj{10}, d!0 \parallel disc(\widetilde{q})} + \frac{1}{4}\confw{\proj{11}, disc(\widetilde{q})} \] where $\widetilde{q}$ is the couple $q_1, q_2$.
 After receiving and measuring two entangled qubits, instead, $B[\conf']$ will evolve in the distribution $\Delta'$
@@ -19,7 +19,7 @@ After receiving and measuring two entangled qubits, instead, $B[\conf']$ will ev
 We have that $\Delta \slift{\not\sim}_{PS} \Delta'$, as there is no decomposition of $\Delta = \sum_{i\in I} p_i \conf_i$ and $\Delta' = \sum_{i\in I} p_i \conf_i'$ such that $\conf_i \simps \conf_i'$ for each $i$, because $\Delta$ contains a configuration that expresses the barb $\downarrow_d$, while $\Delta'$ contains none.
 
 \subsection{qCCS}
-We compare here lqCCS with qCCS, showing that some defining properties of CCS is recovered in lqCCS. We omit here the main difference discusse above, which is the new bisimulation ~QS, shown above to be more adequate to odel behavioural equivalence in quantum processes.
+We compare here lqCCS with qCCS, showing that some defining properties of CCS is recovered in lqCCS. We omit here the main difference discussed above, which is the new bisimulation \simqs, shown to be more adequate to model behavioural equivalence in quantum processes.
 
 Our probabilistic saturated bisimilarity is designed to be equivalent to open bisimilarity for qCCS, except for a few intended modification:\begin{itemize}
 \item Open bisimilarity requires bisimilar processes to have the same free variables, $\simps$ requires bisimilar processes to have the same typing context.
@@ -29,7 +29,7 @@ Our probabilistic saturated bisimilarity is designed to be equivalent to open bi
 \end{itemize}
 
 
-In the following, By writing $\sop \in \mathcal{TS}(\hilbert_{\widetilde{q}})$, we intend a superoperator that acts only on the qubits $\widetilde{q}$, i.e. $\sop(\rho) = \sum_{i \in I} (I_{\widetilde{p}} \otimes A_i) \rho (I_{\widetilde{p}} \otimes A_i)^{\dagger}$, where $\widetilde{p} = \text{QN} \setminus \widetilde{q}$ are all the qubits \textit{outside} $\widetilde{q}$. We also write $\sop(\confw{\rho, P})$ to denote the configuration $\confw{\sop(\rho), P}$.
+In the following, by writing $\sop \in \mathcal{TS}(\hilbert_{\widetilde{q}})$, we intend a superoperator that acts only on the qubits $\widetilde{q}$, i.e. $\sop(\rho) = \sum_{i \in I} (I_{\widetilde{p}} \otimes A_i) \rho (I_{\widetilde{p}} \otimes A_i)^{\dagger}$, where $\widetilde{p} = \text{QN} \setminus \widetilde{q}$ are all the qubits \textit{outside} $\widetilde{q}$. We also write $\sop(\confw{\rho, P})$ to denote the configuration $\confw{\sop(\rho), P}$.
 
 \begin{theorem}
 	For any pair of configurations $\confw{\rho, P}, \confw{\sigma, Q}$ well-typed under $\Gamma; \Sigma$, 
@@ -111,7 +111,7 @@ To transform an affine system in a linear system, is necessary to remove the \te
 \]
 that allows to introduce a quantum name $q$ in $\Sigma$ even if it is not sent by $P$. In CQP, weakening is not an explicit rule of the typesystem, but is used implicitly in various rules, making it an affine type system.
 
-As already said, our quantum saturated bisimilairty descends from the same quantum properties that are behind mized configuration CQP bisimilarity. One feature of our language that is missing in CQP are superoperators, so only in our system is possible to prove that 
+As already said, our quantum saturated bisimilarity descends from the same quantum properties that are behind mixed configuration CQP bisimilarity. One feature of our language that is missing in CQP are superoperators, so only in our system is possible to prove that 
 \begin{align*}
 	Set_{\ketbra{+}{+}}(q).M_{01}(q \triangleright x).c!0 \sim Set_{\ketbra{+}{+}}.Set_{\frac{1}{2} I}(q).c!0
 \end{align*}

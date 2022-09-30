@@ -132,10 +132,10 @@ And so $\confw{\sigma, P\parallel R \parallel \discQ} \rel_{\trQ}\confw{\nu, Q\p
 
 As an example, considere the following formula, that from \cite{davidsonFormalVerificationTechniques2012} we expect to hold.
 \begin{example}
-From \cite{davidsonFormalVerificationTechniques2012} we expect that $$P =  M_{01}[q_0 \rhd x].disc(q_0) \simqs Q = M_\pm[q_0 \rhd x].disc(q_0)$$
+We expect that $$P =  M_{01}[q_0 \rhd x].disc(q_0) \simqs Q = M_\pm[q_0 \rhd x].disc(q_0)$$
 \end{example}
 
-To prove this result, we need the above theorem \ref{bisim_closed_by_discard_quantum}
+To prove this result, we need the above Theorem \ref{bisim_closed_by_discard_quantum}
 
 Given that $\emptyset, {q_0} \vdash P$ and $\emptyset, {q_0} \vdash Q$, we show that
 \[\rel = \big\{ \confw{\sigma, B[P]}, \confw{\sigma, B[Q]} \mid \sigma \in \mathcal{D}(\calH_{QN}), B[\blank]_{\emptyset; \set{q}} \text{ typed context}\big\}^S\ \cup \sim_{PS}
@@ -160,7 +160,7 @@ Suppose that $\confw{\sigma, R \parallel P} \rel \confw{\sigma, R \parallel Q}$,
  Observe that $\sop_{0, q}(\sigma) + \sop_{1, q}(\sigma)$ can be seen as $\sop_{01, q}(\sigma)$, where $\sop_{01, q}$ is the trace-preserving superoperator that measures the qubit $q$ in the computational basis and then discards the result. $\sop_{01, q}(\sigma)$ is indeed a well defined superoperator, with $\proj{0}\otimes I$ and $\proj{1}\otimes I$ one of its Kraus decomposition. The same holds also for $\sop_{+, q}(\sigma) + \sop_{-, q}(\sigma) = \sop_{\pm, q}(\sigma)$. So we can conclude
  \[ \confw{\sop_{01,q},  R \parallel disc(q)} \simqs \confw{\sop_{\pm,q},  R \parallel disc(q)}
  \]
- from theorem \ref{bisim_closed_by_discard_quantum}, since $tr_q(\sop_{01, q}(\sigma)) = tr_q(\sop_{\pm, q}(\sigma)) = tr_q(\sigma)$.
+ from Theorem \ref{bisim_closed_by_discard_quantum}, since $tr_q(\sop_{01, q}(\sigma)) = tr_q(\sop_{\pm, q}(\sigma)) = tr_q(\sigma)$.
 \end{itemize}
 
 As a general result, note that for quantum saturated bisimilarity all the following processes are equivalent 

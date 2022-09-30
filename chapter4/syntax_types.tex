@@ -23,7 +23,7 @@ $Set_{\Phi^+}$ to denote the corresponding superoperators. We write $\sop: Op(n)
 
 Each measurement symbol $M$ has a given arity $n$, and denotes a measurement $\set{M_0, \ldots, M_{k-1}}$ with $k$ different outcomes, where for each $0 \leq m \leq k-1$, $M_m$ is a linear operator on $\Hto{n}$ and $\calH$ is the two-dimensional Hilbert space of a qubit. We will use the symbol $M_{01}$ to denote the one-qubit measurement on the computational base $\set{M_0 = \proj{0}, M_1=\proj{1}}$, and the symbol $M_\pm$ to denote the one-qubit measurement on the diagonal base $\set{M_0 = \proj{+}, M_1 = \proj{-}}$. We write $M: Meas(n)$ to indicate  that $M$ is a measurement symbol with arity $n$.
 
-We say that the channel name $c$ is \textit{bound} in $P\setminus c$, and it is \textit{free} when it isn't bound by any restriction operator. We denote with $\mathit{fc}(P)$ the set of free channels of $P$.
+We say that the channel name $c$ is \textit{bound} in $P\setminus c$, and it is \textit{free} when it is not bound by any restriction operator. We denote with $\mathit{fc}(P)$ the set of free channels of $P$.
 
 We use $discard(e)$, as syntactic sugar for $c!e \setminus c$, and $discard(\widetilde{e})$, or also $disc(\widetilde{e})$, as syntactic sugar for $discard(e_1)\parallel \ldots\parallel discard(e_n)$.
 
@@ -39,7 +39,7 @@ We decided to keep the presentation as simple as possible, hence to mit recursiv
 CQP type system, as well as the equivalent syntactic rules for qCCS, treats quantum name communication in an affine way: each quantum variable can be sent at most once. This allows processes like 
 \[ P = H[q].\nil \qquad Q = X[q].\nil\]
 
-This syntax has created a crucial ambiguity in the literature, with consequences on the different notion of bisimilarity defined in QPAlg/CQP and qCCS. In QPAlg and CQP, the qubit $q$, owned by the processes $P$ and $Q$ above is \textit{not} visible for an outside observer, as it is never sent. In qCCS, the qubit $q$ \textit{is} indeed visible for an external observer, as explained in section \ref{stateOfTheAr_Bisimulation}. In QPAlg/CQP $P$ and $Q$ are bisimilar, while in qCCS they are not.
+This syntax has created a crucial ambiguity in the literature, with consequences on the different notion of bisimilarity defined in QPAlg/CQP and qCCS. In QPAlg and CQP, the qubit $q$, owned by the processes $P$ and $Q$ above is \textit{not} visible for an outside observer, as it is never sent. In qCCS, the qubit $q$ \textit{is} indeed visible for an external observer, as explained in Section \ref{stateOfTheAr_Bisimulation}. In QPAlg/CQP $P$ and $Q$ are bisimilar, while in qCCS they are not.
 
 To resolve this ambiguity, we introduce a \textit{linear} type system, where each quantum variable must be sent exactly once. A linear type system rejects the two processes above, while for example accepts the following
 \[P' = H[q].c!q \qquad Q' = X[q].c!q\]
@@ -47,7 +47,7 @@ that are bisimilar neither in QPAlg/CQP nor in qCCP.
 
 Notice that in lqCCS is also possible to write processes like 
 \[P'' = H[q].discard(q) \qquad Q'' = X[q].discard\]
-$P''$ and $Q''$ follow an approach a-la QPAlg, where the qubit $q$ is not visible, and are in fact bisimilar.
+$P''$ and $Q''$ follow an approach a là QPAlg, where the qubit $q$ is not visible, and are in fact bisimilar.
 
 
 The typing judgment are of the form $\Gamma \vdash e : T$ for classical expressions, $\Sigma \vdash e$ for quantum expressions, and $\Gamma; \Sigma \vdash P$ for processes.
@@ -61,7 +61,7 @@ The typing judgment are of the form $\Gamma \vdash e : T$ for classical expressi
 \end{itemize}
 
 
-We report in figure \ref{typesystem} the type system for Linear qCCS.
+We report in Figure \ref{typesystem} the type system for Linear qCCS.
 
 
 \begin{figure}[h!]
@@ -97,7 +97,7 @@ We report in figure \ref{typesystem} the type system for Linear qCCS.
 \infer[\mbox{\footnotesize\scshape QSend}]{c : \hat{\mathcal{Q}} ; \set{e} \vdash c!e}{} \\[0.2cm]
 %\infer[\mbox{\footnotesize\scshape QDiscard}]{e:\mathcal{Q} ; \set{e} \vdash discard(e)}{} \\[0.2cm]
 \infer[\mbox{\footnotesize\scshape Sum}]{\Gamma_1 \cup \Gamma_2; \Sigma \vdash P_1 + P_2}{\Gamma_1; \Sigma \vdash P_1 & \Gamma_2; \Sigma \vdash P_2} \qquad 
-\infer[\mbox{\footnotesize\scshape Par}]{\Gamma_i \cup \Gamma_2; \Sigma_1 \cup \Sigma_2 \vdash P_1 \parallel P_2}
+\infer[\mbox{\footnotesize\scshape Par}]{\Gamma_1 \cup \Gamma_2; \Sigma_1 \cup \Sigma_2 \vdash P_1 \parallel P_2}
 {\Sigma_1 \cap \Sigma_2 = \emptyset & \Gamma_1; \Sigma_1 \vdash P_1 & \Gamma_2 q; \Sigma_2 \vdash P_2} \\[0.2cm]
 \infer[\mbox{\footnotesize\scshape Rename}]{\Gamma; \Sigma \vdash P \{f\}}{f(\Gamma); \Sigma \vdash f(P)} \qquad
 \infer[\mbox{\footnotesize\scshape Restrict}]{\Gamma - c; \Sigma \vdash P \setminus c}{\Gamma; \Sigma \vdash P} \\[0.3cm]
@@ -114,14 +114,14 @@ between
 \]
 (recall that $discard(q)$ is syntactic sugar for $c!q\setminus c$)
 
-In the first case the qubit $q$ is observable, both for QPAlg/CQP and qCCS. In the second case, $P'$ ends up in a deadlock process $c!q \setminus c$, where the qubit $q$ is never sent, and it is not observable both for QPAlg/CQP and qCCS (techincally because it remains part of the free quantum variables of $P'$). 
+In the first case the qubit $q$ is observable, both for QPAlg/CQP and qCCS. In the second case, $P'$ ends up in a deadlock process $c!q \setminus c$, where the qubit $q$ is never sent, and it is not observable both for QPAlg/CQP and qCCS (technically because it remains part of the free quantum variables of $P'$). 
 
-In other words, writing processes like $P$, that always send their qubit, we obtain the observable properties assumed in qCCS, where the quantum sate is visible. Writing processes like $P'$, that always discard their qubits, we obtain the observable properties of QPAlg/CQP, where the state is invisible. Linear qCCS allows to mix the two notions, specifying which qubits should be visible for an external observer and which should not.
+In other words, writing processes like $P$, which always send their qubits, we obtain the observable properties assumed in qCCS, where the quantum state is visible. Writing processes like $P'$, which always discard their qubits, we obtain the observable properties of QPAlg/CQP, where the state is invisible. Linear qCCS allows to mix the two notions, specifying which qubits should be visible for an external observer and which should not.
 
 Finally, observe that the construct $discard(q) = c!q \setminus c$ is implementable also in standard qCCS, $\ite{e}{P}{Q}$ is equivalent to $[e].P + [\neg e].Q$, and so the well-typed terms of lqCCS are a subset of the valid terms of qCCS, inteded to capture only the asynchronous, unambiguous linear processes.
 
 \subsection{Contexts}
-After introducing the syntax and type system of lqCCS, we can now define contexts, that will be useful in section \ref{bisimulation_chapter4}. A context is usually defined as a "process with a hole", but in our case we need to restrict ourselves to contexts that respect the linear typing rules. So we introduce \textit{typed contexts}, i.e. contexts that "accept" only processes typed by a specific $\Gamma;\Sigma$, and are admitted by the linear type system.
+After introducing the syntax and type system of lqCCS, we can now define contexts, which will be useful in Section \ref{bisimulation_chapter4}. A context is usually defined as a "process with a hole", but in our case we need to restrict ourselves to contexts that respect the linear typing rules. So we introduce \textit{typed contexts}, i.e. contexts that "accept" only processes typed by a specific $\Gamma;\Sigma$, and are admitted by the linear type system.
 
 \begin{definition}
 A typed context $B[\blank]_{\Gamma; \Sigma}$ is generated by the grammar:
@@ -146,4 +146,4 @@ Given a typed context $B[\blank]_{\Gamma; \Sigma}$ and a process $P$, the proces
 	The proof is trivial, proceeding by induction on the rules {\footnotesize\scshape Hole} and {\footnotesize\scshape ParHole}.
 \end{proof}
 
-Notice that according to the given syntax, a context can be either the degenerate empty context $[\blank]_{\Gamma;\Sigma}$, or the parallel context $[\blank]_{\Gamma;\Sigma} \parallel P$ for some $P$. When used to define saturated bisimilarity (section \ref{bisimulation_chapter4}), these are the only \textit{discriminating} context, as in \cite{bonchiGeneralTheoryBarbs2014}.
+Notice that according to the given syntax, a context can be either the degenerate empty context $[\blank]_{\Gamma;\Sigma}$, or the parallel context $[\blank]_{\Gamma;\Sigma} \parallel P$ for some $P$. When used to define saturated bisimilarity (Section \ref{bisimulation_chapter4}), these are the only \textit{discriminating} contexts, as in \cite{bonchiGeneralTheoryBarbs2014}.

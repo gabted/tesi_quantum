@@ -160,13 +160,13 @@ The transition relation $\to$ is defined as follows, with $s \xrightarrow{\mu} \
 
 We define bisimularity on QLTS as usual.
 \begin{definition}
-	A relation $\rel : S \times S$ is called a QLTS \emph{bisimulation} if it's symmetric and for each pair of states $s, s' \in S$ such that $s \rel s'$,
+	A symmetric relation $\rel : S \times S$ is called a QLTS \emph{bisimulation} if it's symmetric and for each pair of states $s, s' \in S$ such that $s \rel s'$,
 	if $s \xrightarrow{\mu} \Delta$ then $s' \xrightarrow{\mu} \Delta'$ and $\Delta\,\qlift{\rel}\,\Delta'$, for some quantum distributions $\Delta, \Delta' \in D(S)$.
 	\emph{Q-bisimilarity} $\sim_Q$ is the largest QLTS bisimulation.
 \end{definition}
 
 
-\subsection{Testing Bisimilartiy over problematic Cases}
+\subsection{Testing Bisimilarity over problematic Cases}
 
 We take the example 6, 7, 8, and show that they behave as expected in mQPA.
 

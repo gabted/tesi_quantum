@@ -1,10 +1,10 @@
 \subsection{Exploring quantum behavioural equivalence}
-We now investigate some expected properties of a bisimulation for quantum processes, and how that they are not met by the standard probabilistic bisimulation. We will see that these problems are related to the use of density operators to represent mixed states, with interesting on sequences on non-determinism.
+We now investigate some expected properties of a bisimulation for quantum processes, and how that they are not met by the standard probabilistic bisimulation. We will see that these problems are related to the use of density operators to represent mixed states, with interesting consequences on non-determinism.
 
 \subsubsection*{The problem of mixed states}
 
-We show that the usual way of defining behavioural equivalence through probabilistic lifting (section \ref{pLTS}) does not work in the quantum case.
-This because probabilistic mixtures of quantum states are represented in two alternative ways, i.e., using density operators and using distributions of configurations.
+We show that the usual way of defining behavioural equivalence through probabilistic lifting (Section \ref{pLTS}) does not work in the quantum case.
+This happens because probabilistic mixtures of quantum states are represented in two alternative ways, i.e., using density operators and using distributions of configurations.
 Two different representations of the same mixture should be equivalent, but this is not always the case in the proposed bisimilarity (and in literature).
 
 \begin{example}
@@ -40,10 +40,10 @@ Once more, \cite{fengBisimulationQuantumProcesses2012, dengOpenBisimulationQuant
 \subsubsection*{The problem of non-determinism}
 
 We present here a strange behaviour that common process algebras express when mixing quantum states with non-deterministic choices.
-Assume a distribution obtained by tracing out one qubit of a bell pair $\ket{\Phi^+} = 1/\sqrt{2}(\ket{00} + \ket{11})$.
+Assume a distribution obtained by tracing out one qubit of a Bell pair $\ket{\Phi^+} = 1/\sqrt{2}(\ket{00} + \ket{11})$.
 This can be obtained, e.g., with the following configuration $\confw{\ket{\Phi^+}, discard(q_0) \parallel \dots}$.
-The qbit is in a probabilistic ensamble of pure states, represented with the density opertator $1/2 I$, which stands for both $\{(\ket{0}, 1/2), (\ket{1}, 1/2)\}$ and $\{(\ket{+}, 1/2), (\ket{-}, 1/2)\}$.
-The two ensambles are indeed indistinguishable from the quantum point of view.
+The qbit is in a probabilistic ensemble of pure states, represented with the density opertator $1/2 I$, which stands for both $\{(\ket{0}, 1/2), (\ket{1}, 1/2)\}$ and $\{(\ket{+}, 1/2), (\ket{-}, 1/2)\}$.
+The two ensembles are indeed indistinguishable from the quantum point of view.
 However, the two express a different behaviour according to a trivial semantics that just applies probabilistic reasoning to quantum processes, as shown in the following.
 \begin{example}
 	Let the processes $P$ and $Q$ and distributions $\Delta$, $\Theta$ be
