@@ -1,17 +1,17 @@
 \subsection{Process Calculi and LTS}
 
 
-Process Calculus, also known as Process Algebra, is an algebraic approach to model concurrent computation, often focus on the communication between different agents. Each agent is formalized as a \textit{process}, a syntactic element that describes its capabilities. Processes can be composed in different ways, and so form an \textit{algebra of processes}, with various operators for parallel composition, sequential compositions, probabilistic and non-deterministic sum, and so on.
+Process Calculus, also known as Process Algebra, is an algebraic approach to model concurrent computations, focusing on the communication between different agents. Each agent is formalized as a \textit{process}, a syntactic element that describes its capabilities. Processes can be composed in different ways, and so form an \textit{algebra of processes}, with various operators for parallel composition, sequential compositions, probabilistic and non-deterministic sum, and so on.
 
 All the foundational and most successful process calculi \cite{milnerCalculusCommunicatingSystems1980, bergstraAlgebraCommunicatingProcesses1985, 
-hoareCommunicatingSequentialProcesses1978, milnerCommunicatingMobileSystems1999},  have a number of key features in common \begin{itemize}
+hoareCommunicatingSequentialProcesses1978, milnerCommunicatingMobileSystems1999},  have a number of key features in common: \begin{itemize}
 \item \textbf{Nil Process}: Each calculus has a \textit{constant process}, usually denoted as $nil$ or $\nil$, that is in a terminal state, i.e. it cannot perform any action.
-\item \textbf{Visible Actions}: Each calculus has \textit{action prefixes}, usually denotes as $\alpha, \beta, \ldots, \overline{\alpha}, \overline{\beta}, \ldots$. If $P$ is a process, $\alpha.P$ is a process that can perform an action $\alpha$, and then behaves as $P$. The two actions $\alpha$ and $\overline{\alpha}$ are called \textit{coactions}, and denotes two dual views of the same communication event. If $\alpha$ is the action of sending a message through a channel, $\overline{\alpha}$ is the dual action of receiving that message. 
+\item \textbf{Visible Actions}: Each calculus has \textit{action prefixes}, usually denoted as $\alpha, \overline{\alpha}, \beta, \overline{\beta}, \ldots$ If $P$ is a process, $\alpha.P$ is a process that performs an action $\alpha$, and then behaves as $P$. The two actions $\alpha$ and $\overline{\alpha}$ are called \textit{coactions}, and denotes two dual views of the same communication event. If $\alpha$ is the action of sending a message through a channel, $\overline{\alpha}$ is the dual action of receiving that message. 
 \item \textbf{Internal Actions} Each calculus defines also a $\tau$ action, called \textit{internal action} or silent action. Process calculi are designed to model the interaction between system, and abstract away from the low level details. A process $\tau.P$ can then performs a silent action, indicating internal operations, not known to an external observer, outside the scope of the system being modeled. 
 %For example, when describing a TCP handshake protocol, only the IP packets sent on the net are represented as visible actions, while while writing data on the buffer of the socket is an internal action.
 \item \textbf{Non-determinism}: Each calculus has a \textit{non-deterministic sum} of processes, denoted as $P + Q$. Such a process can non-deterministically "choose" to behave like $P$ or like $Q$. 
 \item \textbf{Parallel Execution}: Each calculus has \textit{parallel composition} of processes, denoted as $P \parallel Q$. Such a process represents the concurrent execution of both $P$ and $Q$, and can perform all the actions of $P$ as well as all the actions of $Q$, in a interleaving manner. Differently from the nondeterministic sum, after $P\parallel Q$ performs an action of $P$, it can still perform the actions of $Q$.
-\item \textbf{Synchronization}: Each calculus has inter-process communication. Two processes executing in parallel can \textit{synchronize}, performing at the same time an action and a coaction. A parallel process $\alpha.P \parallel \overline{\alpha}.Q$ can evolve in $P \parallel Q$, as the two processes had performed a synchronous communication. Such synchronization transition results in an invisible action, as it can be understood as a internal action of the (composite) process $\alpha.P \parallel \overline{\alpha}.Q$ 
+\item \textbf{Synchronization}: Each calculus has inter-process communication. Two parallel processes can \textit{synchronize}, performing at the same time an action and a coaction. A parallel process $\alpha.P \parallel \overline{\alpha}.Q$ can evolve in $P \parallel Q$, as the two processes had performed a synchronous communication. Such synchronization transition results in an invisible action, as synchronization can be understood as a internal action of the (composite) process $\alpha.P \parallel \overline{\alpha}.Q$ 
 
 \end{itemize}
 
@@ -33,7 +33,7 @@ Formally, a Labeled Transition System is a triple $\langle S , Act, \rightarrow 
 
 An element $(s, \alpha, t) \in \rightarrow$ is called a \textit{transition}, and is often written as $s \xrightarrow{\alpha} t$. We denote with $\Rightarrow$ the reflexive and transitive closure of $\xrightarrow{\tau}$, and use $s \xRightarrow{\alpha} t$ as an abbreviation for $s \Rightarrow s' \xrightarrow{\alpha} t' \Rightarrow t$ for some $s', t' \in S$. When dealing with process calculi, the set $S$ of states is the set of all processes, and a transition $P \xrightarrow{\alpha} P'$ means that the process $P$ performs an action $\alpha$ and evolves in $P'$.
 
-The LTS of a process in value passing CCS is given by the following set of derivation rules: 
+The LTS of a process in value passing CCS is given by the following set of inference rules: 
 
 \begin{gather*}
 c!v.P \xrightarrow{c!v} P \qquad c?x.P \xrightarrow{c?v} P[v/x] \qquad \	\tau.P \xrightarrow{\tau} P
@@ -51,20 +51,20 @@ c!v.P \xrightarrow{c!v} P \qquad c?x.P \xrightarrow{c?v} P[v/x] \qquad \	\tau.P 
 
 One of the most important notion in the theory of process calculi is behaviourally equivalence, i.e. recognizing when two processes express exactly the same behaviour. Different ways to compare the behaviour of two processes yields different definitions of equivalence. Since from the birth of process calculi, one of the most common definition of behavioural equivalence has been the \textit{bisimilarity} relation. Two processes are bisimilar if each one can "simulate", i.e. replicate, the behaviour of the other. 
 
-The simplest notion of bisimilarity is \textit{strong bisimilarity}, where two bisimilar processes must perform exactly the same action, both visible and silent. If we ignore the silent actions, we get instead \textit{weak bisimilarity}, as it will be explained formally   explained in the next paragraphs.
+The simplest notion of bisimilarity is \textit{strong bisimilarity}, where two bisimilar processes must perform exactly the same actions, both visible and silent. If we ignore the silent actions, we get instead \textit{weak bisimilarity}, as it will be explained formally   explained in the next paragraph.
 
 
 Let $\langle S , Act, \rightarrow \rangle$ be a LTS. Then a symmetric relation $\rel \subseteq S \times S$ is a \textit{strong bisimulation} if and only if, whenever $s \rel t$, then 
 \begin{center}
 if $s \xrightarrow{\alpha} s'$ then $t \xrightarrow{\alpha} t'$ for some $t'$ such that $s' \rel t'$
 \end{center}
-Two states $s, t \in S$ are said to be \textit{strongly bisimilar}, written $s \sim t$, if exists a strong bisimulation $\rel$ such that $s \rel t$. This means that bisimilarity is the the union of all the bisimulation relations, and so the largest bisimulation. 
-Strong bisimulation is an equivalence relation, i.e. is reflexive, symmetrical and transitive, and it is also a \textit{congruence}, meaning that, if $P$ and $Q$ are bisimilar, so must be $P\parallel R$ and $Q\parallel R$, or $P + R$ and $Q + R$, and so on.
+Two states $s, t \in S$ are said to be \textit{strongly bisimilar}, written $s \sim t$, if a strong bisimulation $\rel$ exists such that $s \rel t$. This means that bisimilarity is the the union of all the bisimulation relations, and so the largest bisimulation. 
+Strong bisimulation is an equivalence relation, i.e. is reflexive, symmetrical and transitive, and it is also a \textit{congruence}, meaning that, if $P$ and $Q$ are bisimilar, so must be $P\parallel R$ and $Q\parallel R$, and $P + R$ and $Q + R$, and so on.
 
 
 
-A weaker notion of behavioural equivalence is \textit{weak bisimilarity}, which requires that two bisimilar processes exhibit the same visible actions, but allows internal action to be matched by zero or more internal action.
-Let $\langle S , Act, \rightarrow \rangle$ be a LTS. Then a symmetric relation $\rel \subseteq S \times S$ is a \textit{weak bisimulation} if and only if, whenever $s \rel t$, then 
+A weaker notion of behavioural equivalence is \textit{weak bisimilarity}, which requires that two bisimilar processes exhibit the same visible actions, but allows each internal action to be matched by zero or more internal actions.
+Let $\langle S , Act, \rightarrow \rangle$ be a LTS. Then a symmetric relation $\rel \subseteq S \times S$ is a \textit{weak bisimulation} if and only if, whenever $s \rel t$,
 \begin{center}
 if $s \xrightarrow{\alpha} s'$ then $t \xRightarrow{\alpha} t'$ for some $t'$ such that $s' \rel t'$ \\
 if $s \xrightarrow{\tau} s'$ then $t \Rightarrow t'$ for some $t'$ such that $s' \rel t'$ 
@@ -72,21 +72,21 @@ if $s \xrightarrow{\tau} s'$ then $t \Rightarrow t'$ for some $t'$ such that $s'
 Two states $s, t \in S$ are said to be \textit{weakly bisimilar}, written $s \approx t$, if a weak bisimulation $\rel$ exists such that $s \rel t$.  Weak bisimilarity is not a congruence, as $P = \alpha.\nil$ and $Q = \tau.\alpha.\nil$ are bisimilar, but $P + \beta.\nil$ and $Q + \beta.\nil$ are not.
 
 
-Halfway between strong and weak bisimilarity there is the notion of \textit{branching bisimilarity}, that is coarser than strong bisimilarity, as it internal actions are not directly observed, but is finer than weak bisimilarity, as it matches the braching structure more accurately.
-Let $\langle S , Act, \rightarrow \rangle$ be a LTS. Then a symmetric relation $\rel \subseteq S \times S$ is a \textit{branching bisimulation} if and only if, whenever $s \rel t$, then 
+Halfway between strong and weak bisimilarity there is the notion of \textit{branching bisimilarity}, that is coarser than strong bisimilarity, as its internal actions are not directly observed, but is finer than weak bisimilarity, as it matches the braching structure more accurately.
+Let $\langle S , Act, \rightarrow \rangle$ be a LTS. Then a symmetric relation $\rel \subseteq S \times S$ is a \textit{branching bisimulation} if and only if, whenever $s \rel t$, 
 \begin{center}
 if $s \xrightarrow{\alpha} s'$ then $t \Rightarrow t' \xrightarrow{\alpha} t''$ for some $t', t''$ such that $s \rel t'$ and $s' \rel t''$
 \end{center}
 Two states $s, t \in S$ are said to be \textit{branching bisimilar}, written $s \simeq t$, if a branching bisimulation $\rel$ exists such that $s \rel t$.
 
-The two processes \[P = \alpha.\nil + \tau.\beta.\nil \qquad Q = \alpha.\nil + \beta.\nil + \tau.\beta.\nil\] are weakly bisimilar, because obviously if $P$ performs an action $Q$ can replicate it, and in $Q$ performs its additional $\beta$ action, $P$ can replicate it as $\tau.\beta$. These two processes are instead not branching bisimilar, because if $Q$ performs its $\beta$ action, $P$ cannot replicate it, as after a $\tau$ transition it evolves in $\beta.\nil$, which it is not bisimilar to $Q$.
+The two processes \[P = \alpha.\nil + \tau.\beta.\nil \qquad Q = \alpha.\nil + \beta.\nil + \tau.\beta.\nil\] are weakly bisimilar, because obviously if $P$ performs an action $Q$ can replicate it, and in $Q$ performs its additional $\beta$ action, $P$ can replicate it as $\tau.\beta$. These two processes are instead not branching bisimilar, because if $Q$ performs its $\beta$ action, $P$ cannot replicate it, as after a $\tau$ transition it evolves in $\beta.\nil$, which is not bisimilar to $Q$.
 
 \subsection{Probabilistic LTS} \label{pLTS}
 
 The usual concepts of process calculus has been successfully extended to model probabilistic systems. We will present in this section the most common definitions of probabilistic LTS and probabilistic bisimulation, following the comprehensive analysis of \cite{hennessyExploringProbabilisticBisimulations2012, dengLogicalMetricAlgorithmic2011}.
 
 \subsubsection{Probabilistic Lifting}
-First of all, we give some preliminary mathematical definitions about probabilistic distributions, and about the very general concept of \textit{lifting} a relation between objects to a relation between distribution of objects.
+First of all, we give some preliminary mathematical definitions about probabilistic distributions, and about the very general concept of \textit{lifting} a relation between objects to a relation between distributions of objects.
 
 Given a set $S$, a (discrete) \textit{probability distribution on $S$} is a mapping $\Delta: S \rightarrow [0, 1]$ such that $\sum_{s\in S} \Delta(s) = 1$. We indicate with $\distr(S)$ the set of all probability distribution on $S$.
 The \textit{support} of $\Delta \in \distr(S)$ is defined as $\lceil\Delta\rceil = \{s \in S \mid \Delta(s) > 0\}$.
@@ -115,16 +115,16 @@ A relation $\mathcal{R} \subseteq \distr(S) \times \distr(S)$  between distribut
 
 Given a relation $\rel \subseteq S \times S$, we define its \textit{lifting} $\mathring{\rel} \subseteq \distr(S) \times \distr(S)$ as the smaller linear relation such that $s \rel t$ implies $\overline{s} \mathring{\rel} \overline{t}$.
 
-With abuse of notation, we denote with the same symbol also the lifting of relations $\rel \subseteq S \times \distr(S)$. Given a relation $\rel \subseteq S \times \distr(S)$, we define its \textit{lifting} $\mathring{\rel} \subseteq \distr(S) \times \distr(S)$ as the smaller linear relation such that $s \rel \Delta$ implies $\overline{s} \mathring{\rel} \Delta$.
+With abuse of notation, we denote with the same symbol also the lifting of relations $\rel \subseteq S \times \distr(S)$. Given a relation $\rel \subseteq S \times \distr(S)$, we define its \textit{lifting} $\mathring{\rel} \subseteq \distr(S) \times \distr(S)$ as the smallest linear relation such that $s \rel \Delta$ implies $\overline{s} \mathring{\rel} \Delta$.
 
 
-These lifted relations enjoys two useful properties. Interestingly, both this property are equivalent to the given definition, and are indeed used as the definition in various works on probabilistic bisimulations. \begin{itemize}
+These lifted relations enjoy two useful properties. Interestingly, both this property are equivalent to the given definition, and are indeed used as the definition in various works on probabilistic bisimulation. \begin{itemize}
 \item Given $\rel \subseteq S \times S$, $\Delta \lrel \Theta$ if and only if $\Delta$ and $\Theta$ can be decomposed as follows: \begin{enumerate}
 \item $\Delta = \sum_{i \in I} p_i \overline{s_i}$, where $I$ is a finite index set and $\sum_{i \in I}p_i = 1$
 \item For each $i \in I$ there is a state $t_i$ such that $s_i \rel t_i$
 \item $\Theta = \sum_{i\in I}p_i\overline{t_i}$ 
 \end{enumerate}
-\item Given an equivalence $\rel \subseteq S \times S$, then $\Delta \lrel \Theta$ if and only if, for all equivalence classes $C \in S/R$
+\item Given an equivalence relation $\rel \subseteq S \times S$, then $\Delta \lrel \Theta$ if and only if, for all equivalence classes $C \in S/R$
 \[\sum_{s\in C} \Delta(s) = \sum_{s\in C} \Theta(s)\]
 \end{itemize}
 
@@ -132,7 +132,7 @@ These lifted relations enjoys two useful properties. Interestingly, both this pr
 
 We are now ready to introduce the main features of probabilistic process calculi. In addition to the usual operators of action prefixes, parallel composition and nondeterministic sum, such calculi often include a \textit{probabilistic choice} operator, like $P \psum{p} Q$, where $p$ is any probability $0 \leq p \leq 1$. A process $P \psum{p} Q$ makes a probabilistic choice between $P$ and $Q$, that is, it evolves in a \textit{distribution of processes}.
 
-Formally, we can define the operational semantic of a probabilistic process calculus as a \textit{pLTS}.
+Formally, we define the operational semantic of a probabilistic process calculus as a \textit{pLTS}.
 	
 A \textit{Probabilistic Labelled Transition System} (pLTS) is a triple $\langle S , Act, \rightarrow \rangle$ where \begin{itemize}
 \item $S$ is a set of states
@@ -141,7 +141,7 @@ A \textit{Probabilistic Labelled Transition System} (pLTS) is a triple $\langle 
 \end{itemize} 
  For example, we could write 
 \[\alpha.(P \psum{\frac{2}{3}} Q) \xlongrightarrow{\alpha} \overline{P} \psum{\frac{2}{3}} \overline{Q}\]
-where $P \psum{\frac{2}{3}} Q$ is a single state, a syntactic element, and $\overline{P} \psum{\frac{2}{3}} \overline{Q}$ is a distribution of states, that assign to state $P$ probability $\frac{2}{3}$, and to state $Q$ probability $\frac{1}{3}$
+where $P \psum{\frac{2}{3}} Q$ is a single state, a syntactic element, and $\overline{P} \psum{\frac{2}{3}} \overline{Q}$ is a distribution of states, that assigns to state $P$ the probability $\frac{2}{3}$, and to state $Q$ the probability $\frac{1}{3}$
 
 
 On this definition of pLTS, there are actually two separate notion of (strong) probabilistic bisimilarity, that differ for how they relate probabilities and non-determinism.

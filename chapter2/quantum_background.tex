@@ -111,7 +111,7 @@ Other important vectors in the $\calHt$ state space are $\kpl$ and $\km$,
 	-1
 	\end{pmatrix}  = \oost\kz - \oost\ko 
 \end{align*}
-that form the so called \textit{diagonal basis}, or Hadamard basis, of $\calHt$. As we will see, $\kpl$ and $\km$ are both an equal superposition of $\kz$ and $\ko$. The difference between $\kpl$ and $\km$ is the \textit{relative phase}, i.e. the phase between the $\kz$ and $\ko$ component. The states $\kz + \ko$, $-\kz -\ko$, $i\kz + i\ko$ are all equal to $\kpl$ times a certain global phase, and are considered the same state. The states $\kz + \ko$, $\kz - \ko$, $\kz +i\ko$, instead, all differs for a relative phase factor, and have a different behaviours when applied to the same computation. 
+that form the so called \textit{diagonal basis}, or Hadamard basis, of $\calHt$. As we will see, $\kpl$ and $\km$ are both an equal superposition of $\kz$ and $\ko$. The difference between $\kpl$ and $\km$ is the \textit{relative phase}, i.e. the phase between the $\kz$ and $\ko$ component. The states $\kz + \ko$, $-\kz -\ko$, $i\kz + i\ko$ are all equal to $\kpl$ times a certain global phase, and are considered the same state. The states $\kz + \ko$, $\kz - \ko$, $\kz +i\ko$, instead, all differ for a relative phase factor, and have a different behaviour when applied to the same computation. 
 \subsection{Unitary Transformations}
 
 For each linear operator $A$ acting on a Hilbert space $\calH$, we denote as $A^\dagger$ the \textit{adjoint} of $A$, i.e. the unique linear operator such that
@@ -142,9 +142,9 @@ A corollary of this property is that applying a unitary operator to a unit vecto
 	\braket{U\psi | U\psi} = \braket{\psi|\psi} = 1
 \]
 
-The following postulate makes obvious why we are interested in unitary transformation.
+The following postulate makes obvious why we are interested in unitary transformations.
 \begin{quote}
-\textbf{Postulate II}: The evolution of a closed quantum system is described by a unitary transformation. That is, the state $\kp$ of the system at time $t_0$ is related to the state $\ket{\psi^\prime}$ of the system at time $t_2$ by a unitary operator $U$ which depends only on the times $t_0$ and $t_1$.
+\textbf{Postulate II}: The evolution of a closed quantum system is described by a unitary transformation. That is, the state $\kp$ of the system at time $t_0$ is related to the state $\ket{\psi^\prime}$ of the system at time $t_1$ by a unitary operator $U$ which depends only on the times $t_0$ and $t_1$.
 \[
 	\ket{\psi^\prime} = U\kp
 \]
@@ -152,7 +152,7 @@ The following postulate makes obvious why we are interested in unitary transform
 
 According to what we said before, if a physical system starts in a unit state, it will always remain in a unit state.
 
-In quantum computing, the the programmer can manipulate the state of a qubit, applying unitary transformations to it. Some of the most frequent transformations, implemented in every quantum computer, are:
+In quantum computing, the programmer can manipulate the state of a qubit by applying unitary transformations to it. Some of the most frequent transformations, implemented in every quantum computer, are:
 \begin{gather*}
 	X = \sigma_X = \begin{bmatrix}
 	0 & 1 \\
@@ -195,34 +195,34 @@ The first three operators are known as Pauli operators. $X$ is the "bit-flip ope
 	\alpha	
 	\end{pmatrix}
 \] 
-Notice that the $X$ operator leaves the $\kpl$ state unaltered, because it was in an equal superposition of $\kz$ and $\ko$, and it remains in a equal superposition.
+Notice that the $X$ operator leaves the $\kpl$ state unaltered, because it is and it remains in an equal superposition of $\kz$ and $\ko$.
 
 
-$Z$ is the "phase-flip operator", as it changes the relative phases of the $\kz$ and $\ko$ component. $Z \kpl$ becomes $\km$ and vice versa. When applied to $\kz$ (or $\ko$) the $Z$ operator does nothing, 
+$Z$ is the "phase-flip operator", it changes the relative phases of the $\kz$ and $\ko$ component. $Z \kpl$ becomes $\km$ and vice versa. When applied to $\kz$ (or $\ko$) the $Z$ operator does nothing, 
 
  
-Finally, the $H$ operator, called the Hadamard operator, or Hadamard gate, is used to \textit{create superposition}, as it transforms a vector from the computational basis to the diagonal basis:
+Finally, the $H$ operator, called the Hadamard operator, or Hadamard gate, is used to \textit{create superpositions}, as it transforms a vector from the computational basis to the diagonal basis:
 \begin{gather*}
 	H\kz = \kpl \qquad H\kpl = \kz  \\
 	H\ko = \km \qquad H\km = \ko \\	 
 \end{gather*}
 \subsection{Measurement}
 
-The second postulate describes only the evolution of isolated systems. Such systems exchange neither energy nor information with the environment, and all their computations are always reversible (and are in fact formalized with invertible, unitary matrices). To extract classical information from the system, to \textit{measure} the output of a quantum computation, an interaction is needed between the quantum system and the environment. As we will see, this measurement operation is first of all non-invertible, as different state could produce the same outcome when measured, but is also fundamentally probabilistic: a generic state $\kp$ could produce different measurement outcomes $m_1, m_2,\ldots$, each with a certain probability that depends on $\kp$.
+The second postulate describes only the evolution of isolated systems. Such systems exchange neither energy nor information with the environment, and all their computations are always reversible (and are in fact formalized with invertible, unitary matrices). To extract classical information from the system, to \textit{measure} the output of a quantum computation, an interaction is needed between the quantum system and the environment. As we will see, this measurement operation is first of all non-invertible, as different state could produce the same outcome when measured, but is also intrinsically probabilistic: a generic state $\kp$ could produce different measurement outcomes $m_1, m_2,\ldots$, each with a certain probability that depends on $\kp$.
 
-From a physical point of view, if a system is in a superposition of states, measuring it can  cause the wavefunction to collapse to a single state, in a purely probabilistic way. This means that, even if we compute a state that contains the desired information, this information is often difficult to recover, because directly measuring  it can destroy the information and produce a trivial outcome.
+From a physical point of view, if a system is in a superposition of states, measuring it cause the wavefunction to collapse to a base state, in a purely probabilistic way. This means that, even if we compute a state that contains the desired information, this information is often difficult to recover, because directly measuring  it can destroy the information and produce a trivial outcome.
 
 \begin{quote} \textbf{Postulate III}: Quantum measurements are described by a set $\{M_m\}_m$ of measurement operators, where the index $m$ refers to the measurement outcomes that may occur in the experiment. The set of measurement operators must be \textit{complete}, i.e.:
 \[\sum_m M_m^\dagger M_m = I\]
-If the state of the quantum system is $\kp$ before the measurement, then the probability that result $m$ occurs is 
+If the state of the quantum system is $\kp$ before the measurement, then the probability that the result $m$ occurs is 
 \[p_m = \bra{\psi}M_m^\dagger M_m\kp\]
-and the state after the measurement will be \[\frac{1}{\sqrt{p_m}}M_m\kp\]
+and if $m$ is the outcome the state after the measurement will be \[\frac{1}{\sqrt{p_m}}M_m\kp\]
 \end{quote}
 
 The most common class of quantum measurements is composed of \textit{projective measurements}. Such measurements are described by a set of \textit{orthogonal projectors}, i.e. Hermitian operators such that \[ M_mM_{m'} = \begin{cases}\mathbf{0}\quad\text{if } m \neq m' \\ M_m\quad\text{if }m = m'\end{cases}\]
 
 
-The simplest example of (projective) measurement is simply measuring a state in the computational basis, i.e. projecting it in its $0$-$1$ component. The measurement in the computational basis, denoted as $M_{01}$ is defined as \[ M_0 = \begin{pmatrix} 1 & 0 \\ 0 & 0\end{pmatrix} \qquad
+The simplest example of (projective) measurement is simply measuring a state in the computational basis, i.e. projecting it in its $\kz$-$\ko$ component. The measurement in the computational basis, denoted as $M_{01}$ is defined as \[ M_0 = \begin{pmatrix} 1 & 0 \\ 0 & 0\end{pmatrix} \qquad
 M_1 = \begin{pmatrix}0 & 0 \\ 0 & 1\end{pmatrix} \]
 And its effect of the state $\kp = \begin{pmatrix}\alpha \\ \beta \end{pmatrix}$ is:
 \begin{align*}
@@ -242,11 +242,11 @@ When instead measuring the $\kpl$ state we get either $\kz$ or $\ko$, with equal
 An other projective measurement is the measurement in the Hadamard basis, $M_\pm$, defined as \[ M_+ = \frac{1}{2}\begin{pmatrix} 1 & 1 \\ 1 & 1\end{pmatrix} \qquad
 M_- = \frac{1}{2}\begin{pmatrix}1 & -1 \\ -1 & 1\end{pmatrix} \]
 
-From the physical point of view, this measurement can be performed composing Hadamard transformations and a measurement in the computational basis: $M_+ = HM_0H$, $M_- = H M_1 H$. Just as $M_{01}$ makes a vector decay in its $\kz$ component or in its $\ko$ component, $M_\pm$ makes a vector decay in its $\kpl$ or $\km$ component. This means that, when measuring $\kpl$ in the Hadamard basis, the outcome will always be $\kpl$ with probability $1$. Notice that a qubit in the state $\kz$ can be considered in an equal superposition of $\kpl$ and $\km$, as $\kz = \oost\kpl + \oost\km$. According to this, measuring $\kz$ in the Hadamard gives the outcomes $\kpl$ or $\km$ with half the probability each.
+From the physical point of view, this measurement can be performed composing Hadamard transformations and a measurement in the computational basis: $M_+ = HM_0H$, $M_- = H M_1 H$. Just as $M_{01}$ causes a vector to decay in its $\kz$ component or in its $\ko$ component, $M_\pm$ makes a vector decay in its $\kpl$ or $\km$ component. This means that, when measuring $\kpl$ in the Hadamard basis, the outcome will always be $\kpl$ with probability $1$. Notice that a qubit in the state $\kz$ can be considered in an equal superposition of $\kpl$ and $\km$, as $\kz = \oost\kpl + \oost\km$. According to this, measuring $\kz$ in the Hadamard gives the outcomes $\kpl$ or $\km$ with half the probability each.
 
 
 \subsection{Composite quantum systems}
-In the previous sections we characterized quantum systems and how they evolve, taking the prototypical example the two-dimensional Hilbert space of a qubit. When dealing hidher-dimensional systems, we can often describe them as \textit{composite system}, made of multiple smaller systems.
+In the previous sections we characterized quantum systems and how they evolve, taking the prototypical example of the two-dimensional Hilbert space of a qubit. When dealing with higher-dimensional systems, we can often describe them as \textit{composite system}, made of multiple smaller systems.
 
 If we have for example two photons,  each described by a (2-dimensional) Hilbert space $\calH$, we can describe the system composed of both photons as the \textit{tensor product} of the 2-dimensional Hilbert spaces.	
 
@@ -371,7 +371,7 @@ Positive semidefinite operators are always diagonalizable with eigenvalues real 
 One of the main application of density operators is to describe the state of a subsystem of a composite quantum system. When dealing with composite system, we write $\rho \otimes \sigma \in \mathcal{D}(\calH_1 \otimes \calH_2)$, to denote the density matrix given by the Kronecker product of $\rho$ and $\sigma$. Notice that, if $\rho = \sum_{i=1}^n p_i\proj{\psi_i}$ and $\sigma = \sum_{j=1}^m p_j\proj{\phi_j}$, then 
 \[\rho \otimes \sigma = \sum_{i=1}^n\sum_{j=1}^m p_ip_j \proj{\psi_i\phi_j}\]
 
-Suppose a composite system, made of two subsystem $A$ and $B$, with state space  $\calH = \calH_A \otimes \calH_B$. A generic  Given a generic (not necessarily separable) $\rho^{AB} \in \calH$, describing the state of the whole system, the operator $\rho^A$ that describes the subsystem $A$ is obtained as 
+Suppose a composite system, made of two subsystem $A$ and $B$, with state space  $\calH = \calH_A \otimes \calH_B$. Given a generic (not necessarily separable) $\rho^{AB} \in \calH$, describing the state of the whole system, the operator $\rho^A$ that describes the subsystem $A$ is obtained as 
 \[
 	\rho^A = tr_B(\rho^{AB})
 \]
@@ -426,7 +426,7 @@ We now define the \textit{superoperators on $\calH$} as all the maps $\sop: \cal
 \item $\sop$ is \textit{trace non-increasing}: for any density operator $\rho \in \calDH$, 
 \[tr\big(\sop(\rho)\big) \leq tr(\rho) \leq 1\]
 \end{itemize}
-We call $\calSH$ the set of all superoperators on $\calH$, and $\mathcal{TS}(\calH) \subset \calSH$ the set of all \textit{trace-preserving} superoperators, i.e. superoperators such that for any $\rho \in \calDH$, 
+We call $\calSH$ the set of all superoperators on $\calH$, and $\mathcal{TS}(\calH) \subseteq \calSH$ the set of all \textit{trace-preserving} superoperators, i.e. superoperators such that for any $\rho \in \calDH$, 
 \[tr\big(\sop(\rho)\big) = tr(\rho)\] 
 
 
@@ -439,7 +439,7 @@ A function $\sop: \calDH \rightarrow \calDH$ is a superoperator on $\calH$ if an
 \sum_i E_i^\dagger E_i \sqsubseteq I_\calH
 \end{gather*}
 
-Where $A \sqsubseteq B$ means that $B - A$ is a positive semidefinite matrix, and $I_{calH}$ is the identity linear operator on $\calH$.
+Where $A \sqsubseteq B$ means that $B - A$ is a positive semidefinite matrix, and $I_{\calH}$ is the identity linear operator on $\calH$.
 
 Although there are possibly multiple Kraus decompositions for any superoperator $\sop \in \calSH$, they are related by a unitary transformation.
 Formally, for any two set of decompositions $\{C_i\}_i$ and $\{B_j\}_j$, there is a unitary matrix $U = \{u_{ij}\}_{ij}$ such that $C_i = \sum_j u_{ij} B_j$.
@@ -453,7 +453,7 @@ can be expressed in Kraus form as
 \]
 
 
-Using density matrices and superoperators, it is possible to restate all the quantum postulate seen in the previous sections. A physical system is represented by a density matrix $\rho \in \calDH$ with trace $1$. A composite physical  system is described by a density matrix $\rho \in \mathcal{D}(\calH_1 \otimes \calH_2)$. The second and the third postulate can be merged together: the evolution of an open quantum system can always be described by a superoperator. That is, the state $\rho$ of the system at time $t_0$ is related to the state $\rho'$ of the system at time $t_2$ by a superoperator $\sop$ which depends only on the times $t_0$ and $t_1$.
+Using density matrices and superoperators, it is possible to restate all the quantum postulate seen in the previous sections. A physical system is represented by a density matrix $\rho \in \calDH$ with trace $1$. A composite physical  system is described by a density matrix $\rho \in \mathcal{D}(\calH_1 \otimes \calH_2)$. The second and the third postulate can be merged together: the evolution of an open quantum system can always be described by a superoperator. That is, the state $\rho$ of the system at time $t_0$ is related to the state $\rho'$ of the system at time $t_2$ by a superoperator $\sop$
 \[
 	\rho' = \sop(\rho)
 \]
@@ -464,10 +464,10 @@ Superoperators can in fact describe both unitary transformations and measurement
 \[ \sop_U(\rho) = U \rho U^\dagger\]
 Given a measurement $\{M_m\}_m$, we can define the (trace non-increasing) superoperator $\sop_m \in \calSH$ as 
 \[\sop_m(\rho) = M_m\rho M_m^\dagger\]
-Notice that $\sop_m(\rho)$ is equal to $p_m\rho_m$, where $p_m$ is the probability of the outcome $m$ when measuring the state $\rho$, and $\rho_m$ is the state after outcome $m$ has occurred. 
+Notice that $\sop_m(\rho)$ is equal to $p_m\rho_m$, where $p_m$ is the probability of the outcome $m$ when measuring the state $\rho$, and $\rho_m$ is the (normalized) state after outcome $m$ has occurred. 
 
 
-Another class of useful superoperators are noisy channels or noisy gates, i.e. transformations that perform the desired operation only with a high probability. We already seen the noisy bitflip channel: 
+Another class of useful superoperators are noisy channels or noisy gates, i.e. transformations that perform the desired operation only with a high probability. We have already seen the noisy bitflip channel: 
 \[\sop(\rho) = (p) 
 I\rho I
 +
