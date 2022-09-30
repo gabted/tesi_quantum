@@ -1,6 +1,6 @@
 \subsection{QPAlg}
 
-In classical process calculi, the operational semantics is given in terms of transitions $P \xrightarrow{\alpha} P'$ between processes. In \cite{lalireProcessAlgebraicApproach2004}, the authors describe how to "quantumize" a simple classical process caulculus, adding to it quantum variables and quantum actions. To do so, processes manipulating and communicating quantum data are always coupled with a state vector, describing the current value of the quantum variables. The operational semantic of QPAlg describes in fact an LTS composed of \textit{configurations}, i.e. states of the form \footnote{The actual configurations described in QPAlg are more complex than this, containing also a stack to manage variable declaration. We will omit these non-quantum constructs to simplify the presentation and the comparisons.}
+In classical process calculi, the operational semantics is given in terms of transitions $P \xrightarrow{\alpha} P'$ between processes. In \cite{lalireProcessAlgebraicApproach2004}, the authors describe how to "quantumize" a simple classical process caulculus, adding quantum variables and quantum actions to it. To do so, processes manipulating and communicating quantum data are always coupled with a state vector, describing the current value of the quantum variables. The operational semantic of QPAlg describes in fact an LTS composed of \textit{configurations}, i.e. states of the form \footnote{The actual configurations described in QPAlg are more complex than this, containing also a stack to manage variable declaration. We will omit these non-quantum constructs to simplify the presentation and the comparisons.}
 \[
 	\langle q_0, \ldots, q_n = \rho, P\rangle
 \] 
@@ -14,14 +14,14 @@ Separating the syntactic, control part of the configuration (the process $P$) fr
 The usual rule for reception, in fact, would be
 \[ c?x.P \xrightarrow{c?v} P[v/x]  \qquad \text{ for any value } v
 \]
-In this way, if $Q$ contains two occurrences of $x$, each of them gets instantiated with a different, independent copy of the value $v$. But if the value $v$ was a quantum state $\rho$, this would require duplicating the quantum information, which is impossible due to the No-cloning theorem ( theorem \ref{noCloning}). The solution proposed in various quantum calculi is substituting just the name of the variable, duplicating only the "pointers" to the same value.
+In this way, if $Q$ contains two occurrences of $x$, each of them gets instantiated with a different, independent copy of the value $v$. But if the value $v$ was a quantum state $\rho$, this would require duplicating the quantum information, which is impossible due to the No-cloning theorem (Theorem \ref{noCloning}). The solution proposed in various quantum calculi is substituting just the name of the variable, duplicating only the "pointers" to the same value.
 \[ \langle \widetilde{q} = \rho, c?x.P \rangle \xrightarrow{c?q} \confw{\widetilde{q} = \rho, P[q/x]} \qquad \text{ for any } q \in \widetilde{q}
 \]
 
-Notice that this idea requires the peculiar assumption that the \textit{value} recived from the external environment is already represented in the the configuration. In QPAlg and in other early works \cite{fengProbabilisticBisimulationsQuantum2007} there was a different rule, where the state vector is extended with a new value received from the environment. This approach was abandoned in more recent calculi, because extending the state vector when a qubit is received (or shrinking it when a qubit is sent) works poorly when exchanging entangled qubits. 
-Suppose that a process $P$ receives just one qubit of a Bell pair, i.e. a qubit that is entangled with something on which $P$ has no control. The only way to represent the new qubit in the configuration is with its reduced density operator $\frac{1}{2}I$. But what happens if the process then receives also the second qubit of the Bell pair? Since we stored the reduced density operator in the configuration, is now impossible to reconstruct the original Bell pair.
+Notice that this idea requires the peculiar assumption that the \textit{value} recived from the external environment is already represented in the configuration. In QPAlg and in other early works \cite{fengProbabilisticBisimulationsQuantum2007} there was a different rule, where the state vector is extended with a new value received from the environment. This approach was abandoned in more recent calculi, because extending the state vector when a qubit is received (or shrinking it when a qubit is sent) works poorly when exchanging entangled qubits. 
+Suppose that a process $P$ receives just one qubit of a Bell pair, i.e. a qubit that is entangled with something on which $P$ has no control. The only way to represent the new qubit in the configuration is with its reduced density operator $\frac{1}{2}I$. But what happens if the process then receives also the second qubit of the Bell pair? It is now impossible to reconstruct the original Bell pair.
 
-Besides, the assumption that the qubit to be received is already represented in the configuration is indeed correct when there is a synchronization between two processes. In that situation, it would be inaccurate to extend the configuration with a new density operator. The systems that allocate a new qubit when receiving end up with de facto two different behaviors, one for communication between processes and one for communication with and unknown environment. This difference is reasonable, but is in contrast with the compositional design of process algebras, and has been abandoned in later systems.
+Besides, the assumption that the qubit to be received is already represented in the configuration is indeed correct when there is a synchronization between two processes. In that situation, it would be inaccurate to extend the configuration with a new density operator. The systems that allocate a new qubit when receiving end up with de facto two different behaviors, one for communication between processes and one for communication with an unknown environment. This difference is reasonable, but is in contrast with the compositional design of process algebras, and has been abandoned in later systems.
 
 
 %\note{measurements and probabilities}
@@ -31,34 +31,33 @@ Another key feature present in QPAlg and in all other calculi is the coexistence
 	\xlongrightarrow{\tau} 
 	\confw{q = \proj{0}, P'} \psum{1/2} \confw{q = \proj{1}, P''}
 \]
-QPAlg follows the "probabilistic-transition" approach, so the distribution state branches probabilistically in one of the possible outcomes.
+QPAlg follows the "probabilistic-transition" approach, so the distributions state branches probabilistically in one of the possible outcomes.
 
 
 
 %\note{parallel composition}
 
-The last relevant detail of the rules of QPAlg, shared also by the other calculi, is the treatment of parallel composition. Due to entangled state, the parallel operator is not entirely compositional. That is, the behaviour of $P\parallel Q$ cannot be described simply as the interleaving of $P$ and $Q$.
+The last relevant detail of the rules of QPAlg, shared also by the other calculi, is the treatment of parallel composition. Due to entangled states, the parallel operator is not entirely compositional. That is, the behaviour of $P\parallel Q$ cannot be described simply as the interleaving of $P$ and $Q$.
 
 Only if two processes $P$ and $Q$ act on separable qubits, in fact, it would possible to treat them independently
 \[ \infer{\langle \widetilde{p},\widetilde{q}=\rho\otimes\sigma, P\parallel Q\rangle \xrightarrow{\alpha} \langle \widetilde{p},\widetilde{q}=\rho'\otimes\sigma, P'\parallel Q\rangle}{\langle \widetilde{p}=\rho, P\rangle \xrightarrow{\alpha} \langle \widetilde{p}=\rho', P'\rangle}\]
 
 
-But when $p, q$ are entangled, the quantum actions of $P$ cannot always be considered "local" to the process, as they effect also the value of $q$ (despite being labelled as internal transition). So in QPAlg a more general rule is used:
+But when $p, q$ are entangled, the quantum actions of $P$ cannot always be considered "local" to the process, as they effect also the value of $q$ (despite being labelled as internal transitions). So in QPAlg a more general rule is used:
 \[\infer{\langle \widetilde{p},\widetilde{q}=\nu, P\parallel Q\rangle \xrightarrow{\alpha} \langle \widetilde{p},\widetilde{q}=\nu', P'\parallel Q\rangle}{\langle \widetilde{p}, \widetilde{q}=\nu, P\rangle \xrightarrow{\alpha} \langle \widetilde{p}, \widetilde{q}=\nu', P'\rangle}\]
-where quantum actions of $P$ must be intended as transformations on the whole Hilbert space $\calH_p \otimes \calH_q$.
+where the quantum actions of $P$ must be intended as transformations on the whole Hilbert space $\calH_p \otimes \calH_q$.
 
 
 
 \subsection{CQP}
-In \cite{gayCommunicatingQuantumProcesses2005}, the authors presented their calculus Communicating Quantum Process. The main contribution of their work is the introduction of affine type system, used to restrict the set of possible processes of the algebra to the "admissible" ones. Under the assumption that Alice, Bob and Charlie are in three different physical location, in fact, the process \[Alice = b!q.c!q.P\] should not be well typed, because Bob could read from the $b$ channel, Charlie from the $c$ channel, and there will be duplication of quantum information. 
+In \cite{gayCommunicatingQuantumProcesses2005}, the authors presented their calculus Communicating Quantum Process. The main contribution of their work is the introduction of affine type system, used to restrict the set of possible processes of the algebra to the "admissible" ones. Under the assumption that Alice, Bob and Charlie are in three different physical locations, in fact, the process \[Alice = b!q.c!q.P\] should not be well typed, because Bob could read from the $b$ channel, Charlie from the $c$ channel, and quantum information would be duplicated . 
 
 
 Variables and expressions in CQP can have types \textbf{Int}, \textbf{Qbit} and \textbf{Unit}, and channels have the corresponding types $\widehat{\ }\textbf{Int}$, $\widehat{\ }\textbf{Qbit}$, $\widehat{\ }\textbf{Unit}$.
-The typing judgements in CQP have the form \[\Gamma \vdash P\] meaning that $P$ is well typed under the context $\Gamma$. $\Gamma$ contains both classical variables and quantum variables: the former are treated following the usual typing rules, the latter are subject to affine typing rules. Affine rules guarantee that each quantum variable will be sent at most once, and cannot be used after it is sent, thanks to how the typing contexts $\Gamma$ are constructed.
-
+The typing judgements in CQP have the form \[\Gamma \vdash P\] meaning that $P$ is well typed under the context $\Gamma$. $\Gamma$ contains both classical variables and quantum variables: the former are treated as usual, the latter are subject to affine typing rules. Affine rules guarantee that each quantum variable will be sent at most once, and cannot be used after it is sent.
 
 From the practical point of view, this means that, \begin{itemize} 
-\item if $c!q.P$ is well typed, where $q$ is a quantum variable, then $P$ cannot contain any other occurence of $q$.
+\item if $c!q.P$ is well typed, where $q$ is a quantum variable, then $P$ cannot contain any other occurrences of $q$.
 \item if $P \parallel Q$ is well typed, then $P$ and $Q$ cannot have occurrences of the same free quantum variables. The authors call this property \textit{unique ownership of qubits}.
 \end{itemize}
 
@@ -68,7 +67,7 @@ is well typed, and the qubit denoted by $q$ becomes inaccessible for all other p
 
 An important remark is that the typing rules are intended to model processes in different physical location, where sending a qubit means physically moving the quantum system. In other settings this type system could be not necessary. For example different processes in a quantum computer, manipulating the same set of quantum registers, situations like 
 \[ H[q].P \parallel Y[q].Q\]
-are reasonable, and their behaviour would be described as usual as race condition between the to processes acting on the same shared data.
+are reasonable, and their behaviour would be described as usual as a race condition between the to processes acting on the same shared data.
 
 
 All the characteristics of QPAlg, in terms of configurations, probabilistic branching and parallel composition are also present in CQP. Differently from QPAlg, CQP  describes \textit{closed quantum systems}, without an unknown environment. That is, there are no transitions $\xrightarrow{c?x}$ or $\xrightarrow{c!v}$, all the communication happens as synchronization between processes. According to this, CQP semantics is described as a reduction system, where the transitions corresponds either to internal actions or infra-process communication.  
@@ -77,39 +76,39 @@ All the characteristics of QPAlg, in terms of configurations, probabilistic bran
 Without interaction with an external environment, all the information is completely represented in the initial configuration, and then there is no need to use mixed quantum states. The state of the quantum variables is thus described as a state vector.
 
 
-CQP is based on the typed pi calculus, with constructs to create new (typed) channel names, new classical variables and new quantum variables. When declaring  new qubit, the state vector is extended with the default value $\kz$
+CQP is based on the typed pi calculus, with constructs to create new (typed) channel names, new classical variables and new quantum variables. When a declaring  new qubit, the state vector is extended with the default value $\kz$
 \[ \confw{q_1, \ldots q_n = \kp, \mono{qbit }x.P} \rightarrow \confw{x,q_1, \ldots q_n = \kz\otimes\kp , P}\]
 
-Thanks to its type system, CQP supports integers and arithmetic expressions, and also \textit{quantum expressions} like $q_1\ldots q_n *= U$ and $M[q_1 \ldots q_n]$. There expressions that take the place of quantum action prefixes of QPAlg, changing the underlying quantum state and causing probabilistic branching.
+Thanks to its type system, CQP supports integers and arithmetic expressions, and also \textit{quantum expressions} like $q_1\ldots q_n *= U$ and $M[q_1 \ldots q_n]$. These expressions take the place of quantum action prefixes of QPAlg, changing the underlying quantum state and causing probabilistic branching.
  
 
-In \cite{davidsonFormalVerificationTechniques2012}, the author introduces a labelled semantics  to CQP, so to define a bisimilarity relation on CQP processes. On top of internal actions and synchronization, the possible actions of a process are as usual reception and sending, in the form $c?x$ and $c!v$. A process $\confw{q_1 \ldots q_n = \kp, c?x.P}$ can evolve receiving a qubit $q_i$ from the environment, but its name and value must already be present in the configuration. Reception and sending in CQP do not modify the quantum state, simply move the quantum names around. As already said, this can be seen as physically moving qubits between different location, but also as concurrent processes exchanging lock on some shared variable, to guarantee mutual exclusion.
+In \cite{davidsonFormalVerificationTechniques2012}, the author introduces a labelled semantics  to CQP, so to define a bisimilarity relation on CQP processes. On top of internal actions and synchronization, the possible actions of a process are as usual reception and sending, in the form $c?x$ and $c!v$. A process $\confw{q_1 \ldots q_n = \kp, c?x.P}$ can evolve receiving a qubit $q_i$ from the environment, but its names and values must already be present in the configuration. Reception and sending in CQP do not modify the quantum state, simply move the quantum names around. As already said, this can be seen as physically moving qubits between different location, but also as concurrent processes exchanging lock on some shared variable, to guarantee mutual exclusion.
 
 
 As for the previous work, all the information is contained in the initial configuration and is never lost, so quantum variables state is expressed as a state vector, instead of as a density matrix.
 
 
 
-In order to define a bisimilarity relation that is also a congruence, in \cite{davidsonFormalVerificationTechniques2012} a different semantic is proposed, featuring so called \textit{mixed configuration}. These mixed configuration can be considered as probabilistic distributions of configurations, but must be treated as a single state. In other words this semantics mixes the "probabilistic transition" and "probabilistic state" approches of Section \ref{pLTS}: after a measurement, a configuration evolves in a mixed configuration (that is, a distribution of configurations), and this mixed configuration does not perform a probabilistic transition, so does not decays in a single configuration. 
+In order to define a bisimilarity relation that is also a congruence, in \cite{davidsonFormalVerificationTechniques2012} a different semantics is proposed, featuring so called \textit{mixed configurations}. These mixed configurations can be considered as probabilistic distributions of configurations, but must be treated as a single state. In other words this semantics mixes the "probabilistic transition" and "probabilistic state" approches of Section \ref{pLTS}: after a measurement, a configuration evolves in a mixed configuration (that is, a distribution of configurations), and this mixed configuration does not perform a probabilistic transition, so does not decays in a single configuration. 
 
-Mixed configurations represent partial knowledge of the classical variables in a configuration, just like mixed state represent partial knowledge of quantum state. So, after a measurement, a configuration must evolve in a mixed configuration, because to an external observer, the outcome of the measurement is unknown. Only when the mixed configuration performs an output transition, where it communicates the output of the measurement, a mixed configuration can branch probabilistically in one of its possible configuration. As we will see, this difference is crucial, because it changes the observable properties of the defined system: in the previous semantic, after a measurement there would be always probabilistic branching, i.e. the outcome probabilities are immediately observable; in the mixed configuration semantic, after a measurement there are no probabilities to observe (as that outcome is still local to the process), and the probabilities appear only when and if the outcome is comunicated.
+Mixed configurations represent partial knowledge of the classical variables in a configuration, just like mixed states represent partial knowledge of quantum state. So, after a measurement, a configuration must evolve in a mixed configuration, because to an external observer, the outcome of the measurement is unknown. Only when the mixed configuration performs an output transition, where it communicates the output of the measurement, a mixed configuration can branch probabilistically in one of its possible configurations. As we will see, this difference is crucial, because it changes the observable properties of the defined system: in the previous semantics, after a measurement there would be always a probabilistic branching, i.e. the outcome probabilities are immediately observable; in the mixed configuration semantics, after a measurement there are no probabilities to observe (as that outcome is still local to the process), and the probabilities appear only when and if the outcome is comunicated.
 
 \subsection{qCCS}
 
-In \cite{fengProbabilisticBisimulationsQuantum2007}, the authors present qCCS, applying the ideas present in QPAlg and CQP to a simpler CCS-inspired calculus, without new name declaration and without expressions. A qCCS process id defined assuming a fixed set con classical channel, of quantum channels, and of quantum names. qCCS enforces the same conditions of "unique ownership of qubits" present in CQP, but without the use of a type system. The terms in qCCS are in fact inductively constructed in a way that preserves this property, for example specificating that $c!q.P$ is a process only if $q$ is not a free quantum variable in $P$.
+In \cite{fengProbabilisticBisimulationsQuantum2007}, the authors present qCCS, applying the ideas of in QPAlg and CQP to a simpler CCS-inspired calculus, without new name declaration and without expressions. A qCCS process is defined assuming a fixed set con classical channels, of quantum channels, and of quantum names. qCCS enforces the same conditions of "unique ownership of qubits" of CQP, but without the use of a type system. The terms in qCCS are in fact inductively constructed in a way that preserves this property, for example specifying that $c!q.P$ is a process only if $q$ is not a free quantum variable in $P$.
 
 
-In the first work on qCCS where presented two different rules for quantum input, one adding a qubit to the configuration, the other assuming that the qubit is already present in the configuration. As already said, only the second rule was used in subsequent works.
+In the first work on qCCS two different rules for quantum input where presented, one adding a qubit to the configuration, the other assuming that the qubit is already present in the configuration. As already said, only the second rule was used in subsequent works.
 
 
-All the characteristics of QPAlg and CQP, in terms of configurations, parallel composition and communication are also present in CQP. The main difference between qCCS and the previous calculi is its "distribution transformation" approach to treat probabilities and nondeterminism. Another distinctive characteristics is that qCCS features recursive processes, which are absent in QPAlg and CQP. For the sake of comparison, we will ignore recursive processes in the rest of this chapter.
+All the characteristics of QPAlg and CQP, in terms of configurations, parallel composition and communication are also present in CQP. The main difference between qCCS and the previous calculi is its "distribution transfomer" approach to treat probabilities and nondeterminism, discussed below. Another distinctive characteristics is that qCCS features recursive processes, which are absent in QPAlg and CQP. For the sake of comparison, we will ignore recursive processes in the rest of this chapter.
 
 
 Like in QPAlg, a process can be constructed with \textit{quantum actions}, that in qCC  are unitaries, superoperators and measurements. A measurement introduces a new classical variable to represent the outcome, and evolves in a distribution of configurations
 \[ \confw{q = \proj{+}, M_{01}[q \rhd x].P} \xrightarrow{\tau} \confw{q = \proj{0}, P[0/x]} \psum{1/2} \confw{q = \proj{0}, P[1/x]} 
 \]
 
-In \cite{fengProbabilisticBisimulationsQuantum2007}, a distribution of configuration cannot evolve in any manner, but in \cite{fengBisimulationQuantumProcesses2012, dengOpenBisimulationQuantum2012}, the transition relations $\longrightarrow \subseteq Conf \times Act_\tau \times \distr(Conf)$ is lifted to a relation between distribution $\longrightarrow \subseteq \distr(Conf) \times Act_\tau \times \distr(Conf)$, i.e. following the "distribution transformer" approach described in Section \ref{pLTS}.
+In \cite{fengProbabilisticBisimulationsQuantum2007}, a distribution of configurations cannot evolve in any manner, but in \cite{fengBisimulationQuantumProcesses2012, dengOpenBisimulationQuantum2012}, the transition relations $\longrightarrow \subseteq Conf \times Act_\tau \times \distr(Conf)$ is lifted to a relation between distributions $\longrightarrow \subseteq \distr(Conf) \times Act_\tau \times \distr(Conf)$, i.e. following the "distribution transformer" approach described in Section \ref{pLTS}.
 
 
-Among the various semantics developed for qCCS, in order to find a bisimilarity equation that was also a congruence, in \cite{yingAlgebraQuantumProcesses2010} the authors proposed a simplified fragment of qCCS, without measurements and classical data. The semantic is purely non-deterministic, without probabilistic behaviour, and the superoperators applied are treated as \textit{observable actions}, as possible labels of the transition relation. This calculus is an alternative approach to the other calculi in literature, relying on different assumptions, and we will not treat it in this chapter.
+Among the various semantics developed for qCCS, in order to find a bisimilarity equation that was also a congruence, in \cite{yingAlgebraQuantumProcesses2010} the authors proposed a simplified fragment of qCCS, without measurements and classical data. The semantic is purely non-deterministic, without probabilistic behaviour, and the superoperators applied are treated as \textit{observable actions}, as possible labels of the transition relation. This calculus is an alternative approach to the other calculi in literature, relying on different assumptions, and we will not discuss in more detail in this chapter.

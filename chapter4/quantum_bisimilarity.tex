@@ -3,10 +3,10 @@
 
 We target the previousy highlighted problems by updating the proposed bisimilarity. The main idea is that density matrices represents equivalence classes of probabilistic mixtures of quantum states that are indistinguishable, and that this equivalence must be lifted from distribution of quantum states to distributions of lqCCS configurations.
 
-The implicit equivalence relation implied by density operator is $\{(\ket{\phi_i}, p_i)\}_i \cong \{(\ket{\phi_j}, p_j)\}$ if and only if $\sum_{i} p_i \ketbra{\phi_i}{\phi_i} = \sum_{j} p_j \ketbra{\phi_j}{\phi_j}$.
-The physical justification of this equivalence is that different mixtures resulting in the same density operator cannot be distinguished since they behave the same. Note that this applies both to pure quantum states, where $\kz$ and $-\kz$ are equivalent, and  mixed states, where $\kz \psum{\frac{1}{2}} \ko$ is the same as $\kpl \psum{\frac{1}{2}} \km$
+The implicit equivalence relation implied by density operators is $\{(\ket{\phi_i}, p_i)\}_i \cong \{(\ket{\phi_j}, p_j)\}$ if and only if $\sum_{i} p_i \ketbra{\phi_i}{\phi_i} = \sum_{j} p_j \ketbra{\phi_j}{\phi_j}$.
+The physical justification of this equivalence is that different mixtures resulting in the same density operator cannot be distinguished since they behave the same. Note that this applies both to pure quantum states, where $\kz$ and $-\kz$ are equivalent, and  mixed states, where $\kz \psum{\frac{1}{2}} \ko$ is the same as $\kpl \psum{\frac{1}{2}} \km$.
 
-The same equivalence relation is trivially extended to configurations, where the use of density operators for the quantum state allows a common representation of different configurations with an equivalent mixtures of quantum states. 
+The same equivalence relation is trivially extended to configurations, where the use of density operators for the quantum state allows a common representation of different configurations with equivalent mixtures of quantum states. 
 We extend here this equivalence relation to distributions of configurations.
 Intuitively, we give rules for exchanging the probabilistic combination $\psum{p}$ in the state of some configurations for probabilistic combination of configurations, and vice-versa. 
 
@@ -162,9 +162,9 @@ Suppose that $\confw{\sigma, R \parallel P} \rel \confw{\sigma, R \parallel Q}$,
  \]
  from Theorem \ref{bisim_closed_by_discard_quantum}, since $tr_q(\sop_{01, q}(\sigma)) = tr_q(\sop_{\pm, q}(\sigma)) = tr_q(\sigma)$.
 \end{itemize}
-
+\begin{remark}
 As a general result, note that for quantum saturated bisimilarity all the following processes are equivalent 
 \[	U(q).disc(q) \simqs M[q \rhd x].disc(q) \simqs \sop(q).disc(q) \simqs \tau.disc(q) \]
 for any unitary $U$, measurement $M$ or superoperator $\sop$.
-
+\end{remark}
 

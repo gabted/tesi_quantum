@@ -1,7 +1,7 @@
 \newcommand{\quantumdst}{\mathfrak{D}}
 \newcommand{\quantumdsta}{\mathfrak{T}}
 
-Given the difficulties of finding a good notion of behavioural equivalence in quantum process algebras, we consider to address the problem on a minimal setting, only considering basic constructs.
+Given the difficulties of finding a good notion of behavioural equivalence in quantum process algebras, we consider to address the problem on a minimal setting, only focusing basic constructs.
 
 \section{Mathematical Preliminaries}
 
@@ -161,7 +161,7 @@ The transition relation $\to$ is defined as follows, with $s \xrightarrow{\mu} \
 We define bisimularity on QLTS as usual.
 \begin{definition}
 	A symmetric relation $\rel : S \times S$ is called a QLTS \emph{bisimulation} if it's symmetric and for each pair of states $s, s' \in S$ such that $s \rel s'$,
-	if $s \xrightarrow{\mu} \Delta$ then $s' \xrightarrow{\mu} \Delta'$ and $\Delta\,\qlift{\rel}\,\Delta'$, for some quantum distributions $\Delta, \Delta' \in D(S)$.
+	if $s \xrightarrow{\mu} \Delta$ then $s' \xrightarrow{\mu} \Delta'$ and $\Delta\,\qlift{\rel}\,\Delta'$, for some quantum distributions $\Delta' \in D(S)$.
 	\emph{Q-bisimilarity} $\sim_Q$ is the largest QLTS bisimulation.
 \end{definition}
 
@@ -170,30 +170,30 @@ We define bisimularity on QLTS as usual.
 
 We take the example 6, 7, 8, and show that they behave as expected in mQPA.
 
-For examples 6 and 7 consider the following.
+For \note{examples 6 and 7} consider the following.
 \begin{example}
 	A qbit which is in a mixed state of $\ket{0}$ and $\ket{1}$ with equal probability behaves exactly as a qbit which is in a mixed state of $\ket{+}$ and $\ket{-}$.
 	Consider the two following processes.
 	\begin{align*}
-		Q &= (s \qsum{\ketbra{0}{0}} s) \qsum{\ketbra{+}{+}} (s \qsum{\ketbra{0}{0}} s)\\
-		Q' &= (s \qsum{\ketbra{+}{+}} s) \qsum{\ketbra{0}{0}} (s \qsum{\ketbra{+}{+}} s)
+		Q &= (s \qsum{\ketbra{0}{0}} s') \qsum{\ketbra{+}{+}} (s \qsum{\ketbra{0}{0}} s')\\
+		Q' &= (s \qsum{\ketbra{+}{+}} s') \qsum{\ketbra{0}{0}} (s \qsum{\ketbra{+}{+}} s')
 	\end{align*}
 	Note that in $Q$ (in $Q'$ resp.), after the nested measure, the qbit is in state $\ket{0}$ or $\ket{1}$ ($\ket{+}$ or $\ket{-}$ resp.) with equal probability.
 	Indeed, $Q$ and $Q'$ stand for the same quantum distribution: $\sem{Q} = \sem{Q'} = K_{\bar{s}}$.
 \end{example}
 
-Example 8 is addressed as follows.
+Example \note{8} is addressed as follows.
 \begin{example}
 	Consider the bell pair $\ket{\Phi^+} = 1/\sqrt{2}(\ket{00} + \ket{11})$.
-	Let $Q$, $Q'$, $P$ and $P'$ be as follows
+	Let $Q$, $Q'$, $Q_0$ and $Q_+$ be as follows
 	\begin{align*}
 		Q &= z \qsum{P_{\_0}} u\\
 		Q' &= p \qsum{P_{\_+}} m\\
-		P_0 &= ((Q + Q') \qsum{P_{\_0}} (Q + Q')) \qsum{P_{\ketbra{\Phi^+}{\Phi^+}}} \nil\\
-		P_+ &= ((Q + Q') \qsum{P_{\_+}} (Q + Q'))  \qsum{P_{\ketbra{\Phi^+}{\Phi^+}}} \nil
+		Q_0 &= ((Q + Q') \qsum{P_{\_0}} (Q + Q')) \qsum{P_{\ketbra{\Phi^+}{\Phi^+}}} \nil\\
+		Q_+ &= ((Q + Q') \qsum{P_{\_+}} (Q + Q'))  \qsum{P_{\ketbra{\Phi^+}{\Phi^+}}} \nil
 	\end{align*}
 	Where $P_{\_0}$ and $P_{\_+}$ are defined as $\ketbra{00}{00} + \ketbra{10}{10}$ and $\ketbra{0+}{0+} + \ketbra{1+}{1+}$ respectively.
-	Note that $\sem{P_0} \qlift{\sim} \sem{P_+}$ iff they behave the same on $\ket{\Phi^+}$, and they should, because the mixed states obtained by measuring a single qbit on the computational base, and on the Hadamard base are the same.
+	Note that $\sem{P_0} \qlift{\sim} \sem{P_+}$ iff they behave the same on $\ket{\Phi^+}$, and they should, because the mixed states obtained by measuring a single qbit on the computational basis, and on the Hadamard basis are the same.
 
 	Indeed $\sem{P_0} = \sem{P_+}$.
 	Take any $\ket{\phi}$,
@@ -210,7 +210,7 @@ Example 8 is addressed as follows.
 
 
 \subsection{Alternative}
-We define an alternative characterization of a quantum transition system that is more in-line with preexisting quantum transition systems like~\cite{Feng:2012, Deng:2012}.
+We define an alternative characterization of a quantum transition system that is more in-line with preexisting quantum transition systems like~\cite{fengBisimulationQuantumProcesses2012, dengOpenBisimulationQuantum2012}.
 A quantum labeled transition system qLTS on an Hilbert space $\hilbert$ is a triple $(S, Act_\tau, \hookrightarrow)$ where
 \begin{itemize}
 	\item $S$ is a set of states $s, s_1, \dots$;
@@ -226,11 +226,11 @@ To simplify our presentation, we reduce to $Q$ and $S$ of a specific form, namel
 Note that this is consistent with the behaviour of preexisting quantum process algebras like qCCS.
 We stress that a term is in this specific form by writing $\hat{Q}$ or $\hat{S}$.
 
-We define the interpretation of a pair $(\ket{\phi}, Q)$ as a distribution as given by the function $\sema{\blank} : (\hilbert \times S) \to D(\hilbert \times S)$:
+We define the interpretation of a pair $(\ket{\phi}, \hat{Q})$ as a distribution as given by the function $\sema{\blank} : (\hilbert \times S) \to D(\hilbert \times S)$:
 \begin{align*}
 	&\sema{\ket{\phi}, s} = \overline{(\ket{\phi}, s)} \\
 	&\sema{\ket{\phi}, U \circ \hat{Q}} = \sema{U\ket{\phi}, \hat{Q}} \\
-	&\sema{\ket{\phi}, Q_1 \qsum{P} \hat{Q_2} } = \sema{P \ket{\phi}, \hat{Q_1}} \psum{p(P, \ket{\phi})} \sema{P^{\bot}\ket{\phi}, \hat{Q_2}} 
+	&\sema{\ket{\phi}, \hat{Q_1} \qsum{P} \hat{Q_2} } = \sema{P \ket{\phi}, \hat{Q_1}} \psum{p(P, \ket{\phi})} \sema{P^{\bot}\ket{\phi}, \hat{Q_2}} 
 \end{align*}
 
 The transition relation $\hookrightarrow$ is defined as follows, with $s \xhookrightarrow{\mu} \Delta$ as notation for $(s, \mu, \Delta) \in\;\hookrightarrow$.
@@ -243,7 +243,7 @@ The transition relation $\hookrightarrow$ is defined as follows, with $s \xhookr
 %\subsubsection{Bisimulation}
 
 \begin{definition}
-	A relation $\rel : (\hilbert \times S) \times (\hilbert \times S)$ is a qLTS \emph{bisimulation} if it's symmetric and for each pair $(\ket{\phi}, s), (\ket{\phi'}, s)$ such that $(\ket{\phi}, s) \rel (\ket{\phi'}, s)$,
+	A symmetric relation $\rel : (\hilbert \times S) \times (\hilbert \times S)$ is a qLTS \emph{bisimulation} if for each pair $(\ket{\phi}, s), (\ket{\phi'}, s)$ such that $(\ket{\phi}, s) \rel (\ket{\phi'}, s)$,
 	if $(\ket{\phi}, s) \xrightarrow{\mu} \Delta$ then $(\ket{\phi}', s') \xrightarrow{\mu} C'$ and $C \slift{\rel} \Delta'$.
 	\emph{q-bisimilarity} $\sim_q$ is the largest qLTS bisimulation.
 \end{definition}

@@ -89,6 +89,7 @@ sorting=nyt
 \newtheorem{definition}{Definition}[section]
 \newtheorem{proposition}{Proposition}[section]
 \theoremstyle{remark}
+\newtheorem{remark}{Remark}[section]
 \newtheorem{example}{Example}[section]
 \newtheorem{assumption}{Assumption}[section]
 
@@ -130,7 +131,7 @@ in our discussion.
 \input{chapter3/quantum_proc_calculi}
 
 \section{Bisimulation}\label{stateOfTheAr_Bisimulation}
-We now focus on the various bisimilarity notion for quantum processes presented in the literature. All of these bisimilarities employ the probabilistic lifting seen in section \ref{pLTS}, some as a Larsen-Skou bisimilarity, some others as a Segala-Bisimilarity.  What really tells apart the different notions are their quantum related details, reguarding which are the observable properties of quantum values, and when these values are considered visible.
+We now focus on the various bisimilarity notion for quantum processes presented in the literature. All of these bisimilarities employ the probabilistic lifting seen in section \ref{pLTS}, some defining a Larsen-Skou bisimilarity, some others a Segala bisimilarity.  What really tells apart the different notions are their quantum related details, reguarding which are the observable properties of quantum values, and when these values are considered visible.
  
 \input{chapter3/bisimulations}
 
@@ -191,9 +192,9 @@ We now focus on the various bisimilarity notion for quantum processes presented 
 We present a new quantum process calculus, designed to resolve the ambiguities and differences present in the other proposals. This allows to investigate more deeply the different notions of behavioural equivalence of quantum systems. 
 This novel calculus goes under the name of Linear qCCS (lqCCS), as it is an asynchronous version of qCCS, but employs a linear type system, similar to the affine type system for CQP.
 
-After introducing lqCCS and its type system, we overview some desired properties of behavioural equivalence, in the light of which we investigates two alternative notions of bisimilarity. More in detail, we see how the type system disambiguates between two alternative notions of observability of quantum states. We show that some distinctive features of different approaches coincides when such ambiguity is removed. We define then a standard probabilistic bisimulation a là Larsen-Skou, in the spirit of \cite{dengOpenBisimulationQuantum2012}, and we give some useful properties for proving it. 
+After introducing lqCCS and its type system, we overview some desired properties of behavioural equivalence, in the light of which we investigates two alternative notions of bisimilarity. More in detail, we see how the type system disambiguates between two alternative notions of observability of quantum states. We show that some distinctive features of different approaches coincides when such ambiguity is removed. We define then a standard probabilistic bisimulation a là Larsen-Skou, in the spirit of \cite{dengOpenBisimulationQuantum2012}, and we give some properties that help proving it. 
 
-Then we show some limitation of the fully-probabilistic approach, proving it is too fine-graned for the quantum case. Thus, we derive an updated versione of bisimilarity that solves this issue while maintaining the previous properties. Finally, we compare our proposal with related works.
+Then we show some limitations of the fully-probabilistic approach, proving it is too fine-graned for the quantum case. Thus, we derive an updated versione of bisimilarity that solves this issue while maintaining the previous properties. Finally, we compare our proposal with related works.
 
 \section{The Language}
 \input{chapter4/syntax_types}

@@ -157,7 +157,7 @@ The second, strictly coarser notion of probabilistic bisimilarity is \textit{Seg
 To define Segala bisimilarity, is necessary to introduce \textit{combined transitions}, i.e. a transition relation $\longrightarrow_{cc} \subseteq S \times Act_t \times \distr(S)$ such that 
 \[ s \xrightarrow{\alpha} \Delta \text{ if and only if } \Delta \in CC(\big\{\Theta \mid s \xrightarrow{\alpha} \Theta \big\})
 \]
-that is, $\Delta$ is reachable from $s$, or is a convex combination of distributions reachable from $s$.
+that is, $\Delta$ is reachable from $s$, or is a convex combination of distributions reachable from $s$. Hence, for example, $\alpha.P + \alpha-Q$ can evolve in $P \psum{\frac{1}{2} Q}$.
 Let $\langle S , Act, \rightarrow \rangle$ be a pLTS. Then a symmetric relation $\rel \subseteq S \times S$ is a \textit{Segala bisimultion} if and only if, whenever $s \rel t$, then 
 \begin{center}
 if $s \xrightarrow{\alpha} \Delta$ then $t \xrightarrow{\alpha}_{cc} \Theta$ for some $\Theta$ such that $\Delta \lrel \Theta$
@@ -165,7 +165,7 @@ if $s \xrightarrow{\alpha} \Delta$ then $t \xrightarrow{\alpha}_{cc} \Theta$ for
 Two states $s, t \in S$ are said to be \textit{Segala bisimilar}, written $s \sim_S t$, if a Segala bisimulation $\rel$ exists such that $s \rel t$.
 \subsubsection{From pLTS to LTS}
 
-The given definition of pLTS can be seen as a disconnected, bipartite graph, where each node is either an element of $S$, i.e. a process, or an element of $\distr(S)$, i.e. a distribution of processes, and all the edges go from $S$ to $\distr(S)$. This is not a problem to define probabilistic bisimilarity, but there are other settings where a connected LTS is preferred, for example when defining weak bisimilarity, temporal logics or model checking algorithm.
+The given definition of pLTS can be seen as a disconnected, bipartite graph, where each node is either an element of $S$, i.e. a process, or an element of $\distr(S)$, i.e. a distribution of processes, and all the edges go from $S$ to $\distr(S)$. This is not a problem to define probabilistic bisimilarity, but there are other settings where a connected LTS is preferred, for example when defining weak bisimilarity, temporal logics or model checking algorithms.
 
 
 To "complete" a pLTS it is necessary to define how a distribution "evolves", which are its outgoing transitions. There are two alternative approaches, that we could call "probabilistic branching" and "distribution transformer".
@@ -176,9 +176,9 @@ The first, arguably more standard approach is \textit{probabilistic branching}, 
 \quad s_i \]
 Where a distribution of processes "picks" just one process, evolving with a \textit{probabilistic transition}. This approach, used also in probabilistic model checking \cite{kwiatkowskaPRISMVerificationProbabilistic2011}, gives a probability to the single transition, and so allows to define a probabilistic measure for a whole path of computation.
 
-With such a rule, a pLTS $\langle S, Act, \rightarrow\rangle$ can be "completed" to a bipartite LTS, where the states are either processer or distribution of processes, the $\rightarrow$ transition goes from states to distribution, with a label in $Act_\tau$, and the $\rightsquigarrow$ transition goes from distributions to states, with $0 \leq p \leq 1$ as a label. 
+With such a rule, a pLTS $\langle S, Act, \rightarrow\rangle$ can be "completed" to a bipartite LTS, where the states are either processes or distribution of processes, the $\rightarrow$ transition goes from states to distribution, with labels in $Act_\tau$, and the $\rightsquigarrow$ transition goes from distributions to states, with labels in $[0, 1]$. 
 
-The second, most recent approach, is known as the \textit{distribution transformer} semantic, also called belief-state transformer semantic or labelled Markov process semantics~\cite{desharnaisBisimulationLabelledMarkov2002, korthikantiReasoningMDPsTransformers2010,  hermannsProbabilisticBisimulationNaturally2014}. It specifies that a distribution of processes must evolve in a distribution of processes, with a derivation rule like 
+The second, most recent approach, is known as the \textit{distribution transformer} semantics, also called belief-state transformer semantics or labeled Markov process semantics~\cite{desharnaisBisimulationLabelledMarkov2002, korthikantiReasoningMDPsTransformers2010,  hermannsProbabilisticBisimulationNaturally2014}. It specifies that a distribution of processes must evolve in a distribution of processes, with a derivation rule like 
 \[ \infer{ \sum_i p_i \overline{s_i} \xrightarrow{\alpha} \sum_i p_i \Delta_i}
   { p_i \xrightarrow{\alpha} \Delta_i & \text{ for each  }i }
 \]
@@ -190,7 +190,7 @@ Notice that the addition of this rule is equivalent to lifting the transition re
 
 \subsection{Reduction systems}\label{bkg_reduction_system}
 
-In the early works on process calculus, bisimilarity in its various form was adopted as the mainstream notion of behavioural equivalence. Starting from \cite{milnerBarbedBisimulation1992}, a different notion of equivalence was considered, conceptually simpler and more general, under the name
+In the early works on process calculus, bisimilarity in its various forms was adopted as the mainstream notion of behavioural equivalence. Starting from \cite{milnerBarbedBisimulation1992}, a different notion of equivalence was considered, conceptually simpler and more general, under the name
 of \textbf{barbed congruence}. According to this notion, two processes are equivalent if they cannot be distinguished by an external observer. That is, two processes $P$ and $Q$ are equivalent if, under any context $B[\blank]$, $B[P]$ and $B[Q]$ express the same observable behaviour, based on a general concept of "observable", called \textit{barb}.
 
 We will first introduce the \textit{reduction semantic} for process calculi, and then show how it can be used to define barbed equivalence. 
@@ -217,12 +217,12 @@ P\parallel\nil \equiv P \qquad P\parallel Q \equiv Q \parallel P \qquad P\parall
 P + \nil \equiv P \qquad P + Q \equiv Q + P \qquad P + (Q + R) \equiv (P + Q) + R
 \end{gather*}
 
-Notice that the reduction system presented above, together with the structural congruence relation, determines exactly the $\xrightarrow{\tau}$ transition of the LTS semantics presented in the previous section. Reduction systems are in fact often used to describe the dynamics of calculi with no interaction with an "outside environment", so no input and output transitions, only inter-process communication.
+Notice that the reduction system presented above, together with the structural congruence relation, determines exactly the $\xrightarrow{\tau}$ transition of the LTS semantics presented in the previous section. Reduction systems are in fact often used to describe the dynamics of calculi with no interaction with an "outside environment", so with no input nor output transitions, only inter-process communication.
 
 
 Obiously, a bisimularity relation defined on a reduction system is a very coarse relation, that simply consider the number of computational steps a process can make. To recover the notion of strong LTS-bisimilarity in the reduction semantics setting, it is necessary to recover some of the "observational power" of labelled bisimulations, through the concept of \textit{barbs}.
 
-We call \textit{barb} a predicate on states, often used to capture a certain notion of "observable property". Given a barb $b$, we write $s\downarrow_b$ to say that $s$ statisfies the predicate $b$, i.e. expresses that property. For value-passing CCS, a suitable observable property is "$P$ is capable to send any value con channel $c$". That is, we define the barb $c$ as the predicate 
+We call \textit{barb} a predicate on states, often used to capture a certain notion of "observable property". Given a barb $b$, we write $s\downarrow_b$ to say that $s$ statisfies the predicate $b$, i.e. expresses that property. For value-passing CCS, a suitable observable property is "$P$ is capable to send something on channel $c$". That is, we define the barb $c$ as the predicate 
 \[\{P \mid \exists v, P' \ P \xrightarrow{c!v} P'\}\]
 %or equivalently, 
 %\[P \downarrow_c \text{ if and only if } P \xrightarrow{c!v} P'\]
@@ -238,15 +238,15 @@ Two states $s, t \in S$ are said to be \textit{barbed bisimilar}, written $s \si
 
 Barbed bisimilarity is often not useful per se, as for example $c!0.a!0.\nil \sim_b c!0.b!0.\nil$, since they both express the barb $\downarrow_c$, and have no outgoing transition. Barbed bisimulation is commonly used as the discriminating property of a contextual equivalence, called \textit{barbed equivalence}.
 
-A context is a "process with a hole", for example $B[] = [] \parallel R$ or $B[] = [] + R$, where $R$ is any process. Given a context $B[]$, we define as $B[P]$ as the process obtained "filling" the hole with $P$, i.e. substituting $P$ in place of $[]$.
+A context is a "process with a hole", for example $B[\blank] = [\blank] \parallel R$ or $B[\blank] = [\blank] + R$, where $R$ is any process. Given a context $B[\blank]$, we define as $B[P]$ as the process obtained "filling" the hole with $P$, i.e. substituting $P$ in place of $[\blank]$.
 
 Given a set of contexts, two processes $P$ and $Q$ are said to be \textit{barbed equivalent}, or barbed congruent, written $P \simeq_b Q$, if for any context $C[]$, it holds that $C[P] \sim_b C[Q]$. With the previously defined barb $\downarrow_c$, and choosing just parallel context of the form $[] \parallel R$, it is possible to prove that
 \[P \simeq_b Q \text{ if and only if } P \sim Q\]
 that is, barbed equivalence is exactly the same as labelled bisimilarity. Similar results can be obtained also for weak bisimilarity, with an appropriate notion of weak barb.
 
 To sum up, a reduction semantic allows to define a barbed equivalence relation, that: \begin{itemize}
-\item Has the same power of labelled bisimilarity, but is defined in terms of a simpler transition system, inspired by term rewriting system.
-\item Is "parametric" with respect to different barbs and different contexts, allowing for different observational power for the same calculus.
-\item Is based on the very general concept of contextual equivalence, and it is used as the prototype of "natural, standard behavioural equivalence" for a lot of new calculi.
-\item Is more difficult to prove, as it involves a universal quantification on all possible context, whereas proving bisimilarity requires as usual only to provide a bisimulation.
+\item Has the same power of labelled bisimilarity, but is defined in terms of a simpler transition system, inspired by term rewriting system;
+\item is "parametric" with respect to different barbs and different contexts, allowing for different observational power for the same calculus;
+\item is based on the very general concept of contextual equivalence, and it is used as the prototype of "natural, standard behavioural equivalence" for a lot of new calculi;
+\item is more difficult to prove, as it involves a universal quantification on all possible contexts, whereas usually proving bisimilarity requires only to provide a bisimulation.
 \end{itemize}

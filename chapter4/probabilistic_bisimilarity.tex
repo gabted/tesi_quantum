@@ -8,7 +8,7 @@ We use (probabilistic) saturated bisimilarity as it is an established, general b
 We define "the capability of performing an output on a channel" as the only barbs, i.e. the atomic observable properties. We do not assume input actions to be observable, following the standard for asynchronous calculi \cite{amadioBisimulationsAsynchronousPcalculus1998}. Since the external observer is asynchronous, it cannot observe the process $P$ to discover if a $c?x$ transition is available: the context can only perform $c!v$ as a terminal action, hence it cannot discover if  the message is ever received.
 
 \begin{definition}[Barb]
-	A \emph{barb} is a predicate $\downarrow_{c}$ over well typed processes, defined as follows: $P \downarrow_{c}$ if and only if $P \equiv c!e \parallel R$ for some expression $e$, and processes $R$.
+	A \emph{barb} is a predicate $\downarrow_{c}$ over well typed processes, defined as follows: $P \downarrow_{c}$ if and only if $P \equiv c!e \parallel R$ for some expression $e$, and process $R$.
 \end{definition}
 
 %\begin{definition}[Barb on configuration]
@@ -27,7 +27,7 @@ If $\conf = \confw{\rho, P}$ is a configuration, we will often write $C\downarro
 	We say that two {processes} $P$ and $Q$ are \emph{bisimilar}, written $P \sim_{PS} Q$, if for any $\rho \in \mathcal{D}(\calH_{QN})$ it holds $\confw{\rho, P} \simps \confw{\rho, Q}$.
 \end{definition}
 
-Note that it is not necessary to use a barb $\downarrow_{c!v}$, so to consider also which is the value that is communicated. A context, in fact, is capable to discern $c!v.P$ and $c!v'.P$ thanks to the \textbf{if-then-else} construct for classical values, or to the measure operator for quantum values. This is an innovation with respect to QPAlg, wehere the observables of $\confw{\rho, c!q.P}$ were both the channel and the value (i.e. the reduced density operator) of $q$. 
+Note that it is not necessary to use a barb $\downarrow_{c!v}$, so to consider also which is the value that is communicated. A context, in fact, is capable to discern $c!v.P$ from $c!v'.P$ thanks to the \textbf{if-then-else} construct for classical values, or to the measure operator for quantum values. This is an innovation with respect to QPAlg, wehere the observables of $\confw{\rho, c!q.P}$ were both the channel and the value (i.e. the reduced density operator) of $q$. 
 
 Note also that $B[\blank]$ has barb $\downarrow_c$ if and only if either $B[\blank]$ has or it $P$ has it. Hence it is not required to use contexts when comparing the barbs of two configurations for checking saturated bisimilarity. 
 
@@ -38,9 +38,9 @@ We can now prove that the teleportation algorithm presented in the last Section 
  The specification expressing the expected behaviour of teleportation is as follows:
 \[\proc{TelSpec} \Coloneqq \tau^8.\text{SWAP}(q_0,q_2).(\text{out}_b!q_2 \parallel discard(q_0, q_1))\]
 
-where $\tau^8$ denotes $8$ repetitions of $\tau$.
+where $\tau^8$ denotes $8$ repetitions of $\tau$. These are needed since we relies on strong bisimilarity.
 
-Note that the exchanged qbit is sent on an output channel, because the  correctness of the algorithm depends on its value. Note also that the value of the others qbit is not visible, as they are discarded. This because any implementation that succeeds in sending the target qubit is satifactory, regardless of what happens to the others qubits.
+Note that the exchanged qbit is sent on an output channel, because the  correctness of the algorithm depends on its value. Note also that the value of the others qbit is not visible, as they are discarded. This because any implementation that succeeds in sending the target qubit is satifactory, regardless of what happens to the other qubits.
 
 The implementation presented in the last section was: 
 
@@ -58,7 +58,7 @@ The implementation presented in the last section was:
 We can prove that $\proc{TelSpec} \simps \proc{Tel}$. Notice in fact that the channels $\text{in}_a, \text{in}_b, \text{m}_{ab}$ in $\proc{Tel}$ are limited, so the only visible communications happen on the $\text{out}_b$ channel. After all the transformations and measurements, $\proc{Tel}$ will leave the $q_2$ qubit exactly as $\proc{TelSpec}$, and the other qubits are not visible.
 \end{example}
 
-Consider now the first definition of teleportation reported in \cite{fengBisimulationQuantumProcesses2012}. This correspond to an  alternative specification of quantum teleportation, where all the final qubits are sent on channels. As a consequence, to match the specification, the implementation must behave the same also in the qbits that are not "teleported". We will see that the following
+Consider now the first definition of teleportation reported in \cite{fengBisimulationQuantumProcesses2012}. This corresponds to an  alternative specification of quantum teleportation, where all the final qubits are sent on channels. As a consequence, to match the specification, the implementation must behave the same also in the qbits that are not "teleported". We will see that the following
 implementation, similar to the previous one
 but where no qubit is discarded, does not
 match the given specification.
