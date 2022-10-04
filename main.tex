@@ -20,7 +20,8 @@
 \usepackage{proof}
 \usepackage{xfrac}
 \usepackage{tensor}
-\usepackage{enumerate}
+\usepackage{enumerate}	
+\usepackage[nowrite, norules, swapnames]{frontespizio}
 \usepackage[
 backend=bibtex,
 style=numeric,
@@ -97,7 +98,34 @@ sorting=nyt
 \author{Gabriele Tedeschi}
 \begin{document}
 
-\maketitle
+\begin{frontespizio}
+\Margini{2cm}{2cm}{2cm}{2cm}
+\Rientro{1cm}
+\Logo[5cm]{cherubino_black}
+\Istituzione{University of Pisa}
+\Divisione{Department of Computer Science}
+\Scuola{Master Degree in Computer Science}
+\Titolo{Exploring Quantum Process Calculi\\ via barbs and contexts}
+\NCandidato{Candidate}
+\Candidato{Gabriele Tedeschi}
+\NRelatore{Thesis supervisor}{}
+\Relatore{Prof. Fabio Gadducci}
+\NCorrelatore{Thesis co-supervisor}{}
+\Correlatore{Dr. Lorenzo Ceragioli}
+%\Correlatore{B. L. User}
+\Piede{Academic Year 2021-2022}
+
+%\Dipartimento{Informatica}
+%\Corso[laurea triennale]{Informatica}
+%\Annoaccademico{2021-2022}
+\end{frontespizio}
+
+\begin{abstract}
+With the development of quantum communication protocols, numerous \textit{quantum process calculi} have been proposed, but none as emerged has an accepted standard. Moreover, an established notion of behavioural equivalence is still missing. In this work we present a new asynchronous calculus, \textit{Linear qCCS}, featuring a linear type system and two novel bisimilarity relations.
+Our language allows to directly compare the semantics of previous proposals, and investigate which notion of behavioural equivalence is most consistent with the quantum mechanical rules. One of the main result is that the usual and well-accepted definition of probabilistic bisimilarity is not appropriate for the quantum setting. Hence we introduce quantum saturated bisimilarity, which adequately formalize the observable properties of quantum systems. Finally, we also explore a foundational approach, presenting a \textit{Minimal Quantum Process Algebra}, in order to investigate, in a minimal framework, the essential characteristics of communicating quantum systems. For this model we define a symbolic semantics, where the probabilistic behaviour of each process is "parametric" with respect to its input quantum values.
+
+ 
+\end{abstract}
 
 \tableofcontents
 
