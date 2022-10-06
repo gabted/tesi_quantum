@@ -170,7 +170,7 @@ In lqCCS, the programmer must \textbf{explicitly} describe what happens to each 
  P' = c?q.X(q).c!q \qquad Q' = c?q.H(q).c!q
 \]
 \[
- P'' = c?q.X(q).disc(q) \qquad Q'' = c?q.H(q).discq
+ P'' = c?q.X(q).disc(q) \qquad Q'' = c?q.H(q).disc(q)
 \]
 \end{frame}
 
@@ -178,13 +178,14 @@ In lqCCS, the programmer must \textbf{explicitly} describe what happens to each 
 \begin{columns}
 \column{0.4\textwidth}
 \begin{itemize}
-\item Transition system made of \textbf{configurations}, of the form $\confw{\kp, P}$
-\item \textbf{Reduction system}, without labels
-\item Probabilistic behaviour, a configuration can evolve in a \textbf{distribution} of configurations
+\item<1-> Transition system made of \textbf{configurations}, of the form $\confw{\kp, P}$
+\item<2-> \textbf{Reduction system}, without labels
+\item<3-> Probabilistic behaviour, a configuration can evolve in a \textbf{distribution} of configurations
 \end{itemize}
-\pause
+
 \column{0.6\textwidth}
-  \ctikzfig{transition_system}
+\only<4->{
+  \ctikzfig{transition_system}}
 \end{columns}
 \end{frame}
 
@@ -193,9 +194,11 @@ In lqCCS, the programmer must \textbf{explicitly} describe what happens to each 
 
 \begin{block}{Saturated Bisimilarity}
 Two processes are \textbf{saturated bisimilar} if they express the same \textbf{observable behaviour} under any \textbf{context} 
+\pause
 \begin{itemize}
 \item 
 Observable behaviour (barb): the capability of sending some value on a specific channel
+\pause
 \item Context: a "program" with a hole, like $[\blank] \parallel R$. We compare $P$ and $Q$ "inside" this context, i.e. we study $P \parallel R$ and $Q \parallel R$.
 \end{itemize}
 \end{block}
@@ -206,14 +209,15 @@ The two processes seen before \[
  P' = c?q.X(q).c!q \qquad Q' = c?q.H(q).c!q
 \]
 are not bisimilar, because there is a context $R$ which tells them apart
-\[ R = c?q.M_{01}[q \rhd y].\left( disc(q)\parallel \ite{x = 0}{a!0}{b!0}\right)\]
+\[ R = c?q.M_{01}[q \rhd x].\left( disc(q)\parallel \ite{x = 0}{a!0}{b!0}\right)\]
 
 \end{frame}
 
 
 \section{The problem with probabilistic bisimilarity}
 \begin{frame}{Probabilistic Bisimilarity}
-Thanks to lqCCS, we can compare the existing bisimilarities. 
+Thanks to lqCCS, we can compare the existing bisimilarities, and find the more appropriate for the quantum setting. 
+\pause
 
 Consider the two configurations 
 \begin{align*}
@@ -232,7 +236,7 @@ According to quantum mechanics, it's impossible to distinguish the two sources $
 S &\text{ emits a qubit $\kz$ or $\ko$ with the same probability}\\
 S' &\text{ emits a qubit $\kpl$ or $\km$ with the same probability}
 \end{align*}
-Suppose we receive a qubit from either $S$ or $S'$, and measure it in the computational basis. If we measure a qubit from $S$, it would result in either $\kz$ or $\ko$. If we measure a qubit from $S'$, a $\kpl$ qubit would decay in either $\kz$ or $\ko$, and a $\km$ qubit would decay in either $\kz$ or $\ko$ as well.
+Suppose we receive a qubit from either $S$ or $S'$, and measure it in the $01$ basis. If we measure a qubit from $S$, it would result in either $\kz$ or $\ko$. If we measure a qubit from $S'$, a $\kpl$ qubit would decay in either $\kz$ or $\ko$, and a $\km$ qubit would decay in either $\kz$ or $\ko$ as well.
 
 \pause
 \begin{block}{Inadequacy of Probabilistic Bisimilarity}
@@ -240,7 +244,7 @@ The usual notion of probabilistic bisimilarity is too fine, when comparing distr
 \end{block}
 \end{frame}
 
-\section{Solution I: Equivalence of distributions}
+\section{Solution I: Quantum Bisimilarity}
 
 
 \begin{frame}{Solution I: Quantum Bisimilarity}
@@ -261,6 +265,7 @@ We introduce an \textit{equivalence} relation $$\equiv \, \subseteq \distr(Conf)
 \end{frame}
 
 \section{Solution II: mQPA}
+\pause
 \begin{frame}{Minimal Quantum Process Algebra}
 \begin{block}{Solution II: mQPA}
 We introduce a new calculus, equipped with a minimal set of features: communication, non-determinism and quantum measurement.
@@ -272,8 +277,8 @@ i.e. the probabilistic observable behaviour is \textbf{parametric} with respect 
 \pause
 In mQPA, the previous example can be rewritten as
 \begin{align*}
-		Q &= (s \qsum{\ketbra{0}{0}} s') \qsum{\ketbra{+}{+}} (s \qsum{\ketbra{0}{0}} s')\\
-		Q' &= (s \qsum{\ketbra{+}{+}} s') \qsum{\ketbra{0}{0}} (s \qsum{\ketbra{+}{+}} s')
+	  (S \qsum{\proj{0}} S')(\kpl) = S \psum{\frac{1}{2}} S'\\
+	  (S \qsum{\proj{+}} S')(\kz) = S \psum{\frac{1}{2}} S'\\
 \end{align*}
 \end{frame}
 
@@ -281,19 +286,20 @@ In mQPA, the previous example can be rewritten as
 \section{Conclusions}
 \begin{frame}{What have we seen}
 \begin{itemize}
-\item<1-> \textbf{lqCCS}, an asynchronous linear calculus inspired by  qCCS. It rephrases the syntax e semantics of previous calculi in a more standard formalism, and allows to compare different notions of bisimilarity. 
-\item<2-> Even though quantum systems exhibit a probabilistic behaviour, \textbf{probabilistic bisimilarity} is not really well suited for the quantum setting. 
-\item<3-> \textbf{mQPA}, a minimal calculus, pursuing a foundational approach on which are the dynamics and observable properties of quantum systems.
+\item<2-> \textbf{lqCCS}, an asynchronous linear calculus inspired by  qCCS. It rephrases the syntax e semantics of previous calculi in a more standard formalism, and allows to compare different notions of bisimilarity. 
+\item<3-> Even though quantum systems exhibit a probabilistic behaviour, \textbf{probabilistic bisimilarity} is not really well suited for the quantum setting. 
+\item<4-> \textbf{quantum bisimilarity} relaxes the conditions of probabilistic bisimilarity, better representing quantum systems.
+\item<4-> \textbf{mQPA}, a minimal calculus, pursuing a foundational approach on which are the dynamics and observable properties of quantum systems.
 \end{itemize}
 \end{frame}
 
 
 \begin{frame}{Future work}
 \begin{itemize}
-\item<1-> We will work on \textbf{non-strong extensions} (weak or barbed bisimilarity), as for example protocol implementation should be weakly bisimilar to its specification
-\item<2->  From weak transitions, it is possible to define reachability, temporal logics and \textbf{model checking}.
-\item<3->  Saturated bisimilarity can be cumbersome to prove, it will be interesting to explore how the existing \textbf{proof techniques} adapt to the quantum setting
-\item<4->  We will investigate the relation between \textbf{mQPA} semantics and the usual, configuration-based semantics, together with their respective bisimilarities.
+\item<2-> We will work on \textbf{non-strong extensions} (weak or barbed bisimilarity), as for example protocol implementation should be weakly bisimilar to its specification.
+\item<3->  From weak transitions, it is possible to define reachability, temporal logics and \textbf{model checking}.
+\item<4->  Saturated bisimilarity can be cumbersome to prove, it will be interesting to explore how the existing \textbf{proof techniques} adapt to the quantum setting.
+\item<5->  We will investigate the relation between \textbf{mQPA} semantics and the usual, configuration-based semantics, together with their respective bisimilarities.
 \end{itemize}
 \end{frame}
 
