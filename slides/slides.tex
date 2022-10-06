@@ -94,22 +94,45 @@
 
 \section{Quantum computing fundamentals}
 \begin{frame}{Qubits}
+The simplest quantum system is a \textbf{qubit}. Like a bit, a qubit has two separate states, $\kz$ and $\ko$.
 
+
+A qubit can also be in a linear combination of states, knows as a \textbf{superposition}.
+\begin{columns}
+\column{0.5\textwidth}
+\[ \kpl = \oost \kz + \oost \ko \]
+\[\km = \oost \kz - \oost \ko \]
+
+\column{0.5\textwidth}
+\begin{figure}
+\includegraphics[scale=0.6]{bloch_no_bkg}
+\end{figure} 
+\end{columns}
 \end{frame}
 
-
-\begin{frame}{Superposition}
-
-\end{frame}
 
 
 \begin{frame}{Measurements}
+A qubit in superposition cannot be directly observed, because when it get \textbf{measured}, it \textbf{decays} in one of its basis states.
 
+\bigskip
+
+\ctikzfig{measurement_gen}
+
+\bigskip
+
+For example, when measuring the state $\kpl = \oost \kz + \oost \ko$, we get either $\kz$ or $\ko$ with the same probability. 
 \end{frame}
 
 
-\begin{frame}{No Cloning theorem}
 
+\begin{frame}{No Cloning theorem}
+\begin{block}{No-Cloning}
+Quantum information cannot be \textbf{duplicated}. That is, given a qubit $q_1$ in state $$\kp = \alpha\kz + \beta\ko$$ it is impossible to prepare a qubit $q_2$ in the same state, without destroying the information in $q_1$.
+\end{block}
+
+\bigskip
+This means that, contrary to classical bits, qubits cannot be freely copied, stored or broadcasted to multiple receivers.
 \end{frame}
 
 
@@ -197,7 +220,7 @@ Consider the two configurations
 \conf = \confw{\kpl, M_{01}[q \rhd x].c!q} &\rightarrow \confw{\kz, c!q} \psum{\frac{1}{2}} \confw{\ko, c!q} \\
 \conf' = \confw{\kz, M_{\pm}[q \rhd x].c!q} &\rightarrow \confw{\kpl, c!q} \psum{\frac{1}{2}} \confw{\km, c!q}
 \end{align*}
-
+\pause
 According to the usual notion of \textbf{probabilistic bisimilarity}, two distributions are bisimilar if they assign the same probability to bisimilar processes. In our example, the two configurations  are \textbf{not} bisimilar, because they evolve in two non-bisimilar distributions.
 
 \end{frame}
