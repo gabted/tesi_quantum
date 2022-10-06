@@ -1,0 +1,19 @@
+- **quantum**
+  - superposizione e misura
+  - no cloning
+- **lqCCS**
+  - differenza sintassi
+  - esempio riduzione (con lts e probabilità)
+  - *barbe e contesti*: più standard rispetto a qCCS (proprietà invece che definizione) e CQP, contesto processo con un buco, che può distinguere i valori quantum secondo el regole della MQ
+- **problema con prabilistic bisimilarity**
+  - grazie a lqCCS si evince che: problema LS bisim, su un esempio 01 vs +-
+- **soluzione 1: equivalenza di distribuzioni**
+  - "ben noto in quantum mechanics che le distribuzioni tot e tot hanno lo stesso comportamento. Ad esempio non possono essere distinte da una misura etc etc"
+- **soluzione 2: mQPA**
+  - stati come funzioni, esempio: 5.2.1, ricorda un approccio simbolico
+- **conclusioni e future work**
+  - recap: lqCCS è una versione lineare aynnc di qCCS, sintassi standard, usata per studiare le bisimilarità. PRobabilistic non è buona, equivalence di distr. mQPA
+    - estensioni non strong (ed esempio fra Teleport e TelSpec)
+    -  quindi reachability logiche modali model checking
+    -  proof techinques per la nostra bisimilarità
+    -  ci si aspetta equivalenza fra mqpa e configurazioni

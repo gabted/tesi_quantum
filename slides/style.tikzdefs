@@ -1,0 +1,60 @@
+\usepackage{braket}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{stmaryrd}
+\usepackage{mathtools}
+\usepackage{proof}
+\usepackage{xfrac}
+\usepackage{tensor}
+
+
+
+%braket notation
+\newcommand{\ketbra}[2]{\ket{#1}\!\!\bra{#2}}
+\newcommand{\proj}[1]{\ketbra{#1}{#1}}
+\newcommand{\kp}{\ket{\psi}}
+\newcommand{\kf}{\ket{\phi}}
+\newcommand{\kz}{\ket{0}}
+\newcommand{\ko}{\ket{1}}
+\newcommand{\kpl}{\ket{+}}
+\newcommand{\km}{\ket{-}}
+\newcommand{\oost}{\frac{1}{\sqrt{2}}}
+
+%hilbert spaces, density matrices and sops
+\newcommand{\calH}{\mathcal{H}}
+\newcommand{\hilbert}{\calH}
+\newcommand{\calHt}{\mathcal{H}^2}
+\newcommand{\Hto}[1]{\mathcal{H}^{\otimes #1}}
+\newcommand{\calDH}{\mathcal{D}(\mathcal{H})}
+\newcommand{\calSH}{\mathcal{S}(\mathcal{H})}
+\newcommand{\sop}{\mathcal{E}}
+\newcommand{\cnot}{\text{CNOT}}
+
+%process algebras
+\newcommand{\ITE}[3]{\textbf{If }{#1}\textbf{ Then } {#2} \textbf{ Else } {#3}}
+\newcommand{\bigzero}{\mbox{\normalfont\bfseries 0}}
+\newcommand{\qsum}[1]{\tensor[_{#1}]{\boxplus}{}}
+\newcommand{\psum}[1]{\tensor[_{#1}]{\oplus}{}}
+\newcommand{\nil}{\mathbf{0}}
+\newcommand{\sem}[1]{\llbracket#1\rrbracket}
+\newcommand{\sema}[1]{\llparenthesis\,#1\,\rrparenthesis}
+\newcommand{\rel}{\mathcal{R}}
+\newcommand{\lrel}{\mathring{\rel}}
+\newcommand{\conf}{\mathcal{C}}
+\newcommand{\confw}[1]{\langle#1\rangle}
+\newcommand{\blank}{{-}}
+\newcommand{\qlift}[1]{\stackrel{\scriptscriptstyle \boxplus}{#1}}
+\newcommand{\slift}[1]{\stackrel{\scriptscriptstyle \circ}{#1}}
+\newcommand{\sqlift}[1]{\hat{#1}}
+\newcommand{\barb}[3]{#3\downarrow_{#1, #2}}
+\newcommand{\proc}[1]{\text{\textbf{#1}}}
+\newcommand{\ite}[3]{\textbf{if } #1 \textbf{ then } #2 \textbf{ else } #3}
+
+%bisimulation symbols
+\newcommand{\simps}{\sim_{PS}}
+\newcommand{\simqs}{\sim_{QS}}
+
+
+\newcommand{\distr}{\mathfrak{D}}
